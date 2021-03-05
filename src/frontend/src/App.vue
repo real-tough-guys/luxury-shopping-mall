@@ -11,9 +11,22 @@
       >
         <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
-        <v-toolbar-title>Page title</v-toolbar-title>
+        <v-toolbar-title>Luxury Shop</v-toolbar-title>
 
         <v-spacer></v-spacer>
+        <v-col
+            cols="6"
+            md="3"
+        >
+          <v-form ref="form">
+            <v-text-field
+                v-model="model"
+                :counter="max"
+                :rules="rules"
+                label="Luxury shop search"
+            ></v-text-field>
+          </v-form>
+        </v-col>
 
 
         <v-btn icon>
