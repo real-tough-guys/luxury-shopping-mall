@@ -3,16 +3,12 @@
     <div>
       <v-app-bar color="black accent-4" dense dark height="80">
         <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
-
         <v-toolbar-title>Luxury Shop</v-toolbar-title>
-
         <v-spacer></v-spacer>
         <v-col cols="6" md="3">
           <v-form ref="form">
             <v-text-field
-              v-model="model"
-              :counter="max"
-              :rules="rules"
+              v-model="searchModel"
               label="Luxury shop search"
             ></v-text-field>
           </v-form>
@@ -21,7 +17,7 @@
         <v-btn icon>
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
-        <v-btn icon>
+        <v-btn icon :to="{ name: 'Cart' }">
           <v-icon>mdi-cart</v-icon>
         </v-btn>
 
@@ -40,31 +36,55 @@
         </v-menu>
       </v-app-bar>
       <v-navigation-drawer v-model="drawer" absolute temporary>
-        <v-list nav dense>
-          <v-list-item-group
-            v-model="group"
-            active-class="deep-purple--text text--accent-4"
-          >
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-home</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Home</v-list-item-title>
-            </v-list-item>
+        <v-list-item>
+          <v-list-item-avatar>
+            <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+          </v-list-item-avatar>
 
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-account</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Account</v-list-item-title>
-            </v-list-item>
-          </v-list-item-group>
+          <v-list-item-content>
+            <v-list-item-title>John Leider</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list dense>
+          <v-list-item :to="{ name: 'Home' }">
+            <v-list-item-icon>
+              <v-icon>mdi-view-dashboard</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>Home</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Mypage' }">
+            <v-list-item-icon>
+              <v-icon>mdi-forum</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>Mypage</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item :to="{ name: 'Product' }">
+            <v-list-item-icon>
+              <v-icon>mdi-gift-outline</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>Product</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
       </v-navigation-drawer>
     </div>
-    <v-spacer></v-spacer>
+
     <v-main>
-      <router-view></router-view>
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
       <!--      <HelloWorld/>-->
     </v-main>
   </v-app>
@@ -89,8 +109,13 @@ export default {
   },
 
   data: () => ({
+    searchModel: null,
     drawer: false,
-    group: null
+    group: null,
+    items: [
+      { title: "Home", icon: "mdi-view-dashboard" },
+      { title: "Mypage", icon: "mdi-forum" }
+    ]
   })
 };
 </script>

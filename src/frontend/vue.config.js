@@ -1,14 +1,17 @@
-module.exports = {
-  transpileDependencies: ["vuetify"],
+const path = require("path");
 
-  devServer: {
-    proxy: {
-      "/": {
-        target: "http://localhost:8080",
-        ws: true,
-        changeOrigin: true
-      }
+module.exports = {
+    transpileDependencies: ["vuetify"],
+
+    devServer: {
+        proxy: {
+            "/": {
+                target: "http://localhost:8080",
+                ws: true,
+                changeOrigin: true
+            }
+        },
+        port: 9000
     },
-    port: 9000
-  }
+    outputDir: path.resolve("__dirname", "../../main/resources/static"),
 };
