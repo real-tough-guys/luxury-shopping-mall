@@ -1,62 +1,43 @@
 <template>
   <div>
-    <v-card class="mx-auto overflow-hidden" height="auto">
-      <v-container>
-        <div v-for="n in 2">
-          <v-hover v-slot="{ hover }">
-            <v-card class="mx-auto" color="white lighten-4" max-width="350">
-              <v-img
-                :aspect-ratio="16 / 12"
-                src="https://cdn.vuetifyjs.com/images/cards/kitchen.png"
-              >
-                <v-expand-transition>
-                  <div
-                    v-if="hover"
-                    class="d-flex transition-fast-in-fast-out blue-grey darken-2 v-card--reveal display-3 white--text"
-                    style="height: 100%;"
-                  >
-                    $14.99
-                  </div>
-                </v-expand-transition>
-              </v-img>
-              <v-card-text class="pt-6" style="position: relative;">
-                <v-btn
-                  absolute
-                  color="black"
-                  class="white--text"
-                  fab
-                  large
-                  right
-                  top
-                >
-                  <v-icon>mdi-cart</v-icon>
-                </v-btn>
-                <div class="font-weight-light grey--text title mb-2">
-                  For the perfect meal
-                </div>
-                <h3 class="display-1 font-weight-light orange--text mb-2">
-                  QW cooking utensils
-                </h3>
-                <div class="font-weight-light title mb-2">
-                  Our Vintage kitchen utensils delight any chef.<br />
-                  Made of bamboo by hand
-                </div>
-              </v-card-text>
-            </v-card>
-          </v-hover>
-        </div>
-      </v-container>
+    <v-card max-width="500" max-height="500" class="mx-auto">
+      <v-carousel>
+        <v-carousel-item
+          v-for="(item, i) in items"
+          :key="i"
+          :src="item.src"
+          reverse-transition="fade-transition"
+          transition="fade-transition"
+        ></v-carousel-item>
+      </v-carousel>
     </v-card>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-
 export default {
-  // data: {
-  //
-  // }
+  data() {
+    return {
+      items: [
+        {
+          src:
+            "https://image.musinsa.com/images/prd_img/2021021921333500000079112.jpg"
+        },
+        {
+          src:
+            "https://image.musinsa.com/images/prd_img/2021021921333500000011944.jpg"
+        },
+        {
+          src:
+            "https://image.musinsa.com/images/prd_img/2021021921333600000035549.jpg"
+        },
+        {
+          src:
+            "https://image.musinsa.com/images/prd_img/2021021921333600000098070.jpg"
+        }
+      ]
+    };
+  }
 };
 </script>
 <style>
