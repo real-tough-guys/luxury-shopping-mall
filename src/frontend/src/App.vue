@@ -119,3 +119,12 @@ export default {
   })
 };
 </script>
+<style>
+th {
+  font-size: 1.2rem !important;
+  font-weight: 100;
+}
+td {
+  font-size: 1rem !important;
+}
+</style>
