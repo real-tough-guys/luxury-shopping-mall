@@ -108,7 +108,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 div#signUp {
   width: 510px;
   margin: auto;
