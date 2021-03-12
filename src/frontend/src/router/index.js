@@ -5,17 +5,17 @@ import VueRouter from "vue-router";
 
 
 Vue.use(VueRouter)
-const Home = () => import(/* webpackChunkName: "jun" */ "../views/Home.vue");
-const Mypage = () => import(/* webpackChunkName: "jun" */ "../views/Mypage.vue");
-const Product = () => import(/* webpackChunkName: "jun" */ "../views/product.vue");
-const Cart = () => import(/* webpackChunkName: "jun" */ "../views/mycart.vue");
+const DetailProduct = () => import("../views/DetailProduct.vue");
+const Mypage = () => import("../views/Mypage.vue");
+const Main = () => import("../views/Main.vue");
+const Cart = () => import("../views/mycart.vue");
 
 
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Home
+    name: "Main",
+    component: Main
   },
   {
     path: '/mypage',
@@ -28,9 +28,9 @@ const routes = [
     component: Cart,
   },
   {
-    path: '/product',
-    name: 'Product',
-    component: Product,
+    path: '/deatil',
+    name: 'DetailProduct',
+    component: DetailProduct,
 
   }
 ];

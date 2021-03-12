@@ -68,15 +68,6 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item :to="{ name: 'Product' }">
-            <v-list-item-icon>
-              <v-icon>mdi-gift-outline</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Product</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
         </v-list>
       </v-navigation-drawer>
     </div>
