@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import product from "@/views/product";
+
 
 export default {
   data() {
@@ -88,7 +88,7 @@ export default {
   computed: {
     total() {
       var i = 0;
-      return this.products.reduce((total, item) => {
+      return this.products.reduce((total) => {
         return Number(total) + Number(this.products[i].price);
         i++;
       }, 0);
