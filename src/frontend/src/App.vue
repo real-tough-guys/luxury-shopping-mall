@@ -68,25 +68,6 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item :to="{ name: 'Product' }">
-            <v-list-item-icon>
-              <v-icon>mdi-gift-outline</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Product</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item :to="{ name: 'Signup' }">
-            <v-list-item-icon>
-              <v-icon>mdi-gift-outline</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Sign up</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
         </v-list>
       </v-navigation-drawer>
     </div>
@@ -129,3 +110,12 @@ export default {
   })
 };
 </script>
+<style>
+th {
+  font-size: 1.2rem !important;
+  font-weight: 100;
+}
+td {
+  font-size: 1rem !important;
+}
+</style>
