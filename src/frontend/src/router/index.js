@@ -9,7 +9,7 @@ const DetailProduct = () => import("../views/DetailProduct.vue");
 const Mypage = () => import("../views/Mypage.vue");
 const Main = () => import("../views/Main.vue");
 const Cart = () => import("../views/mycart.vue");
-
+const Login =()=> import(("../views/login.vue"));
 
 const routes = [
   {
@@ -31,6 +31,12 @@ const routes = [
     path: '/deatil',
     name: 'DetailProduct',
     component: DetailProduct,
+
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
 
   }
 ];
