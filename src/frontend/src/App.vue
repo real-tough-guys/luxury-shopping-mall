@@ -76,6 +76,16 @@
               <v-list-item-title>detail</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
+          <v-list-item :to="{ name: 'AdminPage' }">
+            <v-list-item-icon>
+              <v-icon>mdi-forum</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>admin 임시</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
       </v-navigation-drawer>
     </div>
