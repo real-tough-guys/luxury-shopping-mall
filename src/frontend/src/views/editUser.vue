@@ -3,7 +3,7 @@
     <v-card width="400" class="mx-auto mt-5">
       <v-card-title style="background-color: grey; margin-bottom:5px;">
         <h3 style="color: white">
-          Sign Up
+          Edit User
         </h3>
       </v-card-title>
       <v-card-text>
@@ -17,18 +17,10 @@
                     :rules="[rules.required]"
                     label="Email address"
                     prepend-icon="mdi-account-circle"
+                    readonly
                     required
                   ></v-text-field>
                 </v-col>
-                <v-btn
-                  :disabled="!email"
-                  id="checkEmail"
-                  elevation="1"
-                  color="blue-grey darken-3"
-                  class="mr-3 white--text"
-                >
-                  check
-                </v-btn>
               </v-row>
 
               <v-row>
@@ -39,7 +31,7 @@
                     :rules="[rules.required, rules.minPw]"
                     :type="show1 ? 'text' : 'password'"
                     name="input-10-1"
-                    label="Password"
+                    label="New Password"
                     hint="At least 8 characters"
                     prepend-icon="mdi-lock"
                     counter
@@ -70,7 +62,7 @@
                   <v-text-field
                     v-model="nickname"
                     :rules="[rules.minName]"
-                    label="Nickname"
+                    label="Edit Nickname"
                     prepend-icon="mdi-account"
                     required
                   ></v-text-field>
@@ -85,15 +77,19 @@
         <v-btn
           :disabled="!valid"
           color="blue-grey darken-3"
-          class="mr-3 white--text"
+          class="mr-0 white--text"
         >
-          Sign up
+          Edit
           <v-icon right>mdi-arrow-right-thick</v-icon>
         </v-btn>
 
-        <v-btn color="blue-grey darken-3" class="mr-4 white--text">
+        <v-btn color="blue-grey darken-3" class="mr-0 white--text">
           Cancel
           <v-icon right>mdi-cancel</v-icon>
+        </v-btn>
+        <v-btn color="error" class="mr-1 white--text">
+          Delete account
+          <v-icon right>mdi-trash-can</v-icon>
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -105,10 +101,10 @@ export default {
     return {
       show1: false,
       show2: false,
-      email: "",
+      email: "text123@gmail.com",
       password: "",
       passwordCheck: "",
-      nickname: "",
+      nickname: "김홍길",
       valid: true,
 
       rules: {
