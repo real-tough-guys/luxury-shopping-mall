@@ -42,7 +42,7 @@
               </v-icon>
             </v-btn>
             <v-card-actions>
-             color : <v-select :items="items2" label="Standard"> </v-select
+              color : <v-select :items="items2" label="Standard"> </v-select
             ></v-card-actions>
             <v-card-actions>
               size : <v-select :items="items3" label="Standard"> </v-select
@@ -117,10 +117,9 @@ export default {
         "pink darken-2",
         "pink darken-2"
       ],
-      items2: ['black', 'white'],
-      items3: ['free'],
-      slides: ["First", "Second", "Third", "Fourth", "Fifth"],
-
+      items2: ["black", "white"],
+      items3: ["free"],
+      slides: ["First", "Second", "Third", "Fourth", "Fifth"]
     };
   }
 };

@@ -1,0 +1,135 @@
+<template>
+  <div>
+    <v-card>
+      <v-card-title>
+        User Table
+        <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        class="elevation-1"
+        v-if="UserList"
+        v-model="selected"
+        show-select
+        :headers="headers"
+        :items="UserList"
+        :single-select="singleSelect"
+        :search="search"
+        hide-default-footer
+      >
+        <template slot="items" slot-scope="props">
+          <tr>
+            <td>{{ props.item.id }}</td>
+            <td>{{ props.item.username }}</td>
+            <td>{{ props.item.email }}</td>
+          </tr>
+        </template>
+        <template v-slot:top>
+          <v-switch
+            v-model="singleSelect"
+            label="Single select"
+            class="pa-3"
+          ></v-switch>
+        </template>
+      </v-data-table>
+
+      <v-btn small @click="deleteItem" class="mx-2" fab dark color="indigo">
+        <v-icon dark>
+          mdi-minus
+        </v-icon>
+      </v-btn>
+
+      <v-dialog v-model="UserCreateDialog" width="500">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            small
+            v-bind="attrs"
+            v-on="on"
+            class="mx-2"
+            fab
+            dark
+            color="indigo"
+          >
+            <v-icon dark>
+              mdi-plus
+            </v-icon>
+          </v-btn>
+        </template>
+
+        <v-card>
+          <v-card-title class="headline grey lighten-2">
+            회원 등록
+          </v-card-title>
+
+          <v-card-text>
+            <UserCreate />
+          </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn color="error" text @click="UserCreateDialog = false">
+              Cancel
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-card>
+  </div>
+</template>
+<script>
+import UserCreate from "../user/UserCreate.vue";
+export default {
+  components: {
+    UserCreate
+  },
+  data() {
+    return {
+      UserCreateDialog: false,
+      selected: [],
+      singleSelect: false,
+      search: "",
+      headers: [
+        { text: "no", value: "id", sortable: true },
+        { text: "이름", value: "username", sortable: true },
+        { text: "이메일", value: "email", sortable: true }
+      ],
+      UserList: [
+        {
+          id: 1,
+          username: "형준이",
+          email: "jhj960918@google.ac.kr"
+        },
+        {
+          id: 2,
+          username: "준성이",
+          email: "hjs96@google.ac.kr"
+        },
+
+        {
+          id: 3,
+          username: "신혁이",
+          email: "ksh97@google.ac.kr"
+        }
+      ]
+    };
+  },
+  methods: {
+    deleteItem() {
+      console.log(this.selected);
+      for (var i = 0; i < this.selected.length; i++) {
+        var selectId = this.selected[i].id;
+        this.UserList.splice(selectId - 1, 1);
+      }
+    }
+  }
+};
+</script>
