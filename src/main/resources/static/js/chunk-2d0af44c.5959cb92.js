@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0af44c"],{"0e34":function(n,t,e){"use strict";e.r(t);var a=function(){var n=this,t=n.$createElement,e=n._self._c||t;return e("div",[e("h1",[n._v("어드민페이지")]),e("v-btn",{attrs:{to:{name:"AdminCreate"}}},[n._v("어드민 작성")])],1)},c=[],r=e("2877"),u=e("6544"),l=e.n(u),s=e("8336"),i={},o=Object(r["a"])(i,a,c,!1,null,null,null);t["default"]=o.exports;l()(o,{VBtn:s["a"]})}}]);
-//# sourceMappingURL=chunk-2d0af44c.5959cb92.js.map
