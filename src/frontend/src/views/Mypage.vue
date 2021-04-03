@@ -36,7 +36,7 @@ export default {
     return {
       userName: "김철수",
       headers: [
-        { text: "상품정보", value: "productName" },
+        { text: "상품정보", value: "name" },
         { text: "주문번호", value: "orderId" },
         { text: "주문일자", value: "orderDate" },
         { text: "주문금액", value: "orderAmountAndQuantity" },
@@ -44,70 +44,70 @@ export default {
       ],
       products: [
         {
-          productName: "Frozen Yogurt",
+          name: "Frozen Yogurt",
           orderDate: "2021.03.11",
           orderId: 1,
           orderAmountAndQuantity: 20000,
           orderStatus: "상품준비"
         },
         {
-          productName: "Ice cream sandwich",
+          name: "Ice cream sandwich",
           orderDate: "2021.03.11",
           orderId: 2,
           orderAmountAndQuantity: 40000,
           orderStatus: "배송완료"
         },
         {
-          productName: "Eclair",
+          name: "Eclair",
           orderDate: "2021.03.11",
           orderId: 3,
           orderAmountAndQuantity: 10000,
           orderStatus: "배송중"
         },
         {
-          productName: "Cupcake",
+          name: "Cupcake",
           orderDate: "2021.03.11",
           orderId: 4,
           orderAmountAndQuantity: 90000,
           orderStatus: "배송중"
         },
         {
-          productName: "Gingerbread",
+          name: "Gingerbread",
           orderDate: "2021.03.11",
           orderId: 5,
           orderAmountAndQuantity: 120000,
           orderStatus: "배송중"
         },
         {
-          productName: "Jelly bean",
+          name: "Jelly bean",
           orderDate: "2021.03.12",
           orderId: 6,
           orderAmountAndQuantity: 11120000,
           orderStatus: "상품준비"
         },
         {
-          productName: "Lollipop",
+          name: "Lollipop",
           orderDate: "2021.03.13",
           orderId: 7,
           orderAmountAndQuantity: 20000,
           orderStatus: "배송완료"
         },
         {
-          productName: "Honeycomb",
+          name: "Honeycomb",
           orderDate: "2021.03.14",
           orderId: 8,
           orderAmountAndQuantity: 10000,
           orderStatus: "배송중"
         },
         {
-          productName: "Donut",
+          name: "Donut",
           orderDate: "2021.03.15",
           orderId: 9,
           orderAmountAndQuantity: 2000,
           orderStatus: "배송중"
         },
         {
-          productName: "KitKat",
+          name: "KitKat",
           orderDate: "2021.03.11",
           orderId: 10,
           orderAmountAndQuantity: 20000,
