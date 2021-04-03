@@ -1,0 +1,46 @@
+package com.skhu.luxuryshop.product.service;
+
+import com.skhu.luxuryshop.product.dto.ProductRequestDto;
+import com.skhu.luxuryshop.product.dto.ProductResponseDto;
+import com.skhu.luxuryshop.product.entity.ProductEntity;
+import com.skhu.luxuryshop.product.repository.ProductRepository;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+
+@Service
+public class ProductService {
+
+
+    private final ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {//Constructor Injection
+        this.productRepository = productRepository;
+
+    }
+
+    public ProductResponseDto findById(Long id) {
+        ProductEntity productEntity = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다. id=" + id));
+        return new ProductResponseDto(productEntity);
+    }
+
+    public List<ProductResponseDto> findAll() {
+        List<ProductEntity> productEntitys = productRepository.findAll();
+        return productEntitys.stream()
+                .map(ProductResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public long save(ProductRequestDto productDto) {
+        ProductEntity productEntity = productDto.toProductEntity();
+        return productRepository.save(productEntity).getId();
+    }
+
+
+}
