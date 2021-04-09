@@ -4,25 +4,28 @@ import com.skhu.luxuryshop.product.entity.ProductEntity;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
+
 @Getter
 public class ProductRequestDto {
 
-
+    @NotBlank(message = "상품명이 없습니다")
     private String name;
+    @NotBlank(message = "상품 설명이 없습니다")
     private String content;
-    private String price;
+    @PositiveOrZero(message = "숫자를 정확히 입력해주세요 ex) 500")
+    private Integer price;
     private String category;
-    private String imageurl1;
-
+    private String imageurl;
 
     @Builder
-    public ProductRequestDto(String name,String content, String price, String category, String imageurl1) {
-
+    public ProductRequestDto(String name, String content, Integer price, String category, String imageurl) {
         this.name = name;
-        this.content=content;
+        this.content = content;
         this.price = price;
         this.category = category;
-        this.imageurl1 = imageurl1;
+        this.imageurl = imageurl;
 
     }
 
@@ -32,11 +35,10 @@ public class ProductRequestDto {
                 .content(content)
                 .price(price)
                 .category(category)
-                .imageurl1(imageurl1)
+                .imageurl(imageurl)
                 .build();
         return productEntity;
     }
-
 
 
 }
