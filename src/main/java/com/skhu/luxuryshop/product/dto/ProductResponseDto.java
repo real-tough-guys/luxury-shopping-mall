@@ -8,18 +8,22 @@ public class ProductResponseDto {
     private long id;
     private String name;
     private String content;
-    private String price;
+    private Integer price;
     private String category;
-    private String imageurl1;
+    private String imageurl;
 
+    public ProductResponseDto(Long id, String name, String content, Integer price, String category, String imageurl) {
+        this.id = id;
+        this.name = name;
+        this.content = content;
+        this.price = price;
+        this.category = category;
+        this.imageurl = imageurl;
+    }
 
-    public  ProductResponseDto (ProductEntity productEntity) { //엔티티 객체 변수를 디티오 객체 변수로 변환 //static factory method
-        this.id = productEntity.getId();
-        this.name = productEntity.getName();
-        this.content = productEntity.getContent();
-        this.price = productEntity.getPrice();
-        this.category = productEntity.getCategory();
-        this.imageurl1 = productEntity.getImageurl1();
+    public static ProductResponseDto from(ProductEntity productEntity) {
+        return new ProductResponseDto(productEntity.getId(), productEntity.getName(), productEntity.getContent(),
+                productEntity.getPrice(), productEntity.getCategory(), productEntity.getImageurl());
     }
 
 
