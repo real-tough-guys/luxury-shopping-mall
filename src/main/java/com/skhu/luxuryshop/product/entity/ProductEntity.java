@@ -1,40 +1,53 @@
 package com.skhu.luxuryshop.product.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.skhu.luxuryshop.product.dto.ProductRequestDto;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
-@NoArgsConstructor
 @Getter
+@Builder
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column(length = 50, nullable = false)
+    private Long id;
+    @NotNull
+    @Column
     private String name;
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @NotNull
+    @Column
     private String content;
-    @Column(length = 50)
-    private String price;
-    @Column(length = 50)
-    private String category;
-    @Column(length = 200)
-    private String imageurl1;
+    @NotNull
+    @Column
+    private Integer price;
 
+    @Column
+    private String category;
+
+    @Column
+    private String imageurl;
 
     @Builder
-    public ProductEntity(String name,String content, String price, String category, String imageurl1) {
-
+    public ProductEntity(String name, String content, Integer price, String category, String imageurl) {
         this.name = name;
         this.content = content;
         this.price = price;
         this.category = category;
-        this.imageurl1 = imageurl1;
+        this.imageurl = imageurl;
 
+    }
+
+    public void update(ProductRequestDto request) {
+        this.name = request.getName();
+        this.content = request.getContent();
+        this.price = request.getPrice();
+        this.category = request.getCategory();
+        this.imageurl = request.getImageurl();
     }
 
 
