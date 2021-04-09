@@ -24,15 +24,15 @@ public class ProductReposioryTest {
     public void 상품_저장하고_불러오기() {
         String name = "test 레포지토리";
         String content = "test 상품 콘텐트";
-        String price = "무신사";
+        Integer price = 800;
         String category = "무신사";
-        String imageurl1 = "무신사";
+        String imageurl = "무신사";
         productRepository.save(ProductEntity.builder()
                                             .name(name)
                                             .content(content)
                                             .price(price)
                                             .category(category)
-                                            .imageurl1(imageurl1)
+                                            .imageurl(imageurl)
                                             .build());
 
         List<ProductEntity> productList = productRepository.findAll();

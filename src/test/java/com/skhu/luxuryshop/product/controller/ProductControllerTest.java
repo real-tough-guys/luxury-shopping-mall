@@ -36,8 +36,9 @@ public class ProductControllerTest {
     public void Product_등록() throws Exception {
         String name = "name 등록";
         String content = "content 등록";
+        Integer price = 500;
         ProductRequestDto productRequestDto = ProductRequestDto.builder()
-                .name(name).content(content).build();
+                .name(name).content(content).price(price).build();
         String url = "http://localhost:" + port + "/api/products";
 
         ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url, productRequestDto, Long.class);
