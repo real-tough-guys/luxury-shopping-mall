@@ -1,65 +1,50 @@
 package com.skhu.luxuryshop.user.service;
 
+import com.skhu.luxuryshop.user.dto.UserResponseDto;
 import com.skhu.luxuryshop.user.dto.UserSignupDto;
-import com.skhu.luxuryshop.user.entity.UserEntity;
 import com.skhu.luxuryshop.user.exception.DuplicatedEmailException;
 import com.skhu.luxuryshop.user.exception.SignupPasswordUnmatchedException;
 import com.skhu.luxuryshop.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @SpringBootTest
+@Transactional
 public class UserSignUpServiceTest {
-    @Mock
+    @Autowired
+    UserSignupService userSignupService;
+    @Autowired
     UserRepository userRepository;
 
-    @InjectMocks
-    UserSignupService userSignupService;
-
-    UserEntity user;
-    Optional<UserEntity> wrappedUser;
-    Optional<UserEntity> wrappedEmptyUser;
-
+    UserSignupDto existsUser;
     UserSignupDto normalUserSignup;
     UserSignupDto emailDuplicatedUserSignup;
     UserSignupDto unmatchedPwdUserSignup;
 
     @BeforeEach
-    void prepare() {
-        user = new UserEntity(999, "test123@gmail.co.kr", "password", "홍길홍");
-        normalUserSignup = new UserSignupDto("unDuplicatied@gmail.co.kr", "password", "password", "홍길동");
-        emailDuplicatedUserSignup = new UserSignupDto("test123@gmail.co.kr", "password", "password", "홍길동");
-        unmatchedPwdUserSignup = new UserSignupDto("unDuplcatied1@gmail.co.kr", "password", "wrongPwd", "홍길동");
-
-        wrappedUser = Optional.of(user);
-        wrappedEmptyUser = Optional.empty();
+    void prepareForAll() {
+        existsUser = new UserSignupDto(findUnDuplicatedUserEmail(), "password", "password", "홍길동");
+        userRepository.save(existsUser.toUserEntity());
+        normalUserSignup = new UserSignupDto(findUnDuplicatedUserEmail(), "password", "password", "홍길동");
+        emailDuplicatedUserSignup = new UserSignupDto(existsUser.getEmail(), "password", "password", "홍길동");
     }
 
     //회원생성 테스트
     @Test
     void test_save() {
-        when(userRepository.findByEmail(ArgumentMatchers.anyString()))
-                .thenReturn(wrappedEmptyUser);
-        when(userRepository.findByEmail(user.getEmail()))
-                .thenReturn(wrappedUser);
-
-        userSignupService.save(normalUserSignup);
-        Mockito.verify(userRepository).save(ArgumentMatchers.any(UserEntity.class));
+        UserResponseDto normalUserResponse = userSignupService.save(normalUserSignup);
+        assertEquals(normalUserResponse.getEmail(), normalUserSignup.getEmail());
 
         assertThrows(DuplicatedEmailException.class, () -> {
             userSignupService.save(emailDuplicatedUserSignup);
         });
+        unmatchedPwdUserSignup = new UserSignupDto(findUnDuplicatedUserEmail(), "password", "wrongPwd", "홍길동");
         assertThrows(SignupPasswordUnmatchedException.class, () -> {
             userSignupService.save(unmatchedPwdUserSignup);
         });
@@ -68,14 +53,22 @@ public class UserSignUpServiceTest {
     //이메일 중복여부 테스트
     @Test
     void test_isDuplicatedEmail() {
-        when(userRepository.findByEmail(ArgumentMatchers.anyString()))
-                .thenReturn(wrappedEmptyUser);
-        when(userRepository.findByEmail(user.getEmail()))
-                .thenReturn(wrappedUser);
-
         assertThrows(DuplicatedEmailException.class, () -> {
-            userSignupService.isDuplicatedEmail(user.getEmail());
+            userSignupService.validateDuplicatedEmail(emailDuplicatedUserSignup.getEmail());
         });
-        assertFalse(userSignupService.isDuplicatedEmail(normalUserSignup.getEmail()));
+        userSignupService.validateDuplicatedEmail(normalUserSignup.getEmail());
+    }
+
+    String findUnDuplicatedUserEmail() {
+        String unDuplicatedUserEmail;
+        int subString = 1;
+        while (subString < 99999) {
+            unDuplicatedUserEmail = subString + "test123@gmail.co.kr";
+            if (!userRepository.existsByEmail(unDuplicatedUserEmail)) {
+                return unDuplicatedUserEmail;
+            }
+            subString++;
+        }
+        return null;
     }
 }

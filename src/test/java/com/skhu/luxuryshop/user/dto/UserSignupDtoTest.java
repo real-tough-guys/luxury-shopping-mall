@@ -35,9 +35,9 @@ public class UserSignupDtoTest {
 
     @Test
     void test_isSamePassword() {
-        assertTrue(normalUserSignup.isSamePassword(normalUserSignup.getPassword(), normalUserSignup.getPasswordCheck()));
+        normalUserSignup.validateSamePassword(normalUserSignup.getPassword(), normalUserSignup.getPasswordCheck());
         assertThrows(SignupPasswordUnmatchedException.class, () -> {
-            normalUserSignup.isSamePassword(unmatchedPwdUserSignup.getPassword(), unmatchedPwdUserSignup.getPasswordCheck());
+            normalUserSignup.validateSamePassword(unmatchedPwdUserSignup.getPassword(), unmatchedPwdUserSignup.getPasswordCheck());
         });
     }
 }
