@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @NotNull
     @Email
@@ -28,11 +28,4 @@ public class UserEntity {
     @NotNull
     @Length(min = 2, max = 8)
     private String nickname;
-
-    @Builder
-    public UserEntity(String email, String password, String nickname) {
-        this.email = email;
-        this.password = password;
-        this.nickname = nickname;
-    }
 }
