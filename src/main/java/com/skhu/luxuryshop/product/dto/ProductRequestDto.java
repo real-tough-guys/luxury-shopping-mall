@@ -9,7 +9,6 @@ import javax.validation.constraints.PositiveOrZero;
 
 @Getter
 public class ProductRequestDto {
-
     @NotBlank(message = "상품명이 없습니다")
     private String name;
     @NotBlank(message = "상품 설명이 없습니다")
@@ -26,7 +25,6 @@ public class ProductRequestDto {
         this.price = price;
         this.category = category;
         this.imageurl = imageurl;
-
     }
 
     public ProductEntity toProductEntity() {

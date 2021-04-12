@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class ProductEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,10 +24,8 @@ public class ProductEntity {
     @NotNull
     @Column
     private Integer price;
-
     @Column
     private String category;
-
     @Column
     private String imageurl;
 

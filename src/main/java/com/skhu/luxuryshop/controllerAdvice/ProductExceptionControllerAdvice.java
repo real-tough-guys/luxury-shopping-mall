@@ -13,19 +13,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class ProductExceptionControllerAdvice {
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> methodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.error( e.getMessage(), e );
-        return new ResponseEntity( e.getMessage(), HttpStatus.BAD_REQUEST );
+        log.error(e.getMessage(), e);
+        return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ProductFindByIdException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> productFindByIdException(ProductFindByIdException e) {
-        log.error( e.getMessage(), e );
-        return new ResponseEntity( e.getMessage(), HttpStatus.BAD_REQUEST );
+        log.error(e.getMessage(), e);
+        return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
 }

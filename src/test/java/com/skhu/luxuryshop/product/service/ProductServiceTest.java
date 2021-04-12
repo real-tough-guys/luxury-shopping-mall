@@ -22,7 +22,7 @@ class ProductServiceTest {
 
     @BeforeEach
     void setup() {
-        product = new ProductRequestDto( "서비스Test", "서비스 컨텐트 테스트", 900, "아우터", "www.asd" );
+        product = new ProductRequestDto("서비스Test", "서비스 컨텐트 테스트", 900, "아우터", "www.asd");
     }
 
     @After
@@ -32,9 +32,9 @@ class ProductServiceTest {
 
     @Test
     void 상품_저장_Test() {
-        Long id = productService.save( product );
-        ProductResponseDto productResponseDto = productService.findById( id );
-        assertTrue( productResponseDto.getName().equals( product.getName() ) );
-        assertTrue( productResponseDto.getContent().equals( product.getContent() ) );
+        Long id = productService.save(product);
+        ProductResponseDto productResponseDto = productService.findById(id);
+        assertTrue(productResponseDto.getName().equals(product.getName()));
+        assertTrue(productResponseDto.getContent().equals(product.getContent()));
     }
 }

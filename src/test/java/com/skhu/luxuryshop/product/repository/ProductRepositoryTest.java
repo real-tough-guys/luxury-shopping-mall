@@ -20,21 +20,21 @@ class ProductRepositoryTest {
 
     @BeforeEach
     void setup() {
-        product = new ProductRequestDto( "서비스Test", "서비스 컨텐트 테스트", 900, "아우터", "www.asd" );
+        product = new ProductRequestDto("서비스Test", "서비스 컨텐트 테스트", 900, "아우터", "www.asd");
     }
 
     @After
     public void cleanup() {
         productRepository.deleteAll();
-        System.out.println( "테스트 완료" );
+        System.out.println("테스트 완료");
     }
 
     @Test
     public void 상품저장_불러오기() {
-        productRepository.save( product.toProductEntity() );
+        productRepository.save(product.toProductEntity());
         List<ProductEntity> products = productRepository.findAll();
-        ProductEntity productEntity = products.get( 0 );
-        assertTrue( productEntity.getName().equals( product.getName() ) );
-        assertTrue( productEntity.getContent().equals( product.getContent() ) );
+        ProductEntity productEntity = products.get(0);
+        assertTrue(productEntity.getName().equals(product.getName()));
+        assertTrue(productEntity.getContent().equals(product.getContent()));
     }
 }
