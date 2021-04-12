@@ -3,41 +3,54 @@ package com.skhu.luxuryshop.user.dto;
 import com.skhu.luxuryshop.user.entity.UserEntity;
 import com.skhu.luxuryshop.user.exception.SignupPasswordUnmatchedException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest
 public class UserSignupDtoTest {
-    UserEntity user;
-    UserSignupDto normalUserSignup;
-    UserSignupDto unmatchedPwdUserSignup;
+    private UserEntity user;
+    private UserSignupDto normalUserSignup;
+    private UserSignupDto unmatchedPwdUserSignup;
 
     @BeforeEach
-    void prepare() {
+    void setUp() {
         normalUserSignup = new UserSignupDto("test123@gmail.com", "password", "password", "홍길동");
         unmatchedPwdUserSignup = new UserSignupDto("test123@gmail.com", "password", "wrongPwd", "홍길동");
     }
 
+    @DisplayName("toUserEntity_정상유저일 경우 ")
     @Test
-    void test_toUserEntity() {
+    void test_toUserEntity_normalUserSignup() {
         user = normalUserSignup.toUserEntity();
 
-        assertEquals(user.getEmail(), normalUserSignup.getEmail());
-        assertEquals(user.getPassword(), normalUserSignup.getPassword());
-        assertEquals(user.getNickname(), normalUserSignup.getNickname());
-
-        assertThrows(SignupPasswordUnmatchedException.class, () -> {
-            unmatchedPwdUserSignup.toUserEntity();
-        });
+        assertThat(normalUserSignup.getEmail()).isEqualTo(user.getEmail());
+        assertThat(normalUserSignup.getPassword()).isEqualTo(user.getPassword());
+        assertThat(normalUserSignup.getNickname()).isEqualTo(user.getNickname());
     }
 
+    @DisplayName("toUserEntity_비밀번호 불일치 유저일 경우 throw SignupPasswordUnmatchedException")
     @Test
-    void test_isSamePassword() {
+    void test_toUserEntity_unmatchedPwdUserSignup() {
+        assertThatThrownBy(() -> {
+            unmatchedPwdUserSignup.toUserEntity();
+        }).isInstanceOf(SignupPasswordUnmatchedException.class)
+                .hasMessageContaining("비밀번호 불일치");
+    }
+
+    @DisplayName("validateSamePassword_정상유저인 경우")
+    @Test
+    void test_validateSamePassword_normalUserSignup() {
         normalUserSignup.validateSamePassword(normalUserSignup.getPassword(), normalUserSignup.getPasswordCheck());
-        assertThrows(SignupPasswordUnmatchedException.class, () -> {
+    }
+
+    @DisplayName("validateSamePassword_비밀번호 불일치 유저인 경우 throw SignupPasswordUnmatchedException")
+    @Test
+    void test_validateSamePassword_unmatchedPwdUserSignup() {
+        assertThatThrownBy(() -> {
             normalUserSignup.validateSamePassword(unmatchedPwdUserSignup.getPassword(), unmatchedPwdUserSignup.getPasswordCheck());
-        });
+        }).isInstanceOf(SignupPasswordUnmatchedException.class)
+                .hasMessageContaining("비밀번호 불일치");
     }
 }
