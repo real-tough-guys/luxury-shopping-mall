@@ -17,15 +17,13 @@ import java.net.URI;
 public class UserController {
     private final UserSignupService userSignupService;
 
-    //이메일 중복검사
     @GetMapping("/emails/{email}/exists")
     public ResponseEntity<Boolean> isDuplicatedEmail(@PathVariable String email) {
         userSignupService.validateDuplicatedEmail(email);
         return new ResponseEntity(true, HttpStatus.OK);
     }
 
-    //회원가입
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<String> signUp(@RequestBody @Valid UserSignupDto userSignupDto) {
         UserResponseDto savedUser = userSignupService.save(userSignupDto);
         return ResponseEntity

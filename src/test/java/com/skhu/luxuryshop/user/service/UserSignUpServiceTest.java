@@ -35,7 +35,6 @@ public class UserSignUpServiceTest {
         emailDuplicatedUserSignup = new UserSignupDto(existsUser.getEmail(), "password", "password", "홍길동");
     }
 
-    //회원생성 테스트
     @Test
     void test_save() {
         UserResponseDto normalUserResponse = userSignupService.save(normalUserSignup);
@@ -50,7 +49,6 @@ public class UserSignUpServiceTest {
         });
     }
 
-    //이메일 중복여부 테스트
     @Test
     void test_isDuplicatedEmail() {
         assertThrows(DuplicatedEmailException.class, () -> {

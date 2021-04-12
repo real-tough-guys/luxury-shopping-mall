@@ -38,7 +38,6 @@ public class UserSignupDto {
         return user;
     }
 
-    //비밀번호 일치 불일치 검사
     public void validateSamePassword(String password, String passwordCheck) {
         if (!password.equals(passwordCheck)) {
             throw new SignupPasswordUnmatchedException("비밀번호 불일치");
