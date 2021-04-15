@@ -45,5 +45,4 @@ public class ProductController {
         productService.delete(id);
         return ResponseEntity.ok().build();
     }
-
 }
