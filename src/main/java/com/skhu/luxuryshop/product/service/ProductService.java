@@ -1,5 +1,6 @@
 package com.skhu.luxuryshop.product.service;
 
+import com.skhu.luxuryshop.exception.ProductExistByIdException;
 import com.skhu.luxuryshop.exception.ProductFindByIdException;
 import com.skhu.luxuryshop.product.dto.ProductRequestDto;
 import com.skhu.luxuryshop.product.dto.ProductResponseDto;
@@ -26,10 +27,10 @@ public class ProductService {
     }
 
     @Transactional
-    public Long update(Long id, ProductRequestDto productRequestDto) {
-        ProductEntity productEntity = productRepository.findById(id).orElseThrow(() -> new ProductFindByIdException("업데이트 하려는 상품 id : " + id + "이 존재 하지 않습니다."));
+    public void update(Long id, ProductRequestDto productRequestDto) {
+        ProductEntity productEntity = productRepository.findById(id)
+                .orElseThrow(() -> new ProductFindByIdException("상품 id : " + id + "이 존재 하지 않습니다."));
         productEntity.update(productRequestDto);
-        return productEntity.getId();
     }
 
     public List<ProductResponseDto> findAll() {
@@ -40,15 +41,16 @@ public class ProductService {
     }
 
     @Transactional
-    public Long save(ProductRequestDto productDto) {
-        return productRepository.save(productDto.toProductEntity()).getId();
+    public ProductResponseDto save(ProductRequestDto productDto) {
+        ProductEntity product = productDto.toProductEntity();
+        return ProductResponseDto.from(productRepository.save(product));
     }
 
     @Transactional
     public void delete(Long id) {
-        productRepository.findById(id).orElseThrow(() -> new ProductFindByIdException("삭제 하려는 상품 id : " + id + "이 존재 하지 않습니다."));
+        if (!productRepository.existsById(id)) {
+            throw new ProductExistByIdException("삭제 하려는 상품이 존재하지 않습니다.");
+        }
         productRepository.deleteById(id);
     }
-
-
 }
