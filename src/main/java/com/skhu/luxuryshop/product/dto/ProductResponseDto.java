@@ -25,6 +25,4 @@ public class ProductResponseDto {
         return new ProductResponseDto(productEntity.getId(), productEntity.getName(), productEntity.getContent(),
                 productEntity.getPrice(), productEntity.getCategory(), productEntity.getImageurl());
     }
-
-
 }
