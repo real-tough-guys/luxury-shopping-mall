@@ -1,14 +1,15 @@
 package com.skhu.luxuryshop.product.controller;
 
 import com.skhu.luxuryshop.product.dto.ProductRequestDto;
+import com.skhu.luxuryshop.product.dto.ProductResponseDto;
 import com.skhu.luxuryshop.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,20 +30,20 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Long> registerProduct(@RequestBody @Valid ProductRequestDto productDto) {
-        productService.save(productDto);
-        return new ResponseEntity("상품등록 성공", HttpStatus.OK);
+        ProductResponseDto savedProduct = productService.save(productDto);
+        return ResponseEntity.created(URI.create("/" + savedProduct.getId())).build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Long> updateProduct(@PathVariable Long id, @RequestBody @Valid ProductRequestDto productRequestDto) {
         productService.update(id, productRequestDto);
-        return new ResponseEntity("상품업데이트 성공", HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> deleteProduct(@PathVariable Long id) {
         productService.delete(id);
-        return new ResponseEntity("상품삭제 성공", HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
 }
