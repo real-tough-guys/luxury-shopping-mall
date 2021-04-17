@@ -54,13 +54,13 @@ public class UserControllerTest {
                 .andReturn();
 
         String body = mvcResult.getResponse().getContentAsString();
-        assertThat(body).isEqualTo("true");
+        assertThat(body).isEqualTo("사용가능한 이메일입니다.");
     }
 
     @DisplayName("isDuplicatedEmail_중복된 이메일 요청인 경우 BadRequest")
     @Test
     void test_isDuplicatedEmail_duplicatedEmail() throws Exception {
-        doThrow(new DuplicatedEmailException("중복된 이메일"))
+        doThrow(new DuplicatedEmailException("중복된 이메일입니다."))
                 .when(userSignupService)
                 .validateDuplicatedEmail(duplicatedEmailUserSignup.getEmail());
 
@@ -70,7 +70,7 @@ public class UserControllerTest {
                 .andReturn();
 
         String body = mvcResult.getResponse().getContentAsString();
-        assertThat(body).isEqualTo("중복된 이메일");
+        assertThat(body).isEqualTo("중복된 이메일입니다.");
     }
 
     @DisplayName("save_정상 유저인 경우 isCreated")
@@ -95,7 +95,7 @@ public class UserControllerTest {
     @Test
     void test_signUp_duplicatedEmailUser() throws Exception {
         when(userSignupService.save(ArgumentMatchers.any(UserSignupDto.class)))
-                .thenThrow(new DuplicatedEmailException("중복된 이메일"));
+                .thenThrow(new DuplicatedEmailException("중복된 이메일입니다."));
 
         MvcResult mvcResult = mockMvc.perform(post("/api/users")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -105,7 +105,7 @@ public class UserControllerTest {
                 .andReturn();
 
         String body = mvcResult.getResponse().getContentAsString();
-        assertThat(body).isEqualTo("중복된 이메일");
+        assertThat(body).isEqualTo("중복된 이메일입니다.");
     }
 
     @DisplayName("save_비밀번호 불일치 유저인 경우 BadRequest")
@@ -114,7 +114,7 @@ public class UserControllerTest {
         unmatchedPwdUserSignup = new UserSignupDto("test123@gmail.com", "password", "wrongpwd", "홍길동");
 
         when(userSignupService.save(ArgumentMatchers.any(UserSignupDto.class)))
-                .thenThrow(new SignupPasswordUnmatchedException("비밀번호 불일치"));
+                .thenThrow(new SignupPasswordUnmatchedException("비밀번호가 일치하지 않습니다."));
 
         MvcResult mvcResult = mockMvc.perform(post("/api/users")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -124,6 +124,6 @@ public class UserControllerTest {
                 .andReturn();
 
         String body = mvcResult.getResponse().getContentAsString();
-        assertThat(body).isEqualTo("비밀번호 불일치");
+        assertThat(body).isEqualTo("비밀번호가 일치하지 않습니다.");
     }
 }

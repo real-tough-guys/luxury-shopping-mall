@@ -49,7 +49,7 @@ public class UserSignUpServiceTest {
         assertThatThrownBy(() -> {
             userSignupService.save(duplicatedEmailUserSignup);
         }).isInstanceOf(DuplicatedEmailException.class)
-                .hasMessageContaining(("중복된 이메일"));
+                .hasMessageContaining(("중복된 이메일입니다."));
     }
 
     @DisplayName("save_비밀번호 불일치 유저인 경우 throw SignupPasswordUnmatchedException")
@@ -59,7 +59,7 @@ public class UserSignUpServiceTest {
         assertThatThrownBy(() -> {
             userSignupService.save(unmatchedPwdUserSignup);
         }).isInstanceOf(SignupPasswordUnmatchedException.class)
-                .hasMessageContaining(("비밀번호 불일치"));
+                .hasMessageContaining(("비밀번호가 일치하지 않습니다."));
     }
 
     @DisplayName("validateDuplicatedEmail_중복되지 않은 이메일인 경우")
@@ -74,6 +74,6 @@ public class UserSignUpServiceTest {
         assertThatThrownBy(() -> {
             userSignupService.validateDuplicatedEmail(duplicatedEmailUserSignup.getEmail());
         }).isInstanceOf(DuplicatedEmailException.class)
-                .hasMessageContaining("중복된 이메일");
+                .hasMessageContaining("중복된 이메일입니다.");
     }
 }

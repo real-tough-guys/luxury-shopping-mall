@@ -36,7 +36,7 @@ public class UserSignupDtoTest {
         assertThatThrownBy(() -> {
             unmatchedPwdUserSignup.toUserEntity();
         }).isInstanceOf(SignupPasswordUnmatchedException.class)
-                .hasMessageContaining("비밀번호 불일치");
+                .hasMessageContaining("비밀번호가 일치하지 않습니다.");
     }
 
     @DisplayName("validateSamePassword_정상유저인 경우")
@@ -51,6 +51,6 @@ public class UserSignupDtoTest {
         assertThatThrownBy(() -> {
             normalUserSignup.validateSamePassword(unmatchedPwdUserSignup.getPassword(), unmatchedPwdUserSignup.getPasswordCheck());
         }).isInstanceOf(SignupPasswordUnmatchedException.class)
-                .hasMessageContaining("비밀번호 불일치");
+                .hasMessageContaining("비밀번호가 일치하지 않습니다.");
     }
 }
