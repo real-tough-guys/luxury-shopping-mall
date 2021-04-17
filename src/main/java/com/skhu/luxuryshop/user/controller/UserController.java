@@ -13,6 +13,7 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = {"http://localhost:9000"})
 @RequestMapping("/api/users")
 public class UserController {
     private final UserSignupService userSignupService;
@@ -20,7 +21,7 @@ public class UserController {
     @GetMapping("/emails/{email}/exists")
     public ResponseEntity<Boolean> isDuplicatedEmail(@PathVariable String email) {
         userSignupService.validateDuplicatedEmail(email);
-        return new ResponseEntity(true, HttpStatus.OK);
+        return new ResponseEntity("중복되지 않은 이메일입니다.", HttpStatus.OK);
     }
 
     @PostMapping
