@@ -126,8 +126,8 @@ export default {
 
       rules: {
         required: input => !!input || "Required.",
-        minPw: password => password.length >= 8 || "Min 8 characters",
-        minName: nickName => nickName.length >= 2 || "Min 2 characters",
+        minPw: password => password.length >= 8 && password.length <= 20 || "Min 8 and Max 20 characters",
+        minName: nickName => nickName.length >= 2 && nickName.length <= 8 || "Min 2 and Max 8 characters",
         pwCheck: passwordCheck =>
             this.password === passwordCheck || "Password mismatch"
       }
