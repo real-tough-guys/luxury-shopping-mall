@@ -23,7 +23,7 @@ public class UserSignupService {
 
     public void validateDuplicatedEmail(String email) {
         if (userRepository.existsByEmail(email)) {
-            throw new DuplicatedEmailException("중복된 이메일");
+            throw new DuplicatedEmailException("중복된 이메일입니다.");
         }
     }
 }

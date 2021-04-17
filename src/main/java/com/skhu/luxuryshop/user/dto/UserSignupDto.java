@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class UserSignupDto {
     @NotBlank(message = "이메일을 입력하세요.")
-    @Email(message = "이메일 형식에 맞지 않습니다.")
+    @Email(message = "이메일 형식을 확인하세요.")
     private String email;
 
     @NotBlank(message = "비밀번호를 입력하세요.")
@@ -40,7 +40,7 @@ public class UserSignupDto {
 
     public void validateSamePassword(String password, String passwordCheck) {
         if (!password.equals(passwordCheck)) {
-            throw new SignupPasswordUnmatchedException("비밀번호 불일치");
+            throw new SignupPasswordUnmatchedException("비밀번호가 일치하지 않습니다.");
         }
     }
 }

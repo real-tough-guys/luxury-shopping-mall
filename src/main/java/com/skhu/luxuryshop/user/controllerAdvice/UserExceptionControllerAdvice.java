@@ -15,7 +15,7 @@ public class UserExceptionControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> methodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
-        return ResponseEntity.badRequest().body(e.getMessage());
+        return ResponseEntity.badRequest().body(e.getBindingResult().getFieldError().getDefaultMessage());
     }
 
     @ExceptionHandler(DuplicatedEmailException.class)
