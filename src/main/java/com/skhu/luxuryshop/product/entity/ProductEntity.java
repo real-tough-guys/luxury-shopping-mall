@@ -17,34 +17,35 @@ public class ProductEntity {
     private Long id;
     @NotNull
     @Column
-    private String name;
+    private String productName;
     @NotNull
     @Column
-    private String content;
+    private String productContent;
     @NotNull
     @Column
-    private Integer price;
+    private Integer productPrice;
+    @NotNull
     @Column
-    private String category;
+    private String productCategory;
+    @NotNull
     @Column
-    private String imageurl;
+    private String productImageurl;
 
     @Builder
-    public ProductEntity(String name, String content, Integer price, String category, String imageurl) {
-        this.name = name;
-        this.content = content;
-        this.price = price;
-        this.category = category;
-        this.imageurl = imageurl;
-
+    public ProductEntity(String productName, String productContent, Integer productPrice, String productCategory, String productImageurl) {
+        this.productName = productName;
+        this.productContent = productContent;
+        this.productPrice = productPrice;
+        this.productCategory = productCategory;
+        this.productImageurl = productImageurl;
     }
 
     public void update(ProductRequestDto request) {
-        this.name = request.getName();
-        this.content = request.getContent();
-        this.price = request.getPrice();
-        this.category = request.getCategory();
-        this.imageurl = request.getImageurl();
+        this.productName = request.getProductName();
+        this.productContent = request.getProductContent();
+        this.productPrice = request.getProductPrice();
+        this.productCategory = request.getProductCategory();
+        this.productImageurl = request.getProductImageurl();
     }
 
 

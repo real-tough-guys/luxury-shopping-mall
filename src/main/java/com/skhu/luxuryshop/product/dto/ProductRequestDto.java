@@ -10,30 +10,32 @@ import javax.validation.constraints.PositiveOrZero;
 @Getter
 public class ProductRequestDto {
     @NotBlank(message = "상품명이 없습니다")
-    private String name;
+    private String productName;
     @NotBlank(message = "상품 설명이 없습니다")
-    private String content;
+    private String productContent;
     @PositiveOrZero(message = "숫자를 정확히 입력해주세요 ex) 500")
-    private Integer price;
-    private String category;
-    private String imageurl;
+    private Integer productPrice;
+    @NotBlank(message = "카테고리가 없습니다.")
+    private String productCategory;
+    @NotBlank(message = "이미지가 없습니다.")
+    private String productImageurl;
 
     @Builder
-    public ProductRequestDto(String name, String content, Integer price, String category, String imageurl) {
-        this.name = name;
-        this.content = content;
-        this.price = price;
-        this.category = category;
-        this.imageurl = imageurl;
+    public ProductRequestDto(String productName, String productContent, Integer productPrice, String productCategory, String productImageurl) {
+        this.productName = productName;
+        this.productContent = productContent;
+        this.productPrice = productPrice;
+        this.productCategory = productCategory;
+        this.productImageurl = productImageurl;
     }
 
     public ProductEntity toProductEntity() {
         ProductEntity productEntity = ProductEntity.builder()
-                .name(name)
-                .content(content)
-                .price(price)
-                .category(category)
-                .imageurl(imageurl)
+                .productName(productName)
+                .productContent(productContent)
+                .productPrice(productPrice)
+                .productCategory(productCategory)
+                .productImageurl(productImageurl)
                 .build();
         return productEntity;
     }
