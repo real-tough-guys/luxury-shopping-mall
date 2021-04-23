@@ -21,7 +21,7 @@ class ProductResponseDtoTest {
     void test_from() {
         productResponseDto = ProductResponseDto.from(product);
         assertThat(product.getId()).isEqualTo(productResponseDto.getId());
-        assertThat(product.getContent()).isEqualTo(productResponseDto.getContent());
-        assertThat(product.getName()).isEqualTo(productResponseDto.getName());
+        assertThat(product.getProductContent()).isEqualTo(productResponseDto.getProductContent());
+        assertThat(product.getProductName()).isEqualTo(productResponseDto.getProductName());
     }
 }

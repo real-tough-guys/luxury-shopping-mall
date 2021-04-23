@@ -43,8 +43,7 @@ class ProductControllerTest {
 
     @Test
     void 상품등록_Test() throws Exception {
-        ProductResponseDto productResponse = new ProductResponseDto(1L, product.getName(), product.getContent(), product.getPrice()
-                , product.getCategory(), product.getImageurl());
+        ProductResponseDto productResponse = new ProductResponseDto(1L, product.getProductName(), product.getProductContent(), product.getProductPrice(), product.getProductCategory(), product.getProductImageurl());
         when(productService.save(ArgumentMatchers.any(ProductRequestDto.class)))
                 .thenReturn(productResponse);
         MvcResult mvcResult = mockMvc.perform(post("/api/products")

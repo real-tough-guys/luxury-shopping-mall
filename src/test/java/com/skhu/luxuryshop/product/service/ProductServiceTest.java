@@ -44,7 +44,7 @@ class ProductServiceTest {
     @Test
     void 상품_Id_조회_Test() throws ProductFindByIdException {
         ProductResponseDto testProduct = productService.findById(1L);
-        assertThat(existProduct.getName()).isEqualTo(testProduct.getName());
+        assertThat(existProduct.getProductName()).isEqualTo(testProduct.getProductName());
     }
 
     @DisplayName("상품 ID가 존재하지 않는 경우 throw ProductFindByIdException")
@@ -61,8 +61,8 @@ class ProductServiceTest {
         List<ProductResponseDto> productList = productService.findAll();
         then(!productList.isEmpty());
         for (ProductResponseDto product : productList) {
-            assertThat(existProduct.getName()).isEqualTo(product.getName());
-            assertThat(existProduct.getContent()).isEqualTo(product.getContent());
+            assertThat(existProduct.getProductName()).isEqualTo(product.getProductName());
+            assertThat(existProduct.getProductContent()).isEqualTo(product.getProductContent());
         }
     }
 
@@ -70,7 +70,7 @@ class ProductServiceTest {
     @Test
     void 상품_저장_Test() {
         ProductResponseDto testProduct = productService.save(product);
-        assertThat(product.getName()).isEqualTo(testProduct.getName());
+        assertThat(product.getProductName()).isEqualTo(testProduct.getProductName());
     }
 
     @Test
@@ -78,8 +78,8 @@ class ProductServiceTest {
         ProductResponseDto responseDto = productService.save(product);
         ProductRequestDto testProduct = new ProductRequestDto("서비스Test", "서비스 컨텐트 테스트", 800, "아우터", "www.asd");
         productService.update(responseDto.getId(), testProduct);
-        assertThat(responseDto.getContent()).isEqualTo(testProduct.getContent());
-        assertThat(responseDto.getPrice()).isNotEqualTo(testProduct.getPrice());
+        assertThat(responseDto.getProductContent()).isEqualTo(testProduct.getProductContent());
+        assertThat(responseDto.getProductPrice()).isNotEqualTo(testProduct.getProductPrice());
     }
 
     @Test

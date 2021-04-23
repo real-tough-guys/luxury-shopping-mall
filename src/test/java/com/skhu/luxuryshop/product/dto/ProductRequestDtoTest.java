@@ -21,9 +21,9 @@ class ProductRequestDtoTest {
     @Test
     void test_toProductEntity_validProduct() {
         product = validProduct.toProductEntity();
-        assertThat(validProduct.getName()).isEqualTo(product.getName());
-        assertThat(validProduct.getContent()).isEqualTo(product.getContent());
-        assertThat(validProduct.getPrice()).isEqualTo(product.getPrice());
+        assertThat(validProduct.getProductName()).isEqualTo(product.getProductName());
+        assertThat(validProduct.getProductContent()).isEqualTo(product.getProductContent());
+        assertThat(validProduct.getProductPrice()).isEqualTo(product.getProductPrice());
     }
 
     @DisplayName("유효하지 않은 Product 요청")

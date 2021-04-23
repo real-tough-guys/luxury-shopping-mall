@@ -25,7 +25,7 @@ public class ProductExceptionControllerAdvice {
     }
 
     @ExceptionHandler(ProductExistByIdException.class)
-    public ResponseEntity<String> productExistByNameException(ProductExistByIdException e) {
+    public ResponseEntity<String> productExistByproductNameException(ProductExistByIdException e) {
         return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
