@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.List;
 
 @Getter
 public class ProductRequestDto {
@@ -16,15 +17,15 @@ public class ProductRequestDto {
     @PositiveOrZero(message = "숫자를 정확히 입력해주세요 ex) 500")
     private Integer price;
     private String category;
-    private String imageurl;
+    private List<String> imageurl;
 
     @Builder
-    public ProductRequestDto(String name, String content, Integer price, String category, String imageurl) {
+    public ProductRequestDto(String name, String content, Integer price, String category, List<String> imageurl) {
         this.name = name;
         this.content = content;
         this.price = price;
         this.category = category;
-        this.imageurl = imageurl;
+        this.imageurl= imageurl;
     }
 
     public ProductEntity toProductEntity() {
@@ -37,6 +38,4 @@ public class ProductRequestDto {
                 .build();
         return productEntity;
     }
-
-
 }
