@@ -14,7 +14,7 @@
                 <v-col>
                   <v-text-field
                       v-model="email"
-                      :rules="[rules.required]"
+                      :rules="[rules.required, rules.validateEmailType]"
                       label="Email address"
                       prepend-icon="mdi-account-circle"
                       required
@@ -30,9 +30,7 @@
                 >
                   check
                 </v-btn>
-
               </v-row>
-
               <v-row>
                 <v-col>
                   <v-text-field
@@ -65,7 +63,6 @@
                   ></v-text-field>
                 </v-col>
               </v-row>
-
               <v-row>
                 <v-col>
                   <v-text-field
@@ -77,10 +74,6 @@
                   ></v-text-field>
                 </v-col>
               </v-row>
-              <v-row v-if=showIsSaved
-                     :style="{color:colorRed}">
-                {{ isSaved }}
-              </v-row>
             </v-container>
           </v-form>
         </div>
@@ -88,7 +81,12 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-btn
-            :disabled="!email||!(password.length >= 8)||!(passwordCheck.length >= 8)||!(nickname.length >= 2)"
+            :disabled="
+            !email ||
+              !(password.length >= 8) ||
+              !(passwordCheck.length >= 8) ||
+              !(nickname.length >= 2)
+          "
             color="blue-grey darken-3"
             class="mr-3 white--text"
             @click="save"
@@ -96,8 +94,7 @@
           Sign up
           <v-icon right>mdi-arrow-right-thick</v-icon>
         </v-btn>
-
-        <v-btn color="blue-grey darken-3" class="mr-4 white--text">
+        <v-btn color="blue-grey darken-3" class="mr-4 white--text" @click="$router.go(-1)">
           Cancel
           <v-icon right>mdi-cancel</v-icon>
         </v-btn>
@@ -106,28 +103,30 @@
   </div>
 </template>
 <script>
-import {isDuplicatedEmail} from "@/api";
-import {save} from "@/api";
+import {isDuplicatedEmail} from "@/api/user";
+import {save} from "@/api/user";
 
 export default {
   data() {
     return {
       show1: false,
       show2: false,
-      showIsSaved: false,
 
       email: "",
       password: "",
       passwordCheck: "",
       nickname: "",
-      valid: true,
-      isSaved: [],
-      colorRed: "red",
 
       rules: {
         required: input => !!input || "Required.",
-        minPw: password => password.length >= 8 && password.length <= 20 || "Min 8 and Max 20 characters",
-        minName: nickName => nickName.length >= 2 && nickName.length <= 8 || "Min 2 and Max 8 characters",
+        validateEmailType: email =>
+            /.+@.+\..+/.test(email) || "E-mail must be valid",
+        minPw: password =>
+            (password.length >= 8 && password.length <= 20) ||
+            "Min 8 and Max 20 characters",
+        minName: nickName =>
+            (nickName.length >= 2 && nickName.length <= 8) ||
+            "Min 2 and Max 8 characters",
         pwCheck: passwordCheck =>
             this.password === passwordCheck || "Password mismatch"
       }
@@ -137,11 +136,11 @@ export default {
     isDuplicatedEmail: function () {
       isDuplicatedEmail(this.email)
           .then(res => {
-            alert(res.data)
+            alert(res.data);
           })
           .catch(res => {
-            alert(res.response.data)
-          })
+            alert(res.response.data);
+          });
     },
     save: function () {
       const userSignupDto = {
@@ -149,16 +148,15 @@ export default {
         password: this.password,
         passwordCheck: this.passwordCheck,
         nickname: this.nickname
-      }
+      };
       save(userSignupDto)
           .then(res => {
-            alert("회원가입 성공!")
+            alert("회원가입 성공!");
             window.open("/login", "_self");
           })
           .catch(res => {
-            this.isSaved = res.response.data
-            alert(this.isSaved)
-          })
+            alert(res.response.data);
+          });
     }
   }
 };
