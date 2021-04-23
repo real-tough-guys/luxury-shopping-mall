@@ -3,8 +3,6 @@ package com.skhu.luxuryshop.product.dto;
 import com.skhu.luxuryshop.product.entity.ProductEntity;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
 public class ProductResponseDto {
     private long id;
@@ -12,9 +10,9 @@ public class ProductResponseDto {
     private String content;
     private Integer price;
     private String category;
-    private List<String> imageurl;
+    private String imageurl;
 
-    public ProductResponseDto(Long id, String name, String content, Integer price, String category, List<String> imageurl) {
+    public ProductResponseDto(Long id, String name, String content, Integer price, String category, String imageurl) {
         this.id = id;
         this.name = name;
         this.content = content;
