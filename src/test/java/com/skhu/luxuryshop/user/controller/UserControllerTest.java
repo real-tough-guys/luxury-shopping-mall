@@ -54,7 +54,7 @@ public class UserControllerTest {
                 .andReturn();
 
         String body = mvcResult.getResponse().getContentAsString();
-        assertThat(body).isEqualTo("사용가능한 이메일입니다.");
+        assertThat(body).isEqualTo("중복되지 않은 이메일입니다.");
     }
 
     @DisplayName("isDuplicatedEmail_중복된 이메일 요청인 경우 BadRequest")
