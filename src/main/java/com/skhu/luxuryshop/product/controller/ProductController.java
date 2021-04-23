@@ -5,11 +5,13 @@ import com.skhu.luxuryshop.product.dto.ProductResponseDto;
 import com.skhu.luxuryshop.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,12 +21,12 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity getProducts() {
+    public ResponseEntity<List<ProductResponseDto>> getProducts() {
         return ResponseEntity.ok(productService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getProductById(@PathVariable Long id) {
+    public ResponseEntity<ProductResponseDto> getProductById(@PathVariable Long id) {
         return ResponseEntity.ok(productService.findById(id));
     }
 
@@ -41,8 +43,8 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Long> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.delete(id);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
