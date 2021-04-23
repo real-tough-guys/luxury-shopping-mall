@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const config = {
-    baseUrl: 'http://localhost:8080/api/users/'
+    baseUrl: '/api/users/'
 };
 
 function isDuplicatedEmail(email) {
@@ -20,14 +20,12 @@ function isDuplicatedEmail(email) {
 
 function save(userSignupDto) {
     return new Promise((resolve, reject) => {
-        const headers = {
-            'Content-Type': 'application/json'
-        }
         axios.post(`${config.baseUrl}`, userSignupDto)
             .then(response => {
                 resolve(response)
                 console.log(response)
-            }).catch(error => {
+            })
+            .catch(error => {
             reject(error)
             console.error(error)
         })

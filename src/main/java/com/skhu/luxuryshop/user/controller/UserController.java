@@ -13,7 +13,6 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:9000"})
 @RequestMapping("/api/users")
 public class UserController {
     private final UserSignupService userSignupService;
