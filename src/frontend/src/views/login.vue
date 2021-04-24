@@ -30,7 +30,7 @@
           <v-btn
             :disabled="!valid"
             color="blue-grey darken-3"
-            class="mr-3 white--text"
+            class="mr-2 white--text"
             @click="validate"
           >
             Go to Login
@@ -39,11 +39,17 @@
 
           <v-btn
             color="blue-grey darken-3"
-            class="mr-4 white--text"
+            class="mr-2 white--text"
             @click="reset"
           >
             Reset
             <v-icon right>mdi-backup-restore</v-icon>
+          </v-btn>
+          <v-btn
+              :to="{name : 'SignUp'}"
+          >
+            Sign Up
+            <v-icon right>mdi-arrow-right-thick</v-icon>
           </v-btn>
         </v-card-actions>
       </v-card>

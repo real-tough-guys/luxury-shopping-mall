@@ -9,9 +9,15 @@
         <div class="privacy">
           <span class="user-name">{{ userName }}</span>
           <br />
-          <button to="/#">
-            회원정보 변경
+
+          <router-link to="/editUser" style="color:white;">
+          <button>
+
+              회원정보 변경
+
           </button>
+          </router-link>
+
           <span class="hidden-xs-only">&nbsp;/&nbsp;</span>
           <button>로그아웃</button>
           <br />
