@@ -27,10 +27,12 @@ public class ProductService {
     }
 
     @Transactional
-    public void update(Long id, ProductRequestDto productRequestDto) {
+    public Long update(Long id, ProductRequestDto requestDto) {
         ProductEntity productEntity = productRepository.findById(id)
                 .orElseThrow(() -> new ProductFindByIdException("상품 id : " + id + "이 존재 하지 않습니다."));
-        productEntity.update(productRequestDto);
+        productEntity.update(requestDto.getProductName(), requestDto.getProductContent(), requestDto.getProductPrice(),
+                requestDto.getProductCategory(), requestDto.getProductImageurl());
+        return id;
     }
 
     public List<ProductResponseDto> findAll() {
