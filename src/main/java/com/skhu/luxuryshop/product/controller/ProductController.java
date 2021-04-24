@@ -8,8 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -31,10 +34,21 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> registerProduct(@RequestBody @Valid ProductRequestDto productDto) {
+    public ResponseEntity<Long> registerProduct(ProductRequestDto productDto ,List<MultipartFile> files) {
+        String baseDir = "C:\\SKHU-project\\SW-Capstone-Project\\luxury-shopping-mall\\src\\frontend\\src\\assets\\images\\";
+        if (files != null) {
+            try {
+                for (int i = 0; i < files.size(); i++) {
+                    files.get(i).transferTo(new File(baseDir + files.get(i).getOriginalFilename()));
+                }
+            } catch (IllegalStateException | IOException e) {
+                e.printStackTrace();
+            }
+        }
         ProductResponseDto savedProduct = productService.save(productDto);
         return ResponseEntity.created(URI.create("/" + savedProduct.getId())).build();
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Long> updateProduct(@PathVariable Long id, @RequestBody @Valid ProductRequestDto productRequestDto) {

@@ -101,7 +101,6 @@
 
 <script>
 import HelloWorld from "./components/HelloWorld";
-import request from "request";
 
 export default {
   name: "App",
@@ -110,11 +109,6 @@ export default {
     HelloWorld
   },
   mounted() {
-    request("http://localhost:8090/api/hello", function(error, response, body) {
-      window.console.log("error", error);
-      window.console.log("statusCode", response && response.statusCode);
-      window.console.log("body", body);
-    });
   },
 
   data: () => ({

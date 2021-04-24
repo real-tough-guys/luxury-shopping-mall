@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Getter
 @Builder
@@ -29,10 +30,12 @@ public class ProductEntity {
     private String productCategory;
     @NotNull
     @Column
-    private String productImageurl;
+    @ElementCollection
+    private List<String> productImageurl;
+
 
     @Builder
-    public ProductEntity(String productName, String productContent, Integer productPrice, String productCategory, String productImageurl) {
+    public ProductEntity(String productName, String productContent, Integer productPrice, String productCategory, List<String> productImageurl) {
         this.productName = productName;
         this.productContent = productContent;
         this.productPrice = productPrice;

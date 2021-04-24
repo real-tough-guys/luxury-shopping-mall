@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.List;
 
 @Getter
 public class ProductRequestDto {
@@ -18,10 +19,11 @@ public class ProductRequestDto {
     @NotBlank(message = "카테고리가 없습니다.")
     private String productCategory;
     @NotBlank(message = "이미지가 없습니다.")
-    private String productImageurl;
+    private List<String> productImageurl;
+
 
     @Builder
-    public ProductRequestDto(String productName, String productContent, Integer productPrice, String productCategory, String productImageurl) {
+    public ProductRequestDto(String productName, String productContent, Integer productPrice, String productCategory,  List<String> productImageurl) {
         this.productName = productName;
         this.productContent = productContent;
         this.productPrice = productPrice;
