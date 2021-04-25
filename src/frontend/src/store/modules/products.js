@@ -6,7 +6,7 @@ const getters = {};
 const actions = {
   getProductsList({ commit }) {
     return axios
-      .get("api/products")
+      .get("/api/products")
       .then(data => {
         commit("setProductList", data);
       })

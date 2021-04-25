@@ -35,7 +35,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Long> registerProduct(ProductRequestDto productDto ,List<MultipartFile> files) {
-        String baseDir = "C:\\SKHU-project\\SW-Capstone-Project\\luxury-shopping-mall\\src\\frontend\\src\\assets\\images\\";
+       String baseDir = System.getProperty("user.dir")+"\\src\\frontend\\src\\assets\\images\\";
         if (files != null) {
             try {
                 for (int i = 0; i < files.size(); i++) {

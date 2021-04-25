@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import AdminProductUpdate from "@/views/admin/product/AdminProductUpdate";
 
 Vue.use(VueRouter);
 const DetailProduct = () => import("../views/DetailProduct.vue");
@@ -8,7 +9,7 @@ const Main = () => import("../views/Main.vue");
 const Cart = () => import("../views/mycart.vue");
 const Login = () => import("../views/login.vue");
 const AdminPage = () => import("../views/admin/AdminPageHome.vue");
-const AdminProductDetail = () => import("../views/admin/product/AdminProductDetail.vue");
+const AdminProductDetail = () => import("../views/admin/product/AdminProductUpdate.vue");
 const routes = [
   {
     path: "/",
@@ -45,6 +46,12 @@ const routes = [
     path: "/admin/admindetail/:id",
     name: "AdminProductDetail",
     component: AdminProductDetail,
+    props: true
+  },
+  {
+    path: "/admin/update/:id",
+    name: "AdminProductUpdate",
+    component: AdminProductUpdate,
     props: true
   },
 
