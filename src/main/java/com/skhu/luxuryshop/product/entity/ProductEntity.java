@@ -43,12 +43,12 @@ public class ProductEntity {
         this.productImageurl = productImageurl;
     }
 
-    public void update(ProductRequestDto request) {
-        this.productName = request.getProductName();
-        this.productContent = request.getProductContent();
-        this.productPrice = request.getProductPrice();
-        this.productCategory = request.getProductCategory();
-        this.productImageurl = request.getProductImageurl();
+    public void update(String productName, String productContent, Integer productPrice, String productCategory, String productImageurl) {
+        this.productName = productName;
+        this.productContent = productContent;
+        this.productPrice = productPrice;
+        this.productCategory = productCategory;
+        this.productImageurl = productImageurl;
     }
 
 

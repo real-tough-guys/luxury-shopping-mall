@@ -8,6 +8,8 @@ const Mypage = () => import("../views/Mypage.vue");
 const Main = () => import("../views/Main.vue");
 const Cart = () => import("../views/mycart.vue");
 const Login = () => import("../views/login.vue");
+const SignUp = () => import("../views/signUp.vue");
+const EditUser = () => import("../views/editUser.vue");
 const AdminPage = () => import("../views/admin/AdminPageHome.vue");
 const AdminProductDetail = () => import("../views/admin/product/AdminProductUpdate.vue");
 const routes = [
@@ -35,6 +37,16 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login
+  },
+  {
+    path: "/singUp",
+    name: "SignUp",
+    component: SignUp
+  },
+  {
+    path: "/editUser",
+    name: "EditUser",
+    component: EditUser
   },
   {
     path: "/admin",
