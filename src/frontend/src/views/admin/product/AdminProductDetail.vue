@@ -10,7 +10,7 @@
       <v-card max-width="450" max-height="auto" class="mx-auto my-12">
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-card-title>
-            <v-text-field color="primary" :rules="titleRules" required v-model="title" counter="15" label="productname" clearable clear-icon="mdi-close-circle" outlined></v-text-field>
+            <v-text-field color="primary" :rules="titleRules" required v-model="title" counter="15" label="name" clearable clear-icon="mdi-close-circle" outlined></v-text-field>
           </v-card-title>
 
           <v-card-title>

@@ -27,7 +27,7 @@
 <!--        <template slot="items" slot-scope="props">-->
 <!--          <tr>-->
 <!--            <td>{{ props.item.id }}</td>-->
-<!--            <td>{{ props.item.productname }}</td>-->
+<!--            <td>{{ props.item.name }}</td>-->
 <!--            <td>{{ props.item.price }}원</td>-->
 <!--          </tr>-->
 <!--        </template>-->
@@ -102,7 +102,7 @@ export default {
       search: "",
       headers: [
         { text: "no", value: "id", sortable: true },
-        { text: "상품이름", value: "productname", sortable: true },
+        { text: "상품이름", value: "name", sortable: true },
         { text: "가격", value: "price", sortable: true },
         { text: "색상", value: "color", sortable: true },
         { text: "사이즈", value: "size", sortable: true },
@@ -112,7 +112,7 @@ export default {
       ProductList: [
         {
           id: 1,
-          productname: "블루종",
+          name: "블루종",
           price: "80000",
           color: ["Navy","white"],
           size:["M","L","XL"],
@@ -121,7 +121,7 @@ export default {
         },
         {
           id: 2,
-          productname: "셔츠",
+          name: "셔츠",
           price: "900000",
           color: ["black","Navy"],
           size:["free"],
@@ -131,7 +131,7 @@ export default {
 
         {
           id: 3,
-          productname: "블랙진",
+          name: "블랙진",
           price: "900000",
           color: ["black","white"],
           size:["M","L","XL"],
