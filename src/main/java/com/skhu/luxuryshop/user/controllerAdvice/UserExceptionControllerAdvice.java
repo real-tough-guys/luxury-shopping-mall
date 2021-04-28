@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice("com.skhu.luxuryshop.user.controller")
 @Slf4j
 public class UserExceptionControllerAdvice {
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> methodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
