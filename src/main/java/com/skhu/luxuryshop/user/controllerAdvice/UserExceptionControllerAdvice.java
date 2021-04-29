@@ -1,7 +1,8 @@
 package com.skhu.luxuryshop.user.controllerAdvice;
 
 import com.skhu.luxuryshop.user.exception.DuplicatedEmailException;
-import com.skhu.luxuryshop.user.exception.SignupPasswordUnmatchedException;
+import com.skhu.luxuryshop.user.exception.NoUserFoundException;
+import com.skhu.luxuryshop.user.exception.UnmatchedPasswordCheckException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+@RestControllerAdvice("com.skhu.luxuryshop.user.controller")
 @Slf4j
 public class UserExceptionControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -24,8 +25,14 @@ public class UserExceptionControllerAdvice {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
-    @ExceptionHandler(SignupPasswordUnmatchedException.class)
-    public ResponseEntity<String> signupPasswordUnMatchException(SignupPasswordUnmatchedException e) {
+    @ExceptionHandler(UnmatchedPasswordCheckException.class)
+    public ResponseEntity<String> signupPasswordUnMatchException(UnmatchedPasswordCheckException e) {
+        log.error(e.getMessage(), e);
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    @ExceptionHandler(NoUserFoundException.class)
+    public ResponseEntity<String> noUserFoundException(NoUserFoundException e){
         log.error(e.getMessage(), e);
         return ResponseEntity.badRequest().body(e.getMessage());
     }
