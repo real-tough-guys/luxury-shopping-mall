@@ -1,7 +1,7 @@
 package com.skhu.luxuryshop.user.dto;
 
 import com.skhu.luxuryshop.user.entity.UserEntity;
-import com.skhu.luxuryshop.user.exception.SignupPasswordUnmatchedException;
+import com.skhu.luxuryshop.user.exception.UnmatchedPasswordCheckException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
@@ -40,7 +40,7 @@ public class UserSignupDto {
 
     public void validateSamePassword(String password, String passwordCheck) {
         if (!password.equals(passwordCheck)) {
-            throw new SignupPasswordUnmatchedException("비밀번호가 일치하지 않습니다.");
+            throw new UnmatchedPasswordCheckException();
         }
     }
 }
