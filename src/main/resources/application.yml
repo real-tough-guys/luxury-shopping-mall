@@ -11,10 +11,9 @@ spring:
       path: /h2-console
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false
-    driverClassproductName: org.h2.Driver
-    userproductName: sa
+    driverClassName: org.h2.Driver
+    userName: sa
     password:
-
   jpa:
     hibernate:
       format_sql: true
