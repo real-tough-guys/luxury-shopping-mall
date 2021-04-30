@@ -26,13 +26,73 @@ function save(userSignupDto) {
                 console.log(response)
             })
             .catch(error => {
-            reject(error)
-            console.error(error)
-        })
+                reject(error)
+                console.error(error)
+            })
+    })
+}
+
+function details(id) {
+    return new Promise((resolve, reject) => {
+        axios.get(`${config.baseUrl}${id}/details`)
+            .then(response => {
+                resolve(response)
+                console.log(response)
+            })
+            .catch(error => {
+                reject(error)
+                console.error(error)
+            })
+    })
+}
+
+function deleteUser(id) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${config.baseUrl}${id}/delete`)
+            .then(response => {
+                resolve(response)
+                console.log(response)
+            })
+            .catch(error => {
+                reject(error)
+                console.error(error)
+            })
+    })
+}
+
+function update(userUpdateDto) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${config.baseUrl}update`, userUpdateDto)
+            .then(response => {
+                resolve(response)
+                console.log(response)
+            })
+            .catch(error => {
+                reject(error)
+                console.error(error)
+            })
+    })
+}
+
+function findAll() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${config.baseUrl}list`)
+            .then(response => {
+                resolve(response)
+                console.log(response)
+            })
+            .catch(error => {
+                reject(error)
+                console.error(error)
+            })
     })
 }
 
 export {
     isDuplicatedEmail,
     save,
+    details,
+    deleteUser,
+    update,
+    findAll
 }
