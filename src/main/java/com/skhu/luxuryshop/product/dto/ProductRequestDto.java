@@ -20,8 +20,6 @@ public class ProductRequestDto {
     private String productCategory;
     @NotBlank(message = "이미지가 없습니다.")
     private List<String> productImageurl;
-
-
     @Builder
     public ProductRequestDto(String productName, String productContent, Integer productPrice, String productCategory,  List<String> productImageurl) {
         this.productName = productName;
@@ -41,6 +39,4 @@ public class ProductRequestDto {
                 .build();
         return productEntity;
     }
-
-
 }
