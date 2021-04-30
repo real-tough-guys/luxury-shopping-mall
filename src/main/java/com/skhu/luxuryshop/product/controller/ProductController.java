@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,27 +29,17 @@ public class ProductController {
         return ResponseEntity.ok(productService.findAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/detail/{id}")
     public ResponseEntity<ProductResponseDto> getProductById(@PathVariable Long id) {
         return ResponseEntity.ok(productService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Long> registerProduct(ProductRequestDto productDto ,List<MultipartFile> files) {
-       String baseDir = System.getProperty("user.dir")+"\\src\\frontend\\src\\assets\\images\\";
-        if (files != null) {
-            try {
-                for (int i = 0; i < files.size(); i++) {
-                    files.get(i).transferTo(new File(baseDir + files.get(i).getOriginalFilename()));
-                }
-            } catch (IllegalStateException | IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public ResponseEntity<Long> registerProduct(ProductRequestDto productDto, List<MultipartFile> files) {
+        productService.fileUpload(files);
         ProductResponseDto savedProduct = productService.save(productDto);
         return ResponseEntity.created(URI.create("/" + savedProduct.getId())).build();
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<Long> updateProduct(@PathVariable Long id, @RequestBody @Valid ProductRequestDto productRequestDto) {
