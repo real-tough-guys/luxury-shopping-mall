@@ -7,6 +7,9 @@ import com.skhu.luxuryshop.product.dto.ProductResponseDto;
 import com.skhu.luxuryshop.product.entity.ProductEntity;
 import com.skhu.luxuryshop.product.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,7 +17,6 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,6 +49,13 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    public List<ProductResponseDto> findAllMain(int limit) {
+        Page<ProductEntity> page = productRepository.findAll(PageRequest.of(limit - 1, 2, Sort.by(Sort.Direction.DESC, "id")));
+        return page.stream()
+                .map(ProductResponseDto::from)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public ProductResponseDto save(ProductRequestDto productDto) {
         ProductEntity product = productDto.toProductEntity();
@@ -58,7 +67,6 @@ public class ProductService {
         if (files != null) {
             try {
                 for (MultipartFile file : files) {
-                    log.info(String.valueOf(UUID.randomUUID()));
                     file.transferTo(new File(baseDir + file.getOriginalFilename()));
                 }
             } catch (IllegalStateException | IOException e) {
@@ -74,4 +82,5 @@ public class ProductService {
         }
         productRepository.deleteById(id);
     }
+
 }
