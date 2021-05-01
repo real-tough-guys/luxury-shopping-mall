@@ -10,12 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,6 +25,11 @@ public class ProductController {
         return ResponseEntity.ok(productService.findAll());
     }
 
+    @GetMapping(value = "/main")
+    public ResponseEntity<List<ProductResponseDto>> getProductsMain(@RequestParam(value = "limit", defaultValue = "1") int limit) {
+        return ResponseEntity.ok(productService.findAllMain(limit));
+    }
+
     @GetMapping("/detail/{id}")
     public ResponseEntity<ProductResponseDto> getProductById(@PathVariable Long id) {
         return ResponseEntity.ok(productService.findById(id));
@@ -36,13 +37,18 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Long> registerProduct(ProductRequestDto productDto, List<MultipartFile> files) {
-        productService.fileUpload(files);
+        if (files != null) {
+            productService.fileUpload(files);
+        }
         ProductResponseDto savedProduct = productService.save(productDto);
         return ResponseEntity.created(URI.create("/" + savedProduct.getId())).build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Long> updateProduct(@PathVariable Long id, @RequestBody @Valid ProductRequestDto productRequestDto) {
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Long> updateProduct(@PathVariable Long id, ProductRequestDto productRequestDto, List<MultipartFile> files) {
+        if (files != null) {
+            productService.fileUpload(files);
+        }
         productService.update(id, productRequestDto);
         return ResponseEntity.ok(productService.update(id, productRequestDto));
     }
