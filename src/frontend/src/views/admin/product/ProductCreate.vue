@@ -175,7 +175,6 @@ export default {
     },
     imagesAdd(e) {
       var files = e.target.files || e.dataTransfer.files;
-
       this.images = [];
       this.image = [];
       Array.prototype.push.apply(this.images, files); //array element add
@@ -207,15 +206,15 @@ export default {
       frm.append("productContent", this.content);
       frm.append("productPrice", this.price);
       frm.append("productCategory", this.category);
-
       axios
-        .post("api/products", frm, {
+        .post("/api/products", frm, {
           headers: {
             "Content-Type": "multipart/form-data"
           }
         })
         .then(res => {
           console.log(res);
+          // this.$router.push({name: "AdminProductDetail", params: {id: id}});
         })
         .catch(err => {
           console.log(err);
