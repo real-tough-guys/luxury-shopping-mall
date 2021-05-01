@@ -8,8 +8,8 @@
         <v-col cols="6" md="3">
           <v-form ref="form">
             <v-text-field
-              v-model="searchModel"
-              label="Luxury shop search"
+                v-model="searchModel"
+                label="Luxury shop search"
             ></v-text-field>
           </v-form>
         </v-col>
@@ -30,7 +30,7 @@
 
           <v-list>
             <v-list-item :to="{ name: 'Login' }">
-              <v-list-item-title>Login </v-list-item-title>
+              <v-list-item-title>Login</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -47,13 +47,11 @@
         </v-list-item>
 
         <v-divider></v-divider>
-
         <v-list dense>
-          <v-list-item>
+          <v-list-item :to="{ name: 'Main' }">
             <v-list-item-icon>
               <v-icon>mdi-view-dashboard</v-icon>
             </v-list-item-icon>
-
             <v-list-item-content>
               <v-list-item-title>Home</v-list-item-title>
             </v-list-item-content>
@@ -100,24 +98,22 @@
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
+import HelloWorld from "./components/HelloWorld"
 
 export default {
   name: "App",
-
   components: {
     HelloWorld
   },
   mounted() {
   },
-
   data: () => ({
     searchModel: null,
     drawer: false,
     group: null,
     items: [
-      { title: "Home", icon: "mdi-view-dashboard" },
-      { title: "Mypage", icon: "mdi-forum" }
+      {title: "Home", icon: "mdi-view-dashboard"},
+      {title: "Mypage", icon: "mdi-forum"}
     ]
   })
 };
@@ -127,6 +123,7 @@ th {
   font-size: 1.2rem !important;
   font-weight: 100;
 }
+
 td {
   font-size: 1rem !important;
 }
