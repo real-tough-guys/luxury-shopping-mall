@@ -1,8 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import AdminProductUpdate from "@/views/admin/product/AdminProductUpdate";
 
 Vue.use(VueRouter);
+const Empty = () => import("../components/Empty.vue")
 const DetailProduct = () => import("../views/DetailProduct.vue");
 const Mypage = () => import("../views/Mypage.vue");
 const Main = () => import("../views/Main.vue");
@@ -11,7 +11,8 @@ const Login = () => import("../views/login.vue");
 const SignUp = () => import("../views/signUp.vue");
 const EditUser = () => import("../views/editUser.vue");
 const AdminPage = () => import("../views/admin/AdminPageHome.vue");
-const AdminProductDetail = () => import("../views/admin/product/AdminProductUpdate.vue");
+const AdminProductDetail = () => import("../views/admin/product/AdminProductDetail.vue");
+const AdminProductUpdate= ()=> import("../views/admin/product/AdminProductUpdate.vue");
 const routes = [
   {
     path: "/",
@@ -50,23 +51,30 @@ const routes = [
   },
   {
     path: "/admin",
-    name: "AdminPage",
-    component: AdminPage,
+    component: Empty,
+    children: [
+      {
+        path: "main",
+        name: "AdminPage",
+        component: AdminPage,
 
-  },
-  {
-    path: "/admin/admindetail/:id",
-    name: "AdminProductDetail",
-    component: AdminProductDetail,
-    props: true
-  },
-  {
-    path: "/admin/update/:id",
-    name: "AdminProductUpdate",
-    component: AdminProductUpdate,
-    props: true
-  },
+      },
+      {
+        path: "detail/:id",
+        name: "AdminProductDetail",
+        component: AdminProductDetail,
+        props: true
+      },
+      {
+        path: ":id/update",
+        name: "AdminProductUpdate",
+        component: AdminProductUpdate,
+        props: true
+      }
 
+
+    ]
+  },
 
 ];
 
