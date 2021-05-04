@@ -1,7 +1,7 @@
 package com.skhu.luxuryshop.product.service;
 
-import com.skhu.luxuryshop.exception.ProductExistByIdException;
-import com.skhu.luxuryshop.exception.ProductFindByIdException;
+import com.skhu.luxuryshop.product.exception.ProductExistByIdException;
+import com.skhu.luxuryshop.product.exception.ProductFindByIdException;
 import com.skhu.luxuryshop.product.dto.ProductRequestDto;
 import com.skhu.luxuryshop.product.dto.ProductResponseDto;
 import com.skhu.luxuryshop.product.entity.ProductEntity;
@@ -62,7 +62,7 @@ public class ProductService {
         return ProductResponseDto.from(productRepository.save(product));
     }
 
-    public void fileUpload(List<MultipartFile> files) {
+    public void uploadFiles(List<MultipartFile> files) {
         String baseDir = System.getProperty("user.dir") + "\\src\\frontend\\src\\assets\\images\\";
         if (files != null) {
             try {
@@ -82,5 +82,4 @@ public class ProductService {
         }
         productRepository.deleteById(id);
     }
-
 }

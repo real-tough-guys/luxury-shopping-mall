@@ -15,6 +15,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
@@ -37,8 +40,11 @@ class ProductControllerTest {
 
     @BeforeEach
     void setUp() {
-        product = new ProductRequestDto("controller 테스트", "controller 테스트", 900, "controller 테스트", "controller 테스트");
-        productEntity = new ProductEntity(1L, "controller test", "controller", 900, "controller", "controller");
+        List<String> imageUrl = new ArrayList<>();
+        imageUrl.add("test1.jpg");
+        imageUrl.add("test2.jpg");
+        product = new ProductRequestDto("controller 테스트", "controller 테스트", 900, "controller 테스트", imageUrl);
+        productEntity = new ProductEntity(1L, "controller test", "controller", 900, "controller", imageUrl);
     }
 
     @Test
@@ -68,7 +74,10 @@ class ProductControllerTest {
     @Test
     void 상품업데이트_Test() throws Exception {
         given(productService.findById(1L)).willReturn(ProductResponseDto.from(productEntity));
-        ProductRequestDto productRequestDto = new ProductRequestDto("update", "update", 900, "update", "update");
+        List<String> imageUrlTest = new ArrayList<>();
+        imageUrlTest.add("test3.jpg");
+        imageUrlTest.add("test4.jpg");
+        ProductRequestDto productRequestDto = new ProductRequestDto("update", "update", 900, "update", imageUrlTest);
         String json = objectMapper.writeValueAsString(productRequestDto);
         MvcResult mvcResult = mockMvc.perform(put("/api/products/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON).content(json))

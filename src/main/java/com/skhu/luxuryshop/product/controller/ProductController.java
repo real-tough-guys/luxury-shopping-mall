@@ -38,7 +38,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Long> registerProduct(ProductRequestDto productDto, List<MultipartFile> files) {
         if (files != null) {
-            productService.fileUpload(files);
+            productService.uploadFiles(files);
         }
         ProductResponseDto savedProduct = productService.save(productDto);
         return ResponseEntity.created(URI.create("/" + savedProduct.getId())).build();
@@ -47,7 +47,7 @@ public class ProductController {
     @PutMapping("/edit/{id}")
     public ResponseEntity<Long> updateProduct(@PathVariable Long id, ProductRequestDto productRequestDto, List<MultipartFile> files) {
         if (files != null) {
-            productService.fileUpload(files);
+            productService.uploadFiles(files);
         }
         productService.update(id, productRequestDto);
         return ResponseEntity.ok(productService.update(id, productRequestDto));
