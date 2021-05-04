@@ -8,8 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -25,19 +25,30 @@ public class ProductController {
         return ResponseEntity.ok(productService.findAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/main")
+    public ResponseEntity<List<ProductResponseDto>> getProductsMain(@RequestParam(value = "limit", defaultValue = "1") int limit) {
+        return ResponseEntity.ok(productService.findAllMain(limit));
+    }
+
+    @GetMapping("/detail/{id}")
     public ResponseEntity<ProductResponseDto> getProductById(@PathVariable Long id) {
         return ResponseEntity.ok(productService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Long> registerProduct(@RequestBody @Valid ProductRequestDto productDto) {
+    public ResponseEntity<Long> registerProduct(ProductRequestDto productDto, List<MultipartFile> files) {
+        if (files != null) {
+            productService.uploadFiles(files);
+        }
         ProductResponseDto savedProduct = productService.save(productDto);
         return ResponseEntity.created(URI.create("/" + savedProduct.getId())).build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Long> updateProduct(@PathVariable Long id, @RequestBody @Valid ProductRequestDto productRequestDto) {
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Long> updateProduct(@PathVariable Long id, ProductRequestDto productRequestDto, List<MultipartFile> files) {
+        if (files != null) {
+            productService.uploadFiles(files);
+        }
         productService.update(id, productRequestDto);
         return ResponseEntity.ok(productService.update(id, productRequestDto));
     }

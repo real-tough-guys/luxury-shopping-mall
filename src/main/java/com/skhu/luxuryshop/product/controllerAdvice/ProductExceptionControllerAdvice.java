@@ -1,7 +1,7 @@
-package com.skhu.luxuryshop.controllerAdvice;
+package com.skhu.luxuryshop.product.controllerAdvice;
 
-import com.skhu.luxuryshop.exception.ProductExistByIdException;
-import com.skhu.luxuryshop.exception.ProductFindByIdException;
+import com.skhu.luxuryshop.product.exception.ProductExistByIdException;
+import com.skhu.luxuryshop.product.exception.ProductFindByIdException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

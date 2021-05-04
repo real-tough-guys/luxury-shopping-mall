@@ -1,8 +1,5 @@
-package com.skhu.luxuryshop.exception;
+package com.skhu.luxuryshop.product.exception;
 
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
 public class ProductFindByIdException extends IllegalArgumentException {
     public ProductFindByIdException(String message) {
         super(message);

@@ -5,6 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ProductResponseDtoTest {
@@ -13,7 +16,10 @@ class ProductResponseDtoTest {
 
     @BeforeEach
     void setUp() {
-        product = new ProductEntity(1L, "DTO 테스트", "DTO 테스트", 900, "DTO 테스트", "DTO 테스트");
+        List<String> imageUrl = new ArrayList<>();
+        imageUrl.add("test1.jpg");
+        imageUrl.add("test2.jpg");
+        product = new ProductEntity(1L, "DTO 테스트", "DTO 테스트", 900, "DTO 테스트", imageUrl);
     }
 
     @DisplayName("form_productentity")

@@ -1,4 +1,4 @@
-package com.skhu.luxuryshop.exception;
+package com.skhu.luxuryshop.product.exception;
 
 public class ProductExistByIdException extends IllegalArgumentException {
     public ProductExistByIdException(String message) {
