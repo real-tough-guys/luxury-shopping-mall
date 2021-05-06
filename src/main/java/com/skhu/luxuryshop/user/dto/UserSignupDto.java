@@ -1,5 +1,6 @@
 package com.skhu.luxuryshop.user.dto;
 
+import com.skhu.luxuryshop.user.entity.Authority;
 import com.skhu.luxuryshop.user.entity.UserEntity;
 import com.skhu.luxuryshop.user.exception.UnmatchedPasswordCheckException;
 import lombok.AllArgsConstructor;
@@ -8,10 +9,12 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.Collections;
 
 @Getter
 @AllArgsConstructor
 public class UserSignupDto {
+
     @NotBlank(message = "이메일을 입력하세요.")
     @Email(message = "이메일 형식을 확인하세요.")
     private String email;
@@ -30,10 +33,16 @@ public class UserSignupDto {
 
     public UserEntity toUserEntity() {
         validateSamePassword(password, passwordCheck);
+
+        Authority authority = Authority.builder()
+                .authorityName("ROLE_USER")
+                .build();
+
         UserEntity user = UserEntity.builder()
                 .email(email)
                 .password(password)
                 .nickname(nickname)
+                .authorities(Collections.singleton(authority))
                 .build();
         return user;
     }
