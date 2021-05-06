@@ -22,6 +22,11 @@ public class UserManagementService {
         return UserResponseDto.from(user.orElseThrow(NoUserFoundException::new));
     }
 
+    public UserResponseDto findOneByEmail(String email) {
+        Optional<UserEntity> user = userRepository.findOneWithAutoritiesByEmail(email);
+        return UserResponseDto.from(user.orElseThrow(NoUserFoundException::new));
+    }
+
     public List<UserResponseDto> findAll() {
         List<UserEntity> users = userRepository.findAll();
         return users.stream()
