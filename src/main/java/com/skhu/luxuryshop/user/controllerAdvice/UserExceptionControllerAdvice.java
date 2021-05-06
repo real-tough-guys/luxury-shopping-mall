@@ -6,6 +6,8 @@ import com.skhu.luxuryshop.user.exception.UnmatchedPasswordCheckException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -32,9 +34,21 @@ public class UserExceptionControllerAdvice {
     }
 
     @ExceptionHandler(NoUserFoundException.class)
-    public ResponseEntity<String> noUserFoundException(NoUserFoundException e){
+    public ResponseEntity<String> noUserFoundException(NoUserFoundException e) {
         log.error(e.getMessage(), e);
         return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<String> badCredentialsException(BadCredentialsException e) {
+        log.error(e.getMessage(), e);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<String> accessDeniedException(AccessDeniedException e) {
+        log.error(e.getMessage(), e);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
