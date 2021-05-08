@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skhu.luxuryshop.user.dto.UserResponseDto;
 import com.skhu.luxuryshop.user.dto.UserSignupDto;
 import com.skhu.luxuryshop.user.dto.UserUpdateDto;
+import com.skhu.luxuryshop.user.entity.Authority;
 import com.skhu.luxuryshop.user.entity.UserEntity;
 import com.skhu.luxuryshop.user.exception.DuplicatedEmailException;
 import com.skhu.luxuryshop.user.exception.NoUserFoundException;
 import com.skhu.luxuryshop.user.exception.UnmatchedPasswordCheckException;
+import com.skhu.luxuryshop.user.jwt.TokenProvider;
 import com.skhu.luxuryshop.user.service.UserManagementService;
 import com.skhu.luxuryshop.user.service.UserSignupService;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebM
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -43,15 +46,22 @@ public class UserControllerTest {
     private UserSignupService userSignupService;
     @MockBean
     private UserManagementService userManagementService;
+    @MockBean
+    private TokenProvider tokenProvider;
+    @MockBean
+    private AuthenticationManagerBuilder authenticationManagerBuilder;
 
     private UserEntity existentUser;
     private UserSignupDto normalUserSignup;
     private UserSignupDto duplicatedEmailUserSignup;
     private UserSignupDto unmatchedPwdUserSignup;
+    private Authority authority = Authority.builder()
+            .authorityName("ROLE_USER")
+            .build();
 
     @BeforeEach
     void setUp() {
-        existentUser = new UserEntity(1L, "test1@gmail.com", "password", "nick");
+        existentUser = new UserEntity(1L, "test1@gmail.com", "password", "nick", Collections.singleton(authority));
         normalUserSignup = new UserSignupDto("test123@gmail.co.kr", "password", "password", "홍길동");
         duplicatedEmailUserSignup = new UserSignupDto("test123@gmail.com", "password", "password", "홍길동");
     }
@@ -87,7 +97,7 @@ public class UserControllerTest {
     @DisplayName("save_정상 유저인 경우 isCreated")
     @Test
     void test_signUp_normalUser() throws Exception {
-        UserResponseDto normalUserResponse = new UserResponseDto(1L, normalUserSignup.getEmail(), normalUserSignup.getNickname());
+        UserResponseDto normalUserResponse = new UserResponseDto(1L, normalUserSignup.getEmail(), normalUserSignup.getNickname(), Collections.singleton(authority));
         when(userSignupService.save(ArgumentMatchers.any(UserSignupDto.class)))
                 .thenReturn(normalUserResponse);
 
@@ -261,8 +271,8 @@ public class UserControllerTest {
     @Test
     void test_findAll() throws Exception {
         List<UserResponseDto> users = new ArrayList<>();
-        UserResponseDto userResponseDto1 = new UserResponseDto(1L, "test1@gmail.com", "nick");
-        UserResponseDto userResponseDto2 = new UserResponseDto(2L, "test2@gmail.com", "nick");
+        UserResponseDto userResponseDto1 = new UserResponseDto(1L, "test1@gmail.com", "nick", Collections.singleton(authority));
+        UserResponseDto userResponseDto2 = new UserResponseDto(2L, "test2@gmail.com", "nick", Collections.singleton(authority));
         users.add(userResponseDto1);
         users.add(userResponseDto2);
 
