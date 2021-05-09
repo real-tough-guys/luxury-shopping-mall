@@ -27,7 +27,7 @@ public class UserController {
     private final UserSignupService userSignupService;
     private final UserManagementService userManagementService;
     private final TokenProvider tokenProvider;
-    private final AuthenticationManagerBuilder authenticationManagerBuiler;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @GetMapping("/emails/{email}/exists")
     public ResponseEntity<String> isDuplicatedEmail(@PathVariable String email) {
@@ -44,15 +44,31 @@ public class UserController {
     }
 
     @GetMapping("/{id}/details")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<UserResponseDto> details(@PathVariable Long id) {
         UserResponseDto userDetails = userManagementService.findById(id);
         return new ResponseEntity(userDetails, HttpStatus.OK);
     }
 
-    @PostMapping("/{id}/delete")
+    @GetMapping("/details")
     @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<UserResponseDto> details() {
+        UserResponseDto userDetails = userManagementService.findByLoginUser();
+        return new ResponseEntity(userDetails, HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}/delete")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         userManagementService.deleteById(id);
+        return new ResponseEntity("계정이 삭제되었습니다.", HttpStatus.OK);
+    }
+
+    @PostMapping("/delete")
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<String> delete() {
+        userManagementService.deleteByLoginUser();
+        SecurityContextHolder.clearContext();
         return new ResponseEntity("계정이 삭제되었습니다.", HttpStatus.OK);
     }
 
@@ -60,7 +76,8 @@ public class UserController {
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<String> update(@RequestBody @Valid UserUpdateDto userUpdateDto) {
         userManagementService.update(userUpdateDto);
-        return new ResponseEntity("수정 성공", HttpStatus.OK);
+        SecurityContextHolder.clearContext();
+        return new ResponseEntity("정보를 변경했습니다. 다시 로그인하세요.", HttpStatus.OK);
     }
 
     @GetMapping("/list")
@@ -71,11 +88,11 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserTokenDto> authorize(@Valid @RequestBody UserLoginDto userLoginDto) {
+    public ResponseEntity<UserTokenDto> login(@Valid @RequestBody UserLoginDto userLoginDto) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userLoginDto.getEmail(), userLoginDto.getPassword());
 
-        Authentication authentication = authenticationManagerBuiler.getObject().authenticate(authenticationToken);
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = tokenProvider.createToken(authentication);

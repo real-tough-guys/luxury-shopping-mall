@@ -1,5 +1,6 @@
 package com.skhu.luxuryshop.user.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 
@@ -7,6 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Getter
+@AllArgsConstructor
 public class UserLoginDto {
     @NotBlank(message = "이메일을 입력하세요.")
     @Email(message = "이메일 형식을 확인하세요.")
