@@ -53,15 +53,16 @@ public class UserManagementService {
 
     public void update(UserUpdateDto userUpdateDto) {
         UserEntity updateUser = userUpdateDto.toUserEntity();
+        UserEntity loginUser = getMyUserWithAuthorities().orElseThrow(NoUserFoundException::new);
         UserEntity user = UserEntity.builder()
                 .id(updateUser.getId())
                 .email(updateUser.getEmail())
                 .password(passwordEncoder.encode(updateUser.getPassword()))
                 .nickname(updateUser.getNickname())
-                .authorities(updateUser.getAuthorities())
+                .authorities(loginUser.getAuthorities())
                 .build();
 
-        if (user.getId() != userUpdateDto.getId()) {
+        if (loginUser.getId() != userUpdateDto.getId()) {
             throw new AccessDeniedException("접근할 수 없습니다.");
         }
         if (!user.getEmail().equals(userUpdateDto.getEmail())) {
