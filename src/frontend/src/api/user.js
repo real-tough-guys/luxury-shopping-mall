@@ -18,7 +18,7 @@ function isDuplicatedEmail(email) {
     })
 }
 
-function save(userSignupDto) {
+function signUp(userSignupDto) {
     return new Promise((resolve, reject) => {
         axios.post(`${config.baseUrl}`, userSignupDto)
             .then(response => {
@@ -46,9 +46,37 @@ function details(id) {
     })
 }
 
+function details() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${config.baseUrl}/details`)
+            .then(response => {
+                resolve(response)
+                console.log(response)
+            })
+            .catch(error => {
+                reject(error)
+                console.error(error)
+            })
+    })
+}
+
 function deleteUser(id) {
     return new Promise((resolve, reject) => {
         axios.post(`${config.baseUrl}${id}/delete`)
+            .then(response => {
+                resolve(response)
+                console.log(response)
+            })
+            .catch(error => {
+                reject(error)
+                console.error(error)
+            })
+    })
+}
+
+function deleteUser() {
+    return new Promise((resolve, reject) => {
+        axios.post(`${config.baseUrl}/delete`)
             .then(response => {
                 resolve(response)
                 console.log(response)
@@ -88,9 +116,23 @@ function findAll() {
     })
 }
 
+function findAll() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${config.baseUrl}login`)
+            .then(response => {
+                resolve(response)
+                console.log(response)
+            })
+            .catch(error => {
+                reject(error)
+                console.error(error)
+            })
+    })
+}
+
 export {
     isDuplicatedEmail,
-    save,
+    signUp,
     details,
     deleteUser,
     update,
