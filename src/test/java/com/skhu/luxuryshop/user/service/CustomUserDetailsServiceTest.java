@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,14 +34,14 @@ public class CustomUserDetailsServiceTest {
             .build();
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         userEntity = new UserEntity(3L, "test1@gmail.com", "password", "홍길동", Collections.singleton(authority));
         userRepository.save(userEntity);
     }
 
     @DisplayName("loadUserByUsername_존재하는 유저일 경우")
     @Test
-    void test_loadUserByUsername_existsUser(){
+    void test_loadUserByUsername_existsUser() {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(userEntity.getEmail());
 
         assertThat(userDetails.getUsername()).isEqualTo(userEntity.getEmail());
@@ -54,11 +53,11 @@ public class CustomUserDetailsServiceTest {
 
     @DisplayName("loadUserByUsername_존재하지 않는 유저일 경우 throw UsernameNotFoundException")
     @Test
-    void test_loadUserByUsername_unExistsUser(){
+    void test_loadUserByUsername_unExistsUser() {
         String unExistsEmail = "unExistsEmail@gmail.co.kr";
-        assertThatThrownBy(()->
+        assertThatThrownBy(() ->
                 customUserDetailsService.loadUserByUsername(unExistsEmail))
                 .isInstanceOf(UsernameNotFoundException.class)
-                .hasMessage(unExistsEmail+"유저가 존재하지 않습니다.");
+                .hasMessage(unExistsEmail + "유저가 존재하지 않습니다.");
     }
 }
