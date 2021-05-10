@@ -65,16 +65,6 @@
               <v-list-item-title>Mypage</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item :to="{ name: 'DetailProduct' }">
-            <v-list-item-icon>
-              <v-icon>mdi-forum</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>detail</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
           <v-list-item :to="{ name: 'AdminPage' }">
             <v-list-item-icon>
               <v-icon>mdi-forum</v-icon>

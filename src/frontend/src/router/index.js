@@ -30,9 +30,10 @@ const routes = [
     component: Cart
   },
   {
-    path: "/deatil",
+    path: "/detail/:id",
     name: "DetailProduct",
-    component: DetailProduct
+    component: DetailProduct,
+    props: true
   },
   {
     path: "/login",
