@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -34,16 +35,18 @@ public class ProductController {
     public ResponseEntity<ProductResponseDto> getProductById(@PathVariable Long id) {
         return ResponseEntity.ok(productService.findById(id));
     }
-
     @PostMapping
-    public ResponseEntity<Long> registerProduct(ProductRequestDto productDto, List<MultipartFile> files) {
+    public ResponseEntity<Long> registerProduct(@RequestBody @Valid ProductRequestDto productDto) {
+        ProductResponseDto savedProduct = productService.save(productDto);
+        return ResponseEntity.created(URI.create("/")).body(savedProduct.getId());
+    }
+    @PostMapping("/file")
+    public ResponseEntity uploadImage(@RequestBody List<MultipartFile> files){
         if (files != null) {
             productService.uploadFiles(files);
         }
-        ProductResponseDto savedProduct = productService.save(productDto);
-        return ResponseEntity.created(URI.create("/" + savedProduct.getId())).build();
+        return ResponseEntity.ok("이미지 저장완료");
     }
-
     @PutMapping("/edit/{id}")
     public ResponseEntity<Long> updateProduct(@PathVariable Long id, ProductRequestDto productRequestDto, List<MultipartFile> files) {
         if (files != null) {
