@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "product")
-public class ProductEntity  {
+public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,17 +26,8 @@ public class ProductEntity  {
     private String productCategory;
     @NotNull
     @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "product_imageurl" ,joinColumns = @JoinColumn(name = "product_id"))
+    @CollectionTable(name = "product_imageurl", joinColumns = @JoinColumn(name = "product_id"))
     private List<String> productImageurl;
-
-    @Builder
-    public ProductEntity(String productName, String productContent, Integer productPrice, String productCategory, List<String> productImageurl) {
-        this.productName = productName;
-        this.productContent = productContent;
-        this.productPrice = productPrice;
-        this.productCategory = productCategory;
-        this.productImageurl = productImageurl;
-    }
 
     public void update(ProductEntity productEntity) {
         this.productName = productEntity.getProductName();
