@@ -1,40 +1,40 @@
 <template>
   <div>
-    <v-container class="grey lighten-5">
-      <v-row>
-        <v-col cols="12" sm="6">
-          <v-card class="pa-2" outlined tile>
+    <v-container>
+      <v-row no-gutters>
+        <v-col cols="12" sm="6" align="right">
+          <v-card outlined tile class="pa-2" max-width="400" max-height="600">
             <v-carousel progress-color="orange">
               <v-carousel-item
-                v-for="(item, i) in items"
+                v-for="(item, i) in productDetail.productImageurl"
                 :key="i"
-                :src="item.src"
-                reverse-transition="fade-transition"
-                transition="fade-transition"
+                v-bind:src="item | loadImgOrPlaceholder"
               ></v-carousel-item>
             </v-carousel>
           </v-card>
         </v-col>
-
         <v-col cols="12" sm="6">
-          <v-card class="pa-2" outlined tile>
+          <v-card class="pa-2" outlined tile max-width="400" max-height="600">
             <v-card-title
-              ><h4>{{ detailName }}</h4>
+              ><h4>{{ productDetail.productName }}</h4>
               <v-btn class="mx-2" fab dark small color="pink">
                 <v-icon dark>
                   mdi-heart
                 </v-icon>
               </v-btn>
             </v-card-title>
-            <v-card-text>{{ `가격 : ${price} 원 ` }}</v-card-text>
+            <v-card-text> {{ `가격 : ${productDetail.productPrice} 원 ` | moneyFilter}}</v-card-text>
 
-            <v-btn color="blue-grey" class="ma-2 white--text">
+            <v-btn
+              color="blue-grey"
+              class="ma-2 white--text"
+              @click="postCartAdd(productDetail.id)"
+            >
               Add To Cart
               <v-icon right dark>
                 mdi-cart
               </v-icon>
             </v-btn>
-
             <v-btn color="blue-grey" class="ma-2 white--text">
               Buy It Now
               <v-icon right dark>
@@ -42,11 +42,13 @@
               </v-icon>
             </v-btn>
             <v-card-actions>
-              color : <v-select :items="items2" label="Standard"> </v-select
-            ></v-card-actions>
+              color :
+              <v-select :items="items2" label="Standard"></v-select>
+            </v-card-actions>
             <v-card-actions>
-              size : <v-select :items="items3" label="Standard"> </v-select
-            ></v-card-actions>
+              size :
+              <v-select :items="items3" label="Standard"></v-select>
+            </v-card-actions>
             <v-card-title>REALATED ITEM</v-card-title>
             <v-carousel
               cycle
@@ -61,8 +63,8 @@
               </template>
               <template v-slot:next="{ on, attrs }">
                 <v-btn color="blue-grey" v-bind="attrs" v-on="on"
-                  >Next slide</v-btn
-                >
+                  >Next slide
+                </v-btn>
               </template>
               <v-carousel-item v-for="(slide, i) in slides" :key="i">
                 <v-sheet :color="colors[i]" height="100%">
@@ -80,34 +82,15 @@
 </template>
 
 <script>
+import axios from "axios";
+import myMixin from "@/filter";
+
 export default {
+  mixins: [myMixin],
+  props: ["id"],
   data() {
     return {
-      items: [
-        {
-          src:
-            "https://image.musinsa.com/images/prd_img/2021021921333500000079112.jpg"
-        },
-        {
-          src:
-            "https://image.musinsa.com/images/prd_img/2021021921333500000011944.jpg"
-        },
-        {
-          src:
-            "https://image.musinsa.com/images/prd_img/2021021921333600000035549.jpg"
-        },
-        {
-          src:
-            "https://image.musinsa.com/images/prd_img/2021021921333600000098070.jpg"
-        }
-      ],
-      products: [
-        {
-          id: 0,
-          title: "미니멀 자켓",
-          price: 70900
-        }
-      ],
+      productDetail: [],
       detailName: "미니멀 자켓",
       price: 70900,
       colors: [
@@ -121,6 +104,42 @@ export default {
       items3: ["free"],
       slides: ["First", "Second", "Third", "Fourth", "Fifth"]
     };
+  },
+  filters: {
+    loadImgOrPlaceholder: function(path) {
+      return require("@/assets/images/" + path);
+    }
+  },
+  computed: {},
+  mounted() {
+    this.init();
+  },
+  methods: {
+    init() {
+      this.getProduct(this.id);
+    },
+    getProduct(id) {
+      return axios
+        .get("/api/products/detail/" + id)
+        .then(res => {
+          this.productDetail = res.data;
+          this.isLoading = false;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    postCartAdd(id) {
+      return axios
+        .post("/api/carts/", { productId: id, color: "노랑" })
+        .then(res => {
+          this.productDetail = res.data;
+          this.$router.push({ name: "Cart" });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 };
 </script>
