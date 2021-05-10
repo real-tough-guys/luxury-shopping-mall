@@ -19,7 +19,6 @@ public class ProductRequestDto {
     private Integer productPrice;
     @NotBlank(message = "카테고리가 없습니다.")
     private String productCategory;
-    @NotBlank(message = "이미지가 없습니다.")
     private List<String> productImageurl;
 
     public ProductEntity toProductEntity() {
