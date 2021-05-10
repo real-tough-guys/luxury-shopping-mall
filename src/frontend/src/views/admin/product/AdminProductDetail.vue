@@ -5,25 +5,29 @@
       <v-toolbar color="primary" dark flat prominent>
         <h1>Admin Detail</h1>
       </v-toolbar>
-      <v-container class="grey lighten-5">
-        <v-row>
-          <v-col cols="12" sm="6">
-            <v-card class="pa-2" outlined tile>
-              <v-carousel progress-color="orange">
-                <v-carousel-item v-for="(item, i) in productDetail.productImageurl" :key="i"
-                                 v-bind:src="item |loadImgOrPlaceholder" width="344" height="auto"
-                                 reverse-transition="fade-transition" transition="fade-transition"></v-carousel-item>
+
+      <v-container >
+        <v-row class="mb-6 " no-gutters  >
+          <v-col sm="5" md="6" align="right" justify="center">
+            <v-card class="pa-2" outlined tile width="344" >
+              <v-carousel hide-delimiters>
+                <v-carousel-item
+                    v-for="(item, i) in productDetail.productImageurl" :key="i"
+                    v-bind:src="item |loadImgOrPlaceholder"
+                ></v-carousel-item>
               </v-carousel>
             </v-card>
           </v-col>
-          <v-col cols="12" sm="6">
-            <v-card class="pa-2" outlined tile>
+          <v-col sm="5" offset-sm="2" md="3" offset-md="0">
+
+            <v-card class="pa-2" outlined tile width="344">
               <v-card-title
-              ><h4>{{ productDetail.productName }}</h4>
+              ><h3>Name : {{ productDetail.productName }}</h3>
               </v-card-title>
-              <v-card-text>{{
-                  `가격 : ${productDetail.productPrice} 원 `
-                }}
+              <v-card-title
+              ><h3>Content : {{ productDetail.productContent }}</h3>
+              </v-card-title>
+              <v-card-text>{{ `가격 : ${productDetail.productPrice} won ` | moneyFilter}}
               </v-card-text>
               <v-btn color="blue-grey" class="ma-2 white--text" @click="updatePush">
                 UPDate
@@ -40,15 +44,20 @@
             </v-card>
           </v-col>
         </v-row>
+
       </v-container>
+
+
     </v-card>
   </div>
 </template>
 <script>
 import axios from "axios";
 import Loding from "@/components/Loding.vue";
+import myMixin from "@/filter";
 
 export default {
+  mixins: [myMixin],
   props: ["id"],
   components: {
     Loding,
@@ -58,11 +67,6 @@ export default {
       isLoading: true,
       productDetail: [],
     };
-  },
-  filters: {
-    loadImgOrPlaceholder: function (path) {
-      return require("@/assets/images/" + path)
-    }
   },
   computed: {},
   mounted() {
