@@ -1,97 +1,110 @@
 <template>
-  <v-container>
-    <v-card>
-      <h1 align="center">
-        <v-icon size="xxx-large" color="black">mdi-gift</v-icon>
-        My Cart
-      </h1>
-      <v-card v-for="product in products" :key="product.id">
-        <v-layout>
-          <v-flex xs3>
-            <v-img :src="product.imgsrc" contain height="125px"></v-img>
-          </v-flex>
-          <v-layout column>
-            <v-card-title
-            ><h4>{{ product.title }}</h4></v-card-title
-            >
-            <v-card-text>{{ `가격 : ${product.price} 원 ` }}</v-card-text>
-          </v-layout>
-          <v-card-actions>
-            <v-btn
-                right
-                color="blue-grey"
-                class="ma-2 white--text"
-                fab
-                right
-                @click="cartDelete(product.id)"
-            >
-              <v-icon dark>
-                mdi-delete
-              </v-icon>
-            </v-btn>
-          </v-card-actions
-          >
-        </v-layout>
-      </v-card>
-      <v-card-subtitle>
-        <h3 align="center">
-          Count
+  <div>
+    <loding v-if="isLoading"/>
+    <v-container>
+      <v-card>
+        <h1 align="center">
+          <v-icon size="xxx-large" color="black">mdi-gift</v-icon>
+          My Cart
+        </h1>
+        <v-card v-for="(cart,index) in carts" :key="cart.id">
 
-          <p style="color: orange">{{ products.length }}</p>
-          Total Price($ {{ total }} 원)
-        </h3>
-      </v-card-subtitle
-      >
-    </v-card>
-    <v-spacer/>
-  </v-container>
+          <v-layout>
+            <v-flex xs3>
+              <v-img v-bind:src=" cart.product.productImageurl[0] | loadImgOrPlaceholder" contain
+                     height="125px"></v-img>
+            </v-flex>
+            <v-layout column>
+              <v-card-title
+              ><h4>{{ cart.product.productName }}</h4></v-card-title
+              >
+              <v-card-text>{{ `가격 : ${cart.product.productPrice} 원 ` | moneyFilter }}</v-card-text>
+            </v-layout>
+            <v-card-actions>
+              <v-btn
+                  right
+                  color="blue-grey"
+                  class="ma-2 white--text"
+                  fab
+                  right
+                  @click="cartDelete(index,cart.id)"
+              >
+                <v-icon dark>
+                  mdi-delete
+                </v-icon>
+              </v-btn>
+            </v-card-actions
+            >
+          </v-layout>
+        </v-card>
+        <v-card-subtitle>
+          <h3 align="center">
+          수량
+
+            <p style="color: orange">{{ carts.length }}</p>
+            Total Price($ {{ total| moneyFilter }} 원)
+          </h3>
+        </v-card-subtitle
+        >
+      </v-card>
+      <v-spacer/>
+    </v-container>
+  </div>
 </template>
 
 <script>
-
+import axios from "axios";
+import Loding from "@/components/Loding.vue";
+import myMixin from "@/filter";
 
 export default {
+  mixins: [myMixin],
   data() {
     return {
-      products: [
-        {
-          id: 0,
-          title: "미니멀 자켓",
-          price: 70900,
-          imgsrc:
-              "https://image.msscdn.net/images/goods_img/20191114/1225639/1225639_1_125.jpg"
-        },
-        {
-          id: 1,
-          title: "스테디 오버 MA-1 자켓 그레이 SJOT1303",
-          price: 58900,
-          imgsrc:
-              "https://image.msscdn.net/images/goods_img/20210311/1838974/1838974_2_125.jpg"
-        },
-        {
-          id: 2,
-          title: "카고 포켓 크롭 블루종 자켓",
-          price: 54000,
-          imgsrc:
-              "https://image.msscdn.net/images/goods_img/20210222/1807421/1807421_2_125.jpg"
-        }
-      ],
-
+      isLoading: true,
+      carts: [],
     };
   },
+  components: {
+    Loding,
+  },
+  mounted() {
+    this.getCart()
+  },
   methods: {
-    cartDelete(idx) {
+    cartDelete(idx,cartId) {
+      console.log(cartId)
+      this.carts.splice(idx, 1);
+      return axios
+          .delete("/api/carts/" + cartId)
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err);
+          });
+    },
+    getCart() {
+      return axios
+          .get("/api/carts/")
+          .then(res => {
+            console.log(res.data)
+            this.carts = res.data;
+            this.isLoading = false;
+          })
+          .catch(err => {
+            console.log(err);
+          });
 
-      this.products.splice(idx - 1, 1);
     }
   },
   computed: {
     total() {
-      var i = 0;
-      return this.products.reduce((total) => {
-        return Number(total) + Number(this.products[i].price);
-        i++;
-      }, 0);
+      let total = 0;
+      this.carts.forEach(cartItem => {
+        total += cartItem.product.productPrice;
+      });
+      return total;
     }
   }
 };
