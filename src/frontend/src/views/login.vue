@@ -45,9 +45,7 @@
             Reset
             <v-icon right>mdi-backup-restore</v-icon>
           </v-btn>
-          <v-btn
-              :to="{name : 'SignUp'}"
-          >
+          <v-btn :to="{ name: 'SignUp' }">
             Sign Up
             <v-icon right>mdi-arrow-right-thick</v-icon>
           </v-btn>
