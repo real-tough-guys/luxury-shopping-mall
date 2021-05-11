@@ -8,39 +8,39 @@
         <v-card-text>
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-text-field
-              v-model="email"
-              :rules="emailRules"
-              label="E-mail"
-              prepend-icon="mdi-account-circle"
-              required
+                v-model="email"
+                :rules="emailRules"
+                label="E-mail"
+                prepend-icon="mdi-account-circle"
+                required
             ></v-text-field>
             <v-text-field
-              v-model="password"
-              :counter="10"
-              :rules="passwordRules"
-              label="password"
-              prepend-icon="mdi-lock"
-              required
-              type="password"
+                v-model="password"
+                :counter="10"
+                :rules="passwordRules"
+                label="password"
+                prepend-icon="mdi-lock"
+                required
+                type="password"
             ></v-text-field>
           </v-form>
         </v-card-text>
-        <v-divider> </v-divider>
+        <v-divider></v-divider>
         <v-card-actions>
           <v-btn
-            :disabled="!valid"
-            color="blue-grey darken-3"
-            class="mr-2 white--text"
-            @click="validate"
+              :disabled="!valid"
+              color="blue-grey darken-3"
+              class="mr-2 white--text"
+              @click="signUp"
           >
             Go to Login
             <v-icon right>mdi-arrow-right-thick</v-icon>
           </v-btn>
 
           <v-btn
-            color="blue-grey darken-3"
-            class="mr-2 white--text"
-            @click="reset"
+              color="blue-grey darken-3"
+              class="mr-2 white--text"
+              @click="reset"
           >
             Reset
             <v-icon right>mdi-backup-restore</v-icon>
@@ -55,6 +55,8 @@
   </div>
 </template>
 <script>
+import {mapActions} from 'vuex'
+
 export default {
   data: () => ({
     valid: true,
@@ -71,11 +73,19 @@ export default {
   }),
 
   methods: {
+    ...mapActions({login: 'users/login'}),
     validate() {
       this.$refs.form.validate();
     },
     reset() {
       this.$refs.form.reset();
+    },
+    signUp() {
+      let userSignupDto = {
+        email: this.email,
+        password: this.password
+      }
+      this.login(userSignupDto);
     }
   }
 };
