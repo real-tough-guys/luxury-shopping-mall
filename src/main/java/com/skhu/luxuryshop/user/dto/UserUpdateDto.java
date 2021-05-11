@@ -7,13 +7,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 
+import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collections;
 
 @Getter
 @AllArgsConstructor
-public class UserSignupDto {
+public class UserUpdateDto {
+    @Id
+    private Long id;
+
     @NotBlank(message = "이메일을 입력하세요.")
     @Email(message = "이메일 형식을 확인하세요.")
     private String email;
@@ -38,11 +42,13 @@ public class UserSignupDto {
                 .build();
 
         UserEntity user = UserEntity.builder()
+                .id(id)
                 .email(email)
                 .password(password)
                 .nickname(nickname)
                 .authorities(Collections.singleton(authority))
                 .build();
+
         return user;
     }
 

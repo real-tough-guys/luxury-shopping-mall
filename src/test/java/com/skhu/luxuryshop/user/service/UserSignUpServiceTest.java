@@ -3,7 +3,7 @@ package com.skhu.luxuryshop.user.service;
 import com.skhu.luxuryshop.user.dto.UserResponseDto;
 import com.skhu.luxuryshop.user.dto.UserSignupDto;
 import com.skhu.luxuryshop.user.exception.DuplicatedEmailException;
-import com.skhu.luxuryshop.user.exception.SignupPasswordUnmatchedException;
+import com.skhu.luxuryshop.user.exception.UnmatchedPasswordCheckException;
 import com.skhu.luxuryshop.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -52,13 +52,13 @@ public class UserSignUpServiceTest {
                 .hasMessageContaining(("중복된 이메일입니다."));
     }
 
-    @DisplayName("save_비밀번호 불일치 유저인 경우 throw SignupPasswordUnmatchedException")
+    @DisplayName("save_비밀번호 불일치 유저인 경우 throw UnmatchedPasswordCheckException")
     @Test
     void test_save_unmathcedPwdUserSignup() {
         UserSignupDto unmatchedPwdUserSignup = new UserSignupDto("unDuplicatedEmail1@gmail.com", "password", "wrongpwd", "홍길동");
         assertThatThrownBy(() -> {
             userSignupService.save(unmatchedPwdUserSignup);
-        }).isInstanceOf(SignupPasswordUnmatchedException.class)
+        }).isInstanceOf(UnmatchedPasswordCheckException.class)
                 .hasMessageContaining(("비밀번호가 일치하지 않습니다."));
     }
 

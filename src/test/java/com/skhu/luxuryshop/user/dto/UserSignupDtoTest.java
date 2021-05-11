@@ -1,7 +1,7 @@
 package com.skhu.luxuryshop.user.dto;
 
 import com.skhu.luxuryshop.user.entity.UserEntity;
-import com.skhu.luxuryshop.user.exception.SignupPasswordUnmatchedException;
+import com.skhu.luxuryshop.user.exception.UnmatchedPasswordCheckException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,12 +30,12 @@ public class UserSignupDtoTest {
         assertThat(normalUserSignup.getNickname()).isEqualTo(user.getNickname());
     }
 
-    @DisplayName("toUserEntity_비밀번호 불일치 유저일 경우 throw SignupPasswordUnmatchedException")
+    @DisplayName("toUserEntity_비밀번호 불일치 유저일 경우 throw UnmatchedPasswordCheckException")
     @Test
     void test_toUserEntity_unmatchedPwdUserSignup() {
         assertThatThrownBy(() -> {
             unmatchedPwdUserSignup.toUserEntity();
-        }).isInstanceOf(SignupPasswordUnmatchedException.class)
+        }).isInstanceOf(UnmatchedPasswordCheckException.class)
                 .hasMessageContaining("비밀번호가 일치하지 않습니다.");
     }
 
@@ -45,12 +45,12 @@ public class UserSignupDtoTest {
         normalUserSignup.validateSamePassword(normalUserSignup.getPassword(), normalUserSignup.getPasswordCheck());
     }
 
-    @DisplayName("validateSamePassword_비밀번호 불일치 유저인 경우 throw SignupPasswordUnmatchedException")
+    @DisplayName("validateSamePassword_비밀번호 불일치 유저인 경우 throw UnmatchedPasswordCheckException")
     @Test
     void test_validateSamePassword_unmatchedPwdUserSignup() {
         assertThatThrownBy(() -> {
             normalUserSignup.validateSamePassword(unmatchedPwdUserSignup.getPassword(), unmatchedPwdUserSignup.getPasswordCheck());
-        }).isInstanceOf(SignupPasswordUnmatchedException.class)
+        }).isInstanceOf(UnmatchedPasswordCheckException.class)
                 .hasMessageContaining("비밀번호가 일치하지 않습니다.");
     }
 }

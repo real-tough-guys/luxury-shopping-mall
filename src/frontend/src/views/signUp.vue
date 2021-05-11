@@ -104,7 +104,7 @@
 </template>
 <script>
 import {isDuplicatedEmail} from "@/api/user";
-import {save} from "@/api/user";
+import {signUp} from "@/api/user";
 
 export default {
   data() {
@@ -149,7 +149,7 @@ export default {
         passwordCheck: this.passwordCheck,
         nickname: this.nickname
       };
-      save(userSignupDto)
+      signUp(userSignupDto)
           .then(res => {
             alert("회원가입 성공!");
             window.open("/login", "_self");

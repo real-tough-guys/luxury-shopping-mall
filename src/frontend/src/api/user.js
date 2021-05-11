@@ -18,7 +18,7 @@ function isDuplicatedEmail(email) {
     })
 }
 
-function save(userSignupDto) {
+function signUp(userSignupDto) {
     return new Promise((resolve, reject) => {
         axios.post(`${config.baseUrl}`, userSignupDto)
             .then(response => {
@@ -26,13 +26,76 @@ function save(userSignupDto) {
                 console.log(response)
             })
             .catch(error => {
-            reject(error)
-            console.error(error)
-        })
+                reject(error)
+                console.error(error)
+            })
+    })
+}
+
+
+function details() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${config.baseUrl}/details`)
+            .then(response => {
+                resolve(response)
+                console.log(response)
+            })
+            .catch(error => {
+                reject(error)
+                console.error(error)
+            })
+    })
+}
+
+
+function deleteUser() {
+    return new Promise((resolve, reject) => {
+        axios.post(`${config.baseUrl}/delete`)
+            .then(response => {
+                resolve(response)
+                console.log(response)
+            })
+            .catch(error => {
+                reject(error)
+                console.error(error)
+            })
+    })
+}
+
+function update(userUpdateDto) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${config.baseUrl}update`, userUpdateDto)
+            .then(response => {
+                resolve(response)
+                console.log(response)
+            })
+            .catch(error => {
+                reject(error)
+                console.error(error)
+            })
+    })
+}
+
+
+function findAll() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${config.baseUrl}login`)
+            .then(response => {
+                resolve(response)
+                console.log(response)
+            })
+            .catch(error => {
+                reject(error)
+                console.error(error)
+            })
     })
 }
 
 export {
     isDuplicatedEmail,
-    save,
+    signUp,
+    details,
+    deleteUser,
+    update,
+    findAll
 }

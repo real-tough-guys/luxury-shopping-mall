@@ -9,7 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+@RestControllerAdvice("com.skhu.luxuryshop.product.controller")
 @Slf4j
 public class ProductExceptionControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)

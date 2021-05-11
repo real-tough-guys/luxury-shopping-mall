@@ -6,6 +6,7 @@ import com.skhu.luxuryshop.user.dto.UserSignupDto;
 import com.skhu.luxuryshop.user.exception.DuplicatedEmailException;
 import com.skhu.luxuryshop.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,17 +14,26 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserSignupService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public UserResponseDto save(UserSignupDto userSignupDto) {
         validateDuplicatedEmail(userSignupDto.getEmail());
-        UserEntity user = userSignupDto.toUserEntity();
+
+        UserEntity signupUser = userSignupDto.toUserEntity();
+        UserEntity user = UserEntity.builder()
+                .email(signupUser.getEmail())
+                .password(passwordEncoder.encode(signupUser.getPassword()))
+                .nickname(signupUser.getNickname())
+                .authorities(signupUser.getAuthorities())
+                .build();
+
         return UserResponseDto.from(userRepository.save(user));
     }
 
     public void validateDuplicatedEmail(String email) {
         if (userRepository.existsByEmail(email)) {
-            throw new DuplicatedEmailException("중복된 이메일입니다.");
+            throw new DuplicatedEmailException();
         }
     }
 }
