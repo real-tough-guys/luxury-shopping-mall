@@ -74,6 +74,7 @@ export default {
 
   methods: {
     ...mapActions({login: 'users/login'}),
+    ...mapActions({detail: 'users/detail'}),
     validate() {
       this.$refs.form.validate();
     },
@@ -86,6 +87,7 @@ export default {
         password: this.password
       }
       this.login(userSignupDto);
+      this.detail();
     }
   }
 };

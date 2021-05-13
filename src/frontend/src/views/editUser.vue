@@ -88,7 +88,7 @@
           Cancel
           <v-icon right>mdi-cancel</v-icon>
         </v-btn>
-        <v-btn color="error" class="mr-1 white--text">
+        <v-btn color="error" class="mr-1 white--text" @click="deleteUser">
           Delete account
           <v-icon right>mdi-trash-can</v-icon>
         </v-btn>
@@ -104,10 +104,9 @@ export default {
     return {
       show1: false,
       show2: false,
-      email: "test456@gmail.com",
+      email: this.$store.state.users.details.email,
       password: "",
       passwordCheck: "",
-      nickname: "김홍길",
       valid: true,
 
       rules: {
@@ -120,17 +119,21 @@ export default {
     };
   },
   methods: {
-    ...mapActions({update: 'users/update'}),
+    ...mapActions({updateUser: 'users/update'}),
+    ...mapActions({delUser: 'users/delUser'}),
     update: function () {
       const userUpdateDto = {
+        id: this.$store.state.users.details.id,
         email: this.email,
         password: this.password,
         passwordCheck: this.passwordCheck,
         nickname: this.nickname
       };
-      this.update(userUpdateDto);
-
-    }
+      this.updateUser(userUpdateDto);
+    },
+    deleteUser: function () {
+      this.delUser();
+    },
   }
 };
 </script>
