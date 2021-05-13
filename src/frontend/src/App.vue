@@ -42,7 +42,7 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>John Leider</v-list-item-title>
+            <v-list-item-title>{{ this.$store.state.users.nickname }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -92,6 +92,7 @@ import HelloWorld from "./components/HelloWorld"
 
 export default {
   name: "App",
+
   components: {
     HelloWorld
   },
@@ -101,6 +102,7 @@ export default {
     searchModel: null,
     drawer: false,
     group: null,
+    nickname:"로그인하세요.",
     items: [
       {title: "Home", icon: "mdi-view-dashboard"},
       {title: "Mypage", icon: "mdi-forum"}

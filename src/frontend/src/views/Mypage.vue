@@ -7,7 +7,7 @@
           <v-img src="https://randomuser.me/api/portraits/men/78.jpg" />
         </v-avatar>
         <div class="privacy">
-          <span class="user-name">{{ userName }}</span>
+          <span class="user-name">{{ this.$store.state.users.nickname }}</span>
           <br />
 
           <router-link to="/editUser" style="color:white;">

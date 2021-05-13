@@ -5,7 +5,8 @@ const config = {
 };
 const state = {
     jwt: null,
-    details: null
+    details:null,
+    nickname: "로그인하세요."
 };
 const getters = {
     getJwt: (state) => {
@@ -19,8 +20,13 @@ const mutations = {
     setJwt: (state, jwt) => {
         state.jwt = jwt;
     },
-    setUserDetails(state, data) {
+    setUserDetails: (state, data) => {
         state.details = data;
+        state.nickname = data.nickname;
+    },
+    logout: (state) => {
+        state.jwt = null;
+        state.details = null;
     }
 };
 
@@ -30,7 +36,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             axios.post(`${config.baseUrl}login`, userSignupDto)
                 .then(response => {
-                    commit("setJwt", response.data);
+                    commit("setJwt", response.data.token);
                     alert("로그인 되었습니다.");
                     console.log(response.data);
                 })
@@ -48,8 +54,9 @@ const actions = {
                     alert("회원가입 성공!");
                     window.open("/login", "_self");
                 })
-                .catch(res => {
-                    alert(res.response.data);
+                .catch(error => {
+                    alert(error.response.data);
+                    console.log(error);
                 });
         })
     },
@@ -76,19 +83,23 @@ const actions = {
                 })
                 .catch(error => {
                     reject(error)
+                    alert(error.response.data)
                     console.error(error)
                 })
         })
     },
     detail({commit}) {
         return new Promise((resolve, reject) => {
-            axios.get(`${config.baseUrl}/details`)
+            axios.get(`${config.baseUrl}/details`,
+                {headers: {Authorization: `Bearer ${state.jwt}`}})
                 .then(response => {
+                    commit("setUserDetails", response.data);
                     resolve(response)
                     console.log(response)
                 })
                 .catch(error => {
                     reject(error)
+                    alert(error.response.data)
                     console.error(error)
                 })
         })
@@ -108,33 +119,42 @@ const actions = {
     },
     delUser({commit}) {
         return new Promise((resolve, reject) => {
-            axios.post(`${config.baseUrl}/delete`)
+            axios.post(`${config.baseUrl}/delete`,
+                {headers: {'Authorization': `Bearer ${state.jwt}`}})
                 .then(response => {
                     resolve(response)
+                    alert(response.data)
+                    commit("logout")
                     console.log(response)
                 })
                 .catch(error => {
                     reject(error)
+                    alert(error.response.data)
                     console.error(error)
                 })
         })
     },
     update({commit}, userUpdateDto) {
         return new Promise((resolve, reject) => {
-            axios.post(`${config.baseUrl}update`, userUpdateDto)
+            axios.post(`${config.baseUrl}update`, userUpdateDto,
+                {headers: {'Authorization': `Bearer ${state.jwt}`}})
                 .then(response => {
                     resolve(response)
+                    alert(response.data)
+                    commit("logout");
                     console.log(response)
                 })
                 .catch(error => {
                     reject(error)
+                    alert(error.response.data)
                     console.error(error)
                 })
         })
     },
     findAll({commit}) {
         return new Promise((resolve, reject) => {
-            axios.get(`${config.baseUrl}list`)
+            axios.get(`${config.baseUrl}list`,
+                {headers: {'Authorization': `Bearer ${state.jwt}`}})
                 .then(response => {
                     resolve(response)
                     console.log(response)

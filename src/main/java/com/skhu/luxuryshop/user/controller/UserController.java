@@ -58,14 +58,14 @@ public class UserController {
     }
 
     @PostMapping("/{id}/delete")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         userManagementService.deleteById(id);
         return new ResponseEntity("계정이 삭제되었습니다.", HttpStatus.OK);
     }
 
     @PostMapping("/delete")
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<String> delete() {
         userManagementService.deleteByLoginUser();
         SecurityContextHolder.clearContext();
