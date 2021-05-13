@@ -1,6 +1,7 @@
 package com.skhu.luxuryshop.cart.entity;
 
 import com.skhu.luxuryshop.product.entity.ProductEntity;
+import com.skhu.luxuryshop.user.entity.UserEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,11 +18,14 @@ public class Cart {
     @ManyToOne(targetEntity = ProductEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private ProductEntity product;
+    @ManyToOne(targetEntity = UserEntity.class, fetch = FetchType.EAGER)
+    private UserEntity user;
     private String color;
 
     @Builder
-    public Cart(ProductEntity product, String color) {
+    public Cart(ProductEntity product, UserEntity user, String color) {
         this.product = product;
+        this.user = user;
         this.color = color;
     }
 }

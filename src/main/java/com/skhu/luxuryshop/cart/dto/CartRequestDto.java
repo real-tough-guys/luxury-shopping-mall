@@ -11,6 +11,8 @@ import javax.validation.constraints.Positive;
 public class CartRequestDto {
     @Positive(message = "없음")
     private Long productId;
+    @Positive(message = "없음")
+    private Long userId;
     @NotBlank(message = "색상.")
     private String color;
 }

@@ -9,6 +9,10 @@ import com.skhu.luxuryshop.product.dto.ProductResponseDto;
 import com.skhu.luxuryshop.product.entity.ProductEntity;
 import com.skhu.luxuryshop.product.exception.ProductFindByIdException;
 import com.skhu.luxuryshop.product.repository.ProductRepository;
+import com.skhu.luxuryshop.user.entity.UserEntity;
+import com.skhu.luxuryshop.user.exception.NoUserFoundException;
+import com.skhu.luxuryshop.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +22,11 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class CartService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
-
-    public CartService(CartRepository cartRepository, ProductRepository productRepository) {
-        this.cartRepository = cartRepository;
-        this.productRepository = productRepository;
-    }
+    private final UserRepository userRepository;
 
     public List<CartResponseDto> findAll() {
         List<Cart> carts = cartRepository.findAll();
@@ -41,9 +42,13 @@ public class CartService {
     public CartResponseDto addCart(CartRequestDto cartRequestDto) {
         ProductEntity productOpt = productRepository.findById(cartRequestDto.getProductId())
                 .orElseThrow(() -> new ProductFindByIdException("상품 id : " + cartRequestDto.getProductId() + "이 존재 하지 않습니다."));
-        Cart.builder().product(productOpt).color(cartRequestDto.getColor()).build();
+        UserEntity user = userRepository.findById(cartRequestDto.getUserId())
+                .orElseThrow(NoUserFoundException::new);
+
+        //Cart.builder().product(productOpt).user(user).color(cartRequestDto.getColor()).build();
         return CartResponseDto.from(cartRepository.save(Cart.builder()
                 .product(productOpt)
+                .user(user)
                 .color(cartRequestDto.getColor())
                 .build()));
     }
