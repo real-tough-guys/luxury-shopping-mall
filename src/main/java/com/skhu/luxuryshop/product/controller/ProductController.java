@@ -30,6 +30,10 @@ public class ProductController {
     public ResponseEntity<List<ProductResponseDto>> getProductsMain(@RequestParam(value = "limit", defaultValue = "1") int limit) {
         return ResponseEntity.ok(productService.findAllMain(limit));
     }
+    @GetMapping(value = "/search")
+    public ResponseEntity<List<ProductResponseDto>> searchKeyword(@RequestParam String name ,String category) {
+        return ResponseEntity.ok(productService.findBySearchKeyword(name,category));
+    }
 
     @GetMapping("/detail/{id}")
     public ResponseEntity<ProductResponseDto> getProductById(@PathVariable Long id) {
