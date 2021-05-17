@@ -15,11 +15,15 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne(targetEntity = ProductEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private ProductEntity product;
-    @ManyToOne(targetEntity = UserEntity.class, fetch = FetchType.EAGER)
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private UserEntity user;
+
     private String color;
 
     @Builder

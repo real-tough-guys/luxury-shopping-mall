@@ -38,6 +38,13 @@ public class CartService {
         return CartResponseDto.from(cart);
     }
 
+    public List<CartResponseDto> findByUserId(Long id){
+        List<Cart> carts = cartRepository.findByUserId(id);
+        return carts.stream()
+                .map(CartResponseDto::from)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public CartResponseDto addCart(CartRequestDto cartRequestDto) {
         ProductEntity productOpt = productRepository.findById(cartRequestDto.getProductId())
@@ -45,7 +52,6 @@ public class CartService {
         UserEntity user = userRepository.findById(cartRequestDto.getUserId())
                 .orElseThrow(NoUserFoundException::new);
 
-        //Cart.builder().product(productOpt).user(user).color(cartRequestDto.getColor()).build();
         return CartResponseDto.from(cartRepository.save(Cart.builder()
                 .product(productOpt)
                 .user(user)
@@ -60,6 +66,4 @@ public class CartService {
         }
         cartRepository.deleteById(id);
     }
-
-
 }
