@@ -1,6 +1,6 @@
 <template>
   <div v-else>
-    <v-card class="mx-auto" height="auto" align="center"> </v-card>
+    <v-card class="mx-auto" height="auto" align="center"></v-card>
 
     <v-card class="mx-auto overflow-hidden" height="auto">
       <v-toolbar color="grey accent-4" dark>
@@ -16,15 +16,15 @@
         </v-btn>
       </v-toolbar>
       <v-tabs centered color="grey">
-        <v-tab @click="nameSearch(items[0])">Outer</v-tab>
-        <v-tab @click="nameSearch(items[1])">Top</v-tab>
-        <v-tab @click="nameSearch(items[2])">Bottom</v-tab>
+        <v-tab @click="categorySearch(items[0])">Outer</v-tab>
+        <v-tab @click="categorySearch(items[1])">Top</v-tab>
+        <v-tab @click="categorySearch(items[2])">Bottom</v-tab>
       </v-tabs>
       <br />
       <h2 style="text-align: center">
         "
         <span style="color: cornflowerblue ;font-weight: bold">{{
-          title
+          searchKeyword
         }}</span>
         " 에 대한 검색 결과
         <span style="color: cornflowerblue ;font-weight: bold"
@@ -96,8 +96,9 @@
 </template>
 <script>
 import { getSearchTitle } from "@/api/search";
-import Loding from "@/components/Loding.vue";
 import myMixin from "@/filter";
+import { mapState } from "vuex";
+
 export default {
   mixins: [myMixin],
   data() {
@@ -106,22 +107,29 @@ export default {
       listData: [],
       productName: "",
       title: "",
-      items: ["outer", "top", "bottom"]
+      items: ["outer", "top", "bottom"],
+      searchKeyword: ""
     };
   },
-  components: {
-    Loding
-  },
+  computed: {},
 
   methods: {
-    nameSearch: function(category) {
-      console.log(this.productName+"is?");
-      getSearchTitle(this.productName, category)
+    nameSearch: function() {
+      getSearchTitle(this.productName, "")
         .then(res => {
           this.listData = res.data;
-          this.title = this.productName;
-          this.isLoading = false;
+          this.searchKeyword = this.productName;
           this.productName = "";
+        })
+        .catch(res => {
+          alert(res.response.data);
+        });
+    },
+    categorySearch: function(category) {
+      getSearchTitle("", category)
+        .then(res => {
+          this.listData = res.data;
+          this.searchKeyword = category;
         })
         .catch(res => {
           alert(res.response.data);
