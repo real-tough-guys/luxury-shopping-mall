@@ -107,21 +107,27 @@ export default {
       email: this.$store.state.users.details.email,
       password: "",
       passwordCheck: "",
+      nickname: "",
       valid: true,
 
       rules: {
         required: input => !!input || "Required.",
         minPw: password => password.length >= 8 || "Min 8 characters",
-        minName: nickName => nickName.length >= 6 || "Min 6 characters",
+        minName: nickname => nickname.length >= 2 || "Min 2 characters",
         pwCheck: passwordCheck =>
             this.password === passwordCheck || "Password mismatch"
       }
     };
   },
+  created() {
+    this.getUserDetails();
+  },
   methods: {
     ...mapActions({updateUser: 'users/update'}),
-    ...mapActions({delUser: 'users/delUser'}),
-    update: function () {
+    ...mapActions({delUser: 'users/deleteUser'}),
+    ...mapActions({logout: 'users/logout'}),
+    ...mapActions({getUser: 'users/detail'}),
+    update: async function () {
       const userUpdateDto = {
         id: this.$store.state.users.details.id,
         email: this.email,
@@ -129,11 +135,21 @@ export default {
         passwordCheck: this.passwordCheck,
         nickname: this.nickname
       };
-      this.updateUser(userUpdateDto);
+      if (await this.updateUser(userUpdateDto)) {
+        await this.$router.push({name: "Login"})
+      }
     },
-    deleteUser: function () {
-      this.delUser();
+    deleteUser: async function () {
+      if (await this.delUser()) {
+        await this.$router.push({name: "Main"});
+      }
     },
+    logoutUser: function () {
+      this.logout();
+    },
+    getUserDetails: function () {
+      this.getUser();
+    }
   }
 };
 </script>

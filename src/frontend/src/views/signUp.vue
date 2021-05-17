@@ -138,14 +138,17 @@ export default {
     isDuplicatedEmail: function () {
       this.duplicateEmail(this.email);
     },
-    save: function () {
+    async save() {
       const userSignupDto = {
         email: this.email,
         password: this.password,
         passwordCheck: this.passwordCheck,
         nickname: this.nickname
       };
-      this.signup(userSignupDto);
+      if(await this.signup(userSignupDto)){
+        await this.$router.push({name:"Login"})
+      }
+
     }
   }
 };

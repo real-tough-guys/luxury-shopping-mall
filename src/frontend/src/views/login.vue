@@ -31,7 +31,7 @@
               :disabled="!valid"
               color="blue-grey darken-3"
               class="mr-2 white--text"
-              @click="signUp"
+              @click="signIn"
           >
             Go to Login
             <v-icon right>mdi-arrow-right-thick</v-icon>
@@ -56,8 +56,30 @@
 </template>
 <script>
 import {mapActions} from 'vuex'
+import axios from 'axios'
 
 export default {
+  methods: {
+    ...mapActions({login: 'users/login'}),
+    ...mapActions({detail: 'users/detail'}),
+    validate() {
+      this.$refs.form.validate();
+    },
+    reset() {
+      this.$refs.form.reset();
+    },
+    async signIn() {
+      let userSignupDto = {
+        email: this.email,
+        password: this.password
+      }
+      if(await this.login(userSignupDto)){
+        await this.detail()
+        await this.$router.push({name: "Main"});
+      }
+    }
+  },
+
   data: () => ({
     valid: true,
     password: "",
@@ -70,25 +92,6 @@ export default {
       v => !!v || "E-mail is required",
       v => /.+@.+\..+/.test(v) || "E-mail must be valid"
     ]
-  }),
-
-  methods: {
-    ...mapActions({login: 'users/login'}),
-    ...mapActions({detail: 'users/detail'}),
-    validate() {
-      this.$refs.form.validate();
-    },
-    reset() {
-      this.$refs.form.reset();
-    },
-    signUp() {
-      let userSignupDto = {
-        email: this.email,
-        password: this.password
-      }
-      this.login(userSignupDto);
-      this.detail();
-    }
-  }
+  })
 };
 </script>

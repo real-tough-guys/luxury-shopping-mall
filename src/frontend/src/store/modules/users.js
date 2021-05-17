@@ -5,7 +5,7 @@ const config = {
 };
 const state = {
     jwt: null,
-    details:null,
+    details: null,
     nickname: "로그인하세요."
 };
 const getters = {
@@ -27,14 +27,15 @@ const mutations = {
     logout: (state) => {
         state.jwt = null;
         state.details = null;
+        state.nickname = "로그인하세요.";
     }
 };
 
 
 const actions = {
-    login({commit}, userSignupDto) {
-        return new Promise((resolve, reject) => {
-            axios.post(`${config.baseUrl}login`, userSignupDto)
+        async login({commit}, userSignupDto) {
+            let isSuccess = true
+            await axios.post(`${config.baseUrl}login`, userSignupDto)
                 .then(response => {
                     commit("setJwt", response.data.token);
                     alert("로그인 되었습니다.");
@@ -43,129 +44,153 @@ const actions = {
                 .catch(error => {
                     alert(error.response.data);
                     console.error(error)
+                    isSuccess = false;
                 })
-        })
-    },
+            return isSuccess
+        },
 
-    signUp({commit}, userSignupDto) {
-        return new Promise((resolve, reject) => {
-            axios.post(`${config.baseUrl}`, userSignupDto)
+        logout({commit}) {
+            return new Promise((resolve, reject) => {
+                axios.get(`${config.baseUrl}logout`,
+                    {headers: {Authorization: `Bearer ${state.jwt}`}})
+                    .then(response => {
+                        commit("logout");
+                        alert("로그아웃 되었습니다.");
+                        console.log(response.data);
+                    })
+                    .catch(error => {
+                        alert(error.response.data);
+                        console.error(error)
+                    })
+            })
+        },
+
+        async signUp({commit}, userSignupDto) {
+            let isSuccess = true;
+            await axios.post(`${config.baseUrl}`, userSignupDto)
                 .then(response => {
                     alert("회원가입 성공!");
-                    window.open("/login", "_self");
+                    console.log(response.data);
                 })
                 .catch(error => {
                     alert(error.response.data);
                     console.log(error);
-                });
-        })
-    },
-    isDuplicatedEmail({commit}, email) {
-        return new Promise((resolve, reject) => {
-            axios.get(`${config.baseUrl}emails/${email}/exists`)
-                .then(response => {
-                    alert(response.data);
-                    resolve(response);
-                    console.log(response);
+                    isSuccess = false;
                 })
-                .catch(error => {
-                    alert(error.response.data);
-                    console.log(error);
-                })
-        })
-    },
-    details({commit}, id) {
-        return new Promise((resolve, reject) => {
-            axios.get(`${config.baseUrl}${id}/details`)
+            return isSuccess;
+        },
+        isDuplicatedEmail({commit}, email) {
+            return new Promise((resolve, reject) => {
+                axios.get(`${config.baseUrl}emails/${email}/exists`)
+                    .then(response => {
+                        alert(response.data);
+                        resolve(response);
+                        console.log(response);
+                    })
+                    .catch(error => {
+                        alert(error.response.data);
+                        console.log(error);
+                    })
+            })
+        },
+        async details({commit}, id) {
+            let isSuccess = true;
+            await axios.get(`${config.baseUrl}${id}/details`)
                 .then(response => {
-                    resolve(response)
+                    commit("setUserDetails", response.data);
                     console.log(response)
                 })
                 .catch(error => {
-                    reject(error)
                     alert(error.response.data)
                     console.error(error)
+                    isSuccess = false;
                 })
-        })
-    },
-    detail({commit}) {
-        return new Promise((resolve, reject) => {
-            axios.get(`${config.baseUrl}/details`,
+            return isSuccess
+        },
+        async detail({commit}) {
+            let isSuccess = true;
+            await axios.get(`${config.baseUrl}/details`,
                 {headers: {Authorization: `Bearer ${state.jwt}`}})
                 .then(response => {
                     commit("setUserDetails", response.data);
-                    resolve(response)
                     console.log(response)
                 })
                 .catch(error => {
-                    reject(error)
                     alert(error.response.data)
                     console.error(error)
+                    isSuccess = false;
                 })
-        })
-    },
-    deleteUser({commit}, id) {
-        return new Promise((resolve, reject) => {
-            axios.post(`${config.baseUrl}${id}/delete`)
-                .then(response => {
-                    resolve(response)
-                    console.log(response)
-                })
-                .catch(error => {
-                    reject(error)
-                    console.error(error)
-                })
-        })
-    },
-    delUser({commit}) {
-        return new Promise((resolve, reject) => {
-            axios.post(`${config.baseUrl}/delete`,
+            return isSuccess
+        }
+        ,
+        async deleteUser({commit}) {
+            let isSuccess = true;
+            await axios.delete(`${config.baseUrl}${state.details.id}/delete`,
                 {headers: {'Authorization': `Bearer ${state.jwt}`}})
                 .then(response => {
-                    resolve(response)
-                    alert(response.data)
                     commit("logout")
+                    alert(response.data)
                     console.log(response)
                 })
                 .catch(error => {
-                    reject(error)
                     alert(error.response.data)
                     console.error(error)
+                    isSuccess = false;
                 })
-        })
-    },
-    update({commit}, userUpdateDto) {
-        return new Promise((resolve, reject) => {
-            axios.post(`${config.baseUrl}update`, userUpdateDto,
+            return isSuccess;
+        }
+        ,
+        delUser({commit}) {
+            return new Promise((resolve, reject) => {
+                axios.post(`${config.baseUrl}delete`,
+                    {headers: {'Authorization': `Bearer ${state.jwt}`}})
+                    .then(response => {
+                        resolve(response)
+                        alert(response.data)
+                        commit("logout")
+                        console.log(response)
+                    })
+                    .catch(error => {
+                        reject(error)
+                        alert(error.response.data)
+                        console.error(error)
+                    })
+            })
+        }
+        ,
+        async update({commit}, userUpdateDto) {
+            let isSuccess = true;
+            await axios.post(`${config.baseUrl}update`, userUpdateDto,
                 {headers: {'Authorization': `Bearer ${state.jwt}`}})
                 .then(response => {
-                    resolve(response)
                     alert(response.data)
                     commit("logout");
                     console.log(response)
                 })
                 .catch(error => {
-                    reject(error)
                     alert(error.response.data)
                     console.error(error)
+                    isSuccess = false;
                 })
-        })
-    },
-    findAll({commit}) {
-        return new Promise((resolve, reject) => {
-            axios.get(`${config.baseUrl}list`,
-                {headers: {'Authorization': `Bearer ${state.jwt}`}})
-                .then(response => {
-                    resolve(response)
-                    console.log(response)
-                })
-                .catch(error => {
-                    reject(error)
-                    console.error(error)
-                })
-        })
+            return isSuccess;
+        }
+        ,
+        findAll({commit}) {
+            return new Promise((resolve, reject) => {
+                axios.get(`${config.baseUrl}list`,
+                    {headers: {'Authorization': `Bearer ${state.jwt}`}})
+                    .then(response => {
+                        resolve(response)
+                        console.log(response)
+                    })
+                    .catch(error => {
+                        reject(error)
+                        console.error(error)
+                    })
+            })
+        }
     }
-};
+;
 
 export default {
     namespaced: true,
