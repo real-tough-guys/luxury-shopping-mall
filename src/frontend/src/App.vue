@@ -5,16 +5,7 @@
         <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
         <v-toolbar-title>Luxury Shop</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-col cols="6" md="3">
-          <v-form ref="form">
-            <v-text-field
-                v-model="searchModel"
-                label="Luxury shop search"
-            ></v-text-field>
-          </v-form>
-        </v-col>
-
-        <v-btn icon>
+        <v-btn icon :to="{ name: 'Search' }">
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
         <v-btn icon :to="{ name: 'Cart' }">
@@ -82,30 +73,31 @@
       <v-container fluid>
         <router-view></router-view>
       </v-container>
-      <!--      <HelloWorld/>-->
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld"
+import { getSearchTitle } from "@/api/search";
+import HelloWorld from "./components/HelloWorld";
 
 export default {
   name: "App",
   components: {
     HelloWorld
   },
-  mounted() {
-  },
+  mounted() {},
   data: () => ({
     searchModel: null,
     drawer: false,
     group: null,
     items: [
-      {title: "Home", icon: "mdi-view-dashboard"},
-      {title: "Mypage", icon: "mdi-forum"}
+      { title: "Home", icon: "mdi-view-dashboard" },
+      { title: "Mypage", icon: "mdi-forum" }
     ]
-  })
+  }),
+  methods: {
+  }
 };
 </script>
 <style>
