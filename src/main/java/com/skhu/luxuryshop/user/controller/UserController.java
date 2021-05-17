@@ -57,14 +57,15 @@ public class UserController {
         return new ResponseEntity(userDetails, HttpStatus.OK);
     }
 
-    @PostMapping("/{id}/delete")
+    @DeleteMapping("/{id}/delete")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         userManagementService.deleteById(id);
+        SecurityContextHolder.clearContext();
         return new ResponseEntity("계정이 삭제되었습니다.", HttpStatus.OK);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<String> delete() {
         userManagementService.deleteByLoginUser();
@@ -101,5 +102,11 @@ public class UserController {
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
         return new ResponseEntity<>(new UserTokenDto(jwt), httpHeaders, HttpStatus.OK);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout() {
+        SecurityContextHolder.clearContext();
+        return new ResponseEntity("로그아웃 되었습니다.", HttpStatus.OK);
     }
 }

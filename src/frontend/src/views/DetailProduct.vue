@@ -131,7 +131,9 @@ export default {
     },
     postCartAdd(id) {
       return axios
-        .post("/api/carts/", { productId: id, color: "노랑" })
+        .post("/api/carts/", { productId: id, userId: this.$store.state.users.details.id, color: "노랑" },
+            {headers: {Authorization: `Bearer ${this.$store.state.users.jwt}`}}
+        )
         .then(res => {
           this.productDetail = res.data;
           this.$router.push({ name: "Cart" });
