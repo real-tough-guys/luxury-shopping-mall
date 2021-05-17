@@ -8,7 +8,6 @@
           My Cart
         </h1>
         <v-card v-for="(cart,index) in carts" :key="cart.id">
-
           <v-layout>
             <v-flex xs3>
               <v-img v-bind:src=" cart.product.productImageurl[0] | loadImgOrPlaceholder" contain
@@ -40,7 +39,6 @@
         <v-card-subtitle>
           <h3 align="center">
             수량
-
             <p style="color: orange">{{ carts.length }}</p>
             Total Price($ {{ total| moneyFilter }} 원)
           </h3>
@@ -83,9 +81,8 @@ export default {
         await this.getMyCart(this.$store.state.users.details.id);
         this.carts = this.$store.getters["carts/getMyCart"];
         this.isLoading = false;
-      }
-      catch{
-        await this.$router.push({name:"Main"});
+      } catch {
+        await this.$router.push({name: "Main"});
       }
     },
     async getUserDetails() {

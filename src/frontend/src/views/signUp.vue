@@ -145,8 +145,8 @@ export default {
         passwordCheck: this.passwordCheck,
         nickname: this.nickname
       };
-      if(await this.signup(userSignupDto)){
-        await this.$router.push({name:"Login"})
+      if (await this.signup(userSignupDto)) {
+        await this.$router.push({name: "Login"})
       }
 
     }

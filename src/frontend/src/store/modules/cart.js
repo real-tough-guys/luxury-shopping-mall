@@ -7,7 +7,7 @@ const state = {
     myCart: []
 };
 const getters = {
-    getMyCart: (state)=>{
+    getMyCart: (state) => {
         return state.myCart;
     }
 };

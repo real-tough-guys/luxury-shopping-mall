@@ -37,7 +37,7 @@ public class UserEntity {
     private String nickname;
 
     @OneToMany(cascade = CascadeType.REMOVE)
-    @JoinColumn(name="user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private List<Cart> carts = new ArrayList<>();
 
     @ManyToMany

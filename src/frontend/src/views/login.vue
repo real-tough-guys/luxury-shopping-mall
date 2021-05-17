@@ -73,7 +73,7 @@ export default {
         email: this.email,
         password: this.password
       }
-      if(await this.login(userSignupDto)){
+      if (await this.login(userSignupDto)) {
         await this.detail()
         await this.$router.push({name: "Main"});
       }

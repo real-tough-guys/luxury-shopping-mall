@@ -32,13 +32,14 @@ public class CartService {
         List<Cart> carts = cartRepository.findAll();
         return carts.stream().map(CartResponseDto::from).collect(Collectors.toList());
     }
+
     public CartResponseDto findById(Long id) {
         Cart cart = cartRepository.findById(id)
                 .orElseThrow(() -> new NotExistCartException("장바구니  : " + id + "이 존재 하지 않습니다."));
         return CartResponseDto.from(cart);
     }
 
-    public List<CartResponseDto> findByUserId(Long id){
+    public List<CartResponseDto> findByUserId(Long id) {
         List<Cart> carts = cartRepository.findByUserId(id);
         return carts.stream()
                 .map(CartResponseDto::from)

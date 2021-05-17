@@ -9,12 +9,9 @@
         <div class="privacy">
           <span class="user-name">{{ this.$store.state.users.nickname }}</span>
           <br/>
-
           <router-link to="/editUser" style="color:white;">
             <button>
-
               회원정보 변경
-
             </button>
           </router-link>
 
@@ -137,7 +134,7 @@ export default {
           .catch(() => this.$router.push({name: "Main"}))
     },
     async getUserDetails() {
-      if(!await this.getMyDetail()){
+      if (!await this.getMyDetail()) {
         await this.$router.push({name: "Main"})
       }
     },
