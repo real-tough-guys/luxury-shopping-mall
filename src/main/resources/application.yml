@@ -47,7 +47,7 @@ spring:
   datasource:
     hikari:
       driver-class-name: org.mariadb.jdbc.Driver
-      jdbc-url: jdbc:mariadb://mm-auto-care-db2.cthrfmz6gizk.ap-northeast-2.rds.amazonaws.com/mmautocare
+      jdbc-url: jdbc:mariadb://luxury-shop-db.c5zpkudkm642.ap-northeast-2.rds.amazonaws.com/luxury-shop
     username: admin
     password: luxuryshop12
   jpa:
