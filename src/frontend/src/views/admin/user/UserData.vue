@@ -104,24 +104,7 @@ export default {
         {text: "이름", value: "nickname", sortable: true},
         {text: "이메일", value: "email", sortable: true}
       ],
-      UserList: [
-        {
-          id: 1,
-          username: "형준이",
-          email: "jhj960918@google.ac.kr"
-        },
-        {
-          id: 2,
-          username: "준성이",
-          email: "hjs96@google.ac.kr"
-        },
-
-        {
-          id: 3,
-          username: "신혁이",
-          email: "ksh97@google.ac.kr"
-        }
-      ]
+      UserList: []
     };
   },
   created() {
@@ -129,12 +112,12 @@ export default {
   },
   methods: {
     ...mapActions({getUserList: "users/findAll"}),
-    ...mapActions({delUser : "users/deleteUserWithId"}),
+    ...mapActions({delUser: "users/deleteUserWithId"}),
     deleteItem() {
       console.log(this.selected);
       for (var i = 0; i < this.selected.length; i++) {
         var selectId = this.selected[i].id;
-        if(selectId === this.$store.state.users.details.id){
+        if (selectId === this.$store.state.users.details.id) {
           continue;
         }
         this.delUser(selectId);
@@ -143,9 +126,10 @@ export default {
       }
     },
     async getUsers() {
-      if(!await this.getUserList()){
-        await this.$router.push({name:"Main"});
-      };
+      if (!await this.getUserList()) {
+        await this.$router.push({name: "Main"});
+      }
+      ;
       this.UserList = this.$store.state.users.userList;
     }
   }

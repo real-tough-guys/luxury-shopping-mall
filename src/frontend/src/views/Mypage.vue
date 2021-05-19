@@ -128,10 +128,10 @@ export default {
     ...mapActions({logout: 'users/logout'}),
     ...mapActions({getMyDetail: 'users/detail'}),
     ...mapActions({getMyCart: 'carts/getMyCarts'}),
-    logoutUser() {
-      this.logout()
-          .then(() => this.$router.push({name: "Main"}))
-          .catch(() => this.$router.push({name: "Main"}))
+    async logoutUser() {
+      if(await this.logout()){
+        await this.$router.push({name: "Main"})
+      }
     },
     async getUserDetails() {
       if (!await this.getMyDetail()) {

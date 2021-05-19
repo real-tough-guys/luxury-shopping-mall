@@ -27,8 +27,8 @@ INSERT INTO product (product_name, product_content,product_price,product_categor
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (6,'test6-1.jpg');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (6,'test6-2.jpg');
 
-INSERT INTO USER_ENTITY (EMAIL, PASSWORD, NICKNAME) VALUES ('test123@gmail.com', '$2a$10$mdJIjMG9plZ0lOilqe/hbOtHxFcRG.yo3dLz9RlJqHkGQT1lqyGVq', '괸리자');
-INSERT INTO USER_ENTITY (EMAIL, PASSWORD, NICKNAME) VALUES ('test456@gmail.com', '$2a$10$mdJIjMG9plZ0lOilqe/hbOtHxFcRG.yo3dLz9RlJqHkGQT1lqyGVq', '일반유저');
+INSERT INTO USER_ENTITY (EMAIL, PASSWORD, NICKNAME) VALUES ('test123@gmail.com', '$2a$10$mdJIjMG9plZ0lOilqe/hbOtHxFcRG.yo3dLz9RlJqHkGQT1lqyGVq', '홍길동');
+INSERT INTO USER_ENTITY (EMAIL, PASSWORD, NICKNAME) VALUES ('test456@gmail.com', '$2a$10$mdJIjMG9plZ0lOilqe/hbOtHxFcRG.yo3dLz9RlJqHkGQT1lqyGVq', '강감찬');
 
 INSERT INTO AUTHORITY (AUTHORITY_NAME) values ('ROLE_USER');
 INSERT INTO AUTHORITY (AUTHORITY_NAME) values ('ROLE_ADMIN');

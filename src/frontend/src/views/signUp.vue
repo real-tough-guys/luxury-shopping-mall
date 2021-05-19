@@ -148,7 +148,6 @@ export default {
       if (await this.signup(userSignupDto)) {
         await this.$router.push({name: "Login"})
       }
-
     }
   }
 };
