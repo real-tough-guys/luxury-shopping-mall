@@ -129,7 +129,7 @@ export default {
     ...mapActions({getMyDetail: 'users/detail'}),
     ...mapActions({getMyCart: 'carts/getMyCarts'}),
     async logoutUser() {
-      if(await this.logout()){
+      if (await this.logout()) {
         await this.$router.push({name: "Main"})
       }
     },
