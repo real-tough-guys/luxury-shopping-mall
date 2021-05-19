@@ -20,6 +20,7 @@
               id="checkEmail"
               elevation="1"
               color="primary"
+              @click="isDuplicatedEmail"
             >
               check
             </v-btn>
@@ -83,6 +84,8 @@
   </div>
 </template>
 <script>
+import {mapActions} from "vuex";
+
 export default {
   data() {
     return {
@@ -103,10 +106,25 @@ export default {
     };
   },
   methods:{
-    signUp(){
-
-     alert("작성이 완료 되었습니다 Cancel 버튼을 눌러주세요")
-    }
+    ...mapActions({signup: 'users/signUp'}),
+    ...mapActions({duplicateEmail: 'users/isDuplicatedEmail'}),
+    ...mapActions({getUserList: "users/findAll"}),
+    isDuplicatedEmail: function () {
+      this.duplicateEmail(this.email);
+    },
+    async signUp() {
+      const userSignupDto = {
+        email: this.email,
+        password: this.password,
+        passwordCheck: this.passwordCheck,
+        nickname: this.nickname
+      };
+      if(await this.signup(userSignupDto)){
+        await this.getUserList();
+        this.UserList = this.$store.state.users.userList;
+        await this.$router.go(0);
+      }
+    },
   }
 };
 </script>

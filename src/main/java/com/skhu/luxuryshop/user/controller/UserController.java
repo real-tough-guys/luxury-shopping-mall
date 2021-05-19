@@ -65,6 +65,13 @@ public class UserController {
         return new ResponseEntity("계정이 삭제되었습니다.", HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<String> deleteByAdmin(@PathVariable Long id) {
+        userManagementService.deleteById(id);
+        return new ResponseEntity("계정을 삭제했습니다.", HttpStatus.OK);
+    }
+
     @DeleteMapping("/delete")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<String> delete() {

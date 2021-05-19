@@ -6,7 +6,8 @@ const config = {
 const state = {
     jwt: null,
     details: null,
-    nickname: "로그인하세요."
+    nickname: "로그인하세요.",
+    userList: [],
 };
 const getters = {
     getJwt: (state) => {
@@ -23,6 +24,9 @@ const mutations = {
     setUserDetails: (state, data) => {
         state.details = data;
         state.nickname = data.nickname;
+    },
+    setUserList: (state, data) => {
+        state.userList = data;
     },
     logout: (state) => {
         state.jwt = null;
@@ -49,20 +53,21 @@ const actions = {
             return isSuccess
         },
 
-        logout({commit}) {
-            return new Promise((resolve, reject) => {
-                axios.get(`${config.baseUrl}logout`,
-                    {headers: {Authorization: `Bearer ${state.jwt}`}})
-                    .then(response => {
-                        commit("logout");
-                        alert("로그아웃 되었습니다.");
-                        console.log(response.data);
-                    })
-                    .catch(error => {
-                        alert(error.response.data);
-                        console.error(error)
-                    })
-            })
+        async logout({commit}) {
+            let isSuccess = true
+            await axios.get(`${config.baseUrl}logout`,
+                {headers: {Authorization: `Bearer ${state.jwt}`}})
+                .then(response => {
+                    commit("logout");
+                    alert("로그아웃 되었습니다.");
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    alert(error.response.data);
+                    console.error(error)
+                    isSuccess = false;
+                })
+            return isSuccess;
         },
 
         async signUp({commit}, userSignupDto) {
@@ -140,6 +145,20 @@ const actions = {
             return isSuccess;
         }
         ,
+        async deleteUserWithId({commit}, id) {
+            let isSuccess = true;
+            await axios.delete(`${config.baseUrl}delete/${id}`,
+                {headers: {'Authorization': `Bearer ${state.jwt}`}})
+                .then(response => {
+                    console.log(response)
+                })
+                .catch(error => {
+                    alert(error.response.data)
+                    console.error(error)
+                    isSuccess = false;
+                })
+            return isSuccess;
+        },
         delUser({commit}) {
             return new Promise((resolve, reject) => {
                 axios.post(`${config.baseUrl}delete`,
@@ -175,19 +194,20 @@ const actions = {
             return isSuccess;
         }
         ,
-        findAll({commit}) {
-            return new Promise((resolve, reject) => {
-                axios.get(`${config.baseUrl}list`,
-                    {headers: {'Authorization': `Bearer ${state.jwt}`}})
-                    .then(response => {
-                        resolve(response)
-                        console.log(response)
-                    })
-                    .catch(error => {
-                        reject(error)
-                        console.error(error)
-                    })
-            })
+        async findAll({commit}) {
+            let isSuccess = true
+            await axios.get(`${config.baseUrl}list`,
+                {headers: {'Authorization': `Bearer ${state.jwt}`}})
+                .then(response => {
+                    console.log(response)
+                    commit("setUserList", response.data);
+                })
+                .catch(error => {
+                    console.error(error)
+                    alert(error.response.data);
+                    isSuccess = false;
+                })
+            return isSuccess;
         }
     }
 ;
