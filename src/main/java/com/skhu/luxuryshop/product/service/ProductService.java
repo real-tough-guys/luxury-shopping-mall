@@ -30,14 +30,14 @@ public class ProductService {
 
     public ProductResponseDto findById(Long id) {
         ProductEntity productEntity = productRepository.findById(id)
-                .orElseThrow(() -> new ProductFindByIdException());
+                .orElseThrow(() -> new ProductFindByIdException("상품이 존재하지 않습니다."));
         return ProductResponseDto.from(productEntity);
     }
 
     @Transactional
     public Long update(Long id, ProductRequestDto requestDto) {
         ProductEntity productEntity = productRepository.findById(id)
-                .orElseThrow(() -> new ProductFindByIdException());
+                .orElseThrow(() -> new ProductFindByIdException("상품이 존재하지 않습니다."));
         productEntity.update(requestDto.toProductEntity());
         return id;
     }
