@@ -88,7 +88,11 @@ const actions = {
             return new Promise((resolve, reject) => {
                 axios.get(`${config.baseUrl}emails/${email}/exists`)
                     .then(response => {
-                        alert(response.data);
+                        if(response.data){
+                            alert("중복되지 않은 이메일입니다.");
+                        }else{
+                            alert("중복된 이메일입니다.");
+                        }
                         resolve(response);
                         console.log(response);
                     })
@@ -134,7 +138,7 @@ const actions = {
                 {headers: {'Authorization': `Bearer ${state.jwt}`}})
                 .then(response => {
                     commit("logout")
-                    alert(response.data)
+                    alert("계정을 삭제했습니다.")
                     console.log(response)
                 })
                 .catch(error => {
@@ -165,7 +169,7 @@ const actions = {
                     {headers: {'Authorization': `Bearer ${state.jwt}`}})
                     .then(response => {
                         resolve(response)
-                        alert(response.data)
+                        alert("계정을 삭제했습니다.")
                         commit("logout")
                         console.log(response)
                     })
@@ -179,10 +183,10 @@ const actions = {
         ,
         async update({commit}, userUpdateDto) {
             let isSuccess = true;
-            await axios.post(`${config.baseUrl}update`, userUpdateDto,
+            await axios.put(`${config.baseUrl}update`, userUpdateDto,
                 {headers: {'Authorization': `Bearer ${state.jwt}`}})
                 .then(response => {
-                    alert(response.data)
+                    alert("계정을 수정했습니다. 다시 로그인하세요")
                     commit("logout");
                     console.log(response)
                 })

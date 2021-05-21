@@ -18,7 +18,9 @@ public class UserSignupService {
 
     @Transactional
     public UserResponseDto save(UserSignupDto userSignupDto) {
-        validateDuplicatedEmail(userSignupDto.getEmail());
+        if (!validateDuplicatedEmail(userSignupDto.getEmail())) {
+            throw new DuplicatedEmailException();
+        }
 
         UserEntity signupUser = userSignupDto.toUserEntity();
         UserEntity user = UserEntity.builder()
@@ -31,9 +33,10 @@ public class UserSignupService {
         return UserResponseDto.from(userRepository.save(user));
     }
 
-    public void validateDuplicatedEmail(String email) {
+    public boolean validateDuplicatedEmail(String email) {
         if (userRepository.existsByEmail(email)) {
-            throw new DuplicatedEmailException();
+            return false;
         }
+        return true;
     }
 }
