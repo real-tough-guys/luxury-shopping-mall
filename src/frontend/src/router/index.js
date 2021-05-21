@@ -10,6 +10,7 @@ const Cart = () => import("../views/mycart.vue");
 const Login = () => import("../views/login.vue");
 const SignUp = () => import("../views/signUp.vue");
 const EditUser = () => import("../views/editUser.vue");
+const Search = () => import("../views/Search.vue");
 const AdminPage = () => import("../views/admin/AdminPageHome.vue");
 const AdminProductDetail = () => import("../views/admin/product/AdminProductDetail.vue");
 const AdminProductUpdate= ()=> import("../views/admin/product/AdminProductUpdate.vue");
@@ -34,6 +35,11 @@ const routes = [
     name: "DetailProduct",
     component: DetailProduct,
     props: true
+  },
+  {
+    path: "/search",
+    name: "Search",
+    component: Search,
   },
   {
     path: "/login",

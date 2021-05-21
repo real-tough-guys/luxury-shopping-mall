@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skhu.luxuryshop.product.dto.ProductRequestDto;
 import com.skhu.luxuryshop.product.dto.ProductResponseDto;
 import com.skhu.luxuryshop.product.entity.ProductEntity;
+import com.skhu.luxuryshop.product.repository.ProductRepository;
 import com.skhu.luxuryshop.product.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,8 +44,8 @@ class ProductControllerTest {
         List<String> imageUrl = new ArrayList<>();
         imageUrl.add("test1.jpg");
         imageUrl.add("test2.jpg");
-        product = new ProductRequestDto("controller 테스트", "controller 테스트", 900, "controller 테스트", imageUrl);
-        productEntity = new ProductEntity(1L, "controller test", "controller", 900, "controller", imageUrl);
+        product = new ProductRequestDto("controller 테스트", "controller 테스트", 900, "outer", imageUrl);
+        productEntity = new ProductEntity(1L, "controller test", "controller", 900, "outer", imageUrl);
     }
 
     @Test
@@ -59,16 +60,19 @@ class ProductControllerTest {
                 .andDo(print())
                 .andReturn();
         String location = mvcResult.getResponse().getHeader("Location");
-        assertThat(location).isEqualTo("/" + productResponse.getId());
+        assertThat(location + 1).isEqualTo("/" + productResponse.getId());
     }
 
     @Test
     void 상품ID조회_Test() throws Exception {
         given(productService.findById(1L)).willReturn(ProductResponseDto.from(productEntity));
-        mockMvc.perform(get("/api/products/{id}", 1L)
+        MvcResult mvcResult = mockMvc.perform(get("/api/products/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andReturn();
+        String body = mvcResult.getResponse().getContentAsString();
+        assertThat(body).isEqualTo(productEntity);
     }
 
     @Test

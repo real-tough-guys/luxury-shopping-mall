@@ -15,9 +15,11 @@ public class ProductResponseDto {
     private Integer productPrice;
     private String productCategory;
     private List<String> productImageurl;
+    private List<String> productSize;
+    private List<String> productColor;
 
     public static ProductResponseDto from(ProductEntity productEntity) {
         return new ProductResponseDto(productEntity.getId(), productEntity.getProductName(), productEntity.getProductContent(),
-                productEntity.getProductPrice(), productEntity.getProductCategory(), productEntity.getProductImageurl());
+                productEntity.getProductPrice(), productEntity.getProductCategory(), productEntity.getProductImageurl(),productEntity.getProductSize(),productEntity.getProductColor());
     }
 }

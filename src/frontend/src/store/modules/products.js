@@ -10,6 +10,7 @@ const actions = {
         return axios
             .get("/api/products")
             .then(data => {
+                console.log(data)
                 commit("setProductList", data);
             })
             .catch(err => {

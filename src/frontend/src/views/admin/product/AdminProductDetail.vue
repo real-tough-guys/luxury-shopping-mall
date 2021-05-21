@@ -29,6 +29,14 @@
               </v-card-title>
               <v-card-text>{{ `가격 : ${productDetail.productPrice} won ` | moneyFilter}}
               </v-card-text>
+              <v-card-actions>
+                color :
+                <v-select :items="productDetail.productColor" label="Standard"></v-select>
+              </v-card-actions>
+              <v-card-actions>
+                size :
+                <v-select :items="productDetail.productSize" label="Standard"></v-select>
+              </v-card-actions>
               <v-btn color="blue-grey" class="ma-2 white--text" @click="updatePush">
                 UPDate
                 <v-icon right dark>

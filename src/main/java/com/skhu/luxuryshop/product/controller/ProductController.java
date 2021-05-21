@@ -26,9 +26,13 @@ public class ProductController {
         return ResponseEntity.ok(productService.findAll());
     }
 
-    @GetMapping(value = "/main")
+    @GetMapping("/main")
     public ResponseEntity<List<ProductResponseDto>> getProductsMain(@RequestParam(value = "limit", defaultValue = "1") int limit) {
         return ResponseEntity.ok(productService.findAllMain(limit));
+    }
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductResponseDto>> searchKeyword(@RequestParam String name ,@RequestParam String category) {
+        return ResponseEntity.ok(productService.findBySearchKeyword(name,category));
     }
 
     @GetMapping("/detail/{id}")

@@ -1,29 +1,47 @@
-INSERT INTO product (product_name, product_content,product_price,product_category ) VALUES ('test', ' test', 9330,'test');
+INSERT INTO product (product_name, product_content,product_price,product_category ) VALUES ('test', ' test', 9330,'outer');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (1,'test1.jpg');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (1,'test1.jpg');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (1,'test1.jpg');
-
-INSERT INTO product (product_name, product_content,product_price,product_category ) VALUES ('test2', ' test2', 8000,'test2');
+INSERT INTO product_size (product_id, product_size) VALUES (1,'Free');
+INSERT INTO product_color (product_id, product_color) VALUES (1,'Black');
+INSERT INTO product_color (product_id, product_color) VALUES (1,'White');
+INSERT INTO product (product_name, product_content,product_price,product_category ) VALUES ('test2', ' test2', 8000,'outer');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (2,'test2.jpg');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (2,'test2.jpg');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (2,'test2.jpg');
-
-INSERT INTO product (product_name, product_content,product_price,product_category ) VALUES ('test3', ' test3', 90000,'test3');
+INSERT INTO product_size (product_id, product_size) VALUES (2,'S');
+INSERT INTO product_size (product_id, product_size) VALUES (2,'M');
+INSERT INTO product_size (product_id, product_size) VALUES (2,'L');
+INSERT INTO product_color (product_id, product_color) VALUES (2,'Black');
+INSERT INTO product_color (product_id, product_color) VALUES (2,'White');
+INSERT INTO product (product_name, product_content,product_price,product_category ) VALUES ('test3', ' test3', 90000,'top');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (3,'test3.jpg');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (3,'test3.jpg');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (3,'test3.jpg');
-
-INSERT INTO product (product_name, product_content,product_price,product_category ) VALUES ('test4', ' test4', 36500,'test4');
+INSERT INTO product_size (product_id, product_size) VALUES (3,'Free');
+INSERT INTO product_color (product_id, product_color) VALUES (3,'Black');
+INSERT INTO product_color (product_id, product_color) VALUES (3,'White');
+INSERT INTO product (product_name, product_content,product_price,product_category ) VALUES ('test4', ' test4', 36500,'top');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (4,'test4.jpg');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (4,'test4.jpg');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (4,'test4.jpg');
-
-INSERT INTO product (product_name, product_content,product_price,product_category ) VALUES ('텐셀 린넨 셔츠', ' 텐셀 린넨 셔츠', 18000,'shrits');
+INSERT INTO product_size (product_id, product_size) VALUES (4,'S');
+INSERT INTO product_size (product_id, product_size) VALUES (4,'M');
+INSERT INTO product_size (product_id, product_size) VALUES (4,'L');
+INSERT INTO product_color (product_id, product_color) VALUES (4,'Black');
+INSERT INTO product_color (product_id, product_color) VALUES (4,'White');
+INSERT INTO product (product_name, product_content,product_price,product_category ) VALUES ('텐셀 린넨 셔츠', ' 텐셀 린넨 셔츠', 18000,'top');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (5,'test5-1.jpg');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (5,'test5-2.jpg');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (5,'test5-3.jpg');
-
+INSERT INTO product_size (product_id, product_size) VALUES (5,'S');
+INSERT INTO product_size (product_id, product_size) VALUES (5,'M');
+INSERT INTO product_size (product_id, product_size) VALUES (5,'L');
+INSERT INTO product_color (product_id, product_color) VALUES (5,'Grey');
+INSERT INTO product_color (product_id, product_color) VALUES (5,'White');
 INSERT INTO product (product_name, product_content,product_price,product_category ) VALUES ('B-스테디 골지 니트 ', 'B-스테디 골지 니트 ', 33000,'Knit');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (6,'test6-1.jpg');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (6,'test6-2.jpg');
-
+INSERT INTO product_size (product_id, product_size) VALUES (6,'Free');
+INSERT INTO product_color (product_id, product_color) VALUES (6,'Grey');
+INSERT INTO product_color (product_id, product_color) VALUES (6,'Red');

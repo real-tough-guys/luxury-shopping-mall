@@ -20,6 +20,8 @@ public class ProductRequestDto {
     @NotBlank(message = "카테고리가 없습니다.")
     private String productCategory;
     private List<String> productImageurl;
+    private List<String> productSize;
+    private List<String> productColor;
 
     public ProductEntity toProductEntity() {
         ProductEntity productEntity = ProductEntity.builder()
@@ -28,6 +30,8 @@ public class ProductRequestDto {
                 .productPrice(productPrice)
                 .productCategory(productCategory)
                 .productImageurl(productImageurl)
+                .productSize(productSize)
+                .productColor(productColor)
                 .build();
         return productEntity;
     }

@@ -43,11 +43,11 @@
             </v-btn>
             <v-card-actions>
               color :
-              <v-select :items="items2" label="Standard"></v-select>
+              <v-select :items="productDetail.productColor" label="Standard"></v-select>
             </v-card-actions>
             <v-card-actions>
               size :
-              <v-select :items="items3" label="Standard"></v-select>
+              <v-select :items="productDetail.productSize" label="Standard"></v-select>
             </v-card-actions>
             <v-card-title>REALATED ITEM</v-card-title>
             <v-carousel
@@ -91,8 +91,7 @@ export default {
   data() {
     return {
       productDetail: [],
-      detailName: "미니멀 자켓",
-      price: 70900,
+
       colors: [
         "pink darken-2",
         "pink darken-2",
@@ -100,8 +99,6 @@ export default {
         "pink darken-2",
         "pink darken-2"
       ],
-      items2: ["black", "white"],
-      items3: ["free"],
       slides: ["First", "Second", "Third", "Fourth", "Fifth"]
     };
   },

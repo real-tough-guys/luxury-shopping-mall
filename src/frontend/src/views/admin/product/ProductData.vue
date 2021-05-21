@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <v-card>
       <v-card-title>
         Product Table
@@ -20,6 +21,7 @@
             <td>{{ props.item.id }}</td>
             <td>{{ props.item.productName }}</td>
             <td :class="headers[2].class">{{ props.item.productCategory }}</td>
+            <td :class="headers[3].class">{{props.item.productColor[0]}}</td>
 
           </tr>
         </template>
@@ -51,7 +53,7 @@
         </template>
 
         <v-card>
-          <v-card-title class="headline grey lighten-2">
+          <v-card-title class="headline  primary" style="color: white">
             상품 등록
           </v-card-title>
           <v-card-text>
@@ -90,8 +92,8 @@ export default {
         {text: "상품이름", value: "productName", sortable: true},
         {text: "가격", value: "productPrice", sortable: true},
         {text: "카테고리", value: "productCategory", sortable: true},
-        {text: "색상", value: "color", sortable: true},
         {text: "사이즈", value: "size", sortable: true},
+        {text: "색상", value: "color", sortable: true},
         {text: "수량", value: "quantity", sortable: true},
       ]
     };

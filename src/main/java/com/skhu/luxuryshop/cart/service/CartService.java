@@ -40,7 +40,7 @@ public class CartService {
     @Transactional
     public CartResponseDto addCart(CartRequestDto cartRequestDto) {
         ProductEntity productOpt = productRepository.findById(cartRequestDto.getProductId())
-                .orElseThrow(() -> new ProductFindByIdException("상품 id : " + cartRequestDto.getProductId() + "이 존재 하지 않습니다."));
+                .orElseThrow(() -> new ProductFindByIdException("상품이 존재하지 않습니다."));
         Cart.builder().product(productOpt).color(cartRequestDto.getColor()).build();
         return CartResponseDto.from(cartRepository.save(Cart.builder()
                 .product(productOpt)
