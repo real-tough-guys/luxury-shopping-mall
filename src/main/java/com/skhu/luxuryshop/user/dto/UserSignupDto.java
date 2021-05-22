@@ -1,17 +1,13 @@
 package com.skhu.luxuryshop.user.dto;
 
-import com.skhu.luxuryshop.user.entity.Authority;
-import com.skhu.luxuryshop.user.entity.UserAuthority;
 import com.skhu.luxuryshop.user.entity.UserEntity;
 import com.skhu.luxuryshop.user.exception.UnmatchedPasswordCheckException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.security.core.userdetails.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.Collections;
 
 @Getter
 @AllArgsConstructor
@@ -34,10 +30,6 @@ public class UserSignupDto {
 
     public UserEntity toUserEntity() {
         validateSamePassword(password, passwordCheck);
-
-        Authority authority = Authority.builder()
-                .authorityName("ROLE_USER")
-                .build();
 
         UserEntity user = UserEntity.builder()
                 .email(email)

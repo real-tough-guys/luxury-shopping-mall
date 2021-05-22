@@ -10,7 +10,6 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.Collections;
 
 @Getter
 @AllArgsConstructor
@@ -36,10 +35,6 @@ public class UserUpdateDto {
 
     public UserEntity toUserEntity() {
         validateSamePassword(password, passwordCheck);
-
-        Authority authority = Authority.builder()
-                .authorityName("ROLE_USER")
-                .build();
 
         UserEntity user = UserEntity.builder()
                 .id(id)

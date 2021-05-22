@@ -1,6 +1,5 @@
 package com.skhu.luxuryshop.user.dto;
 
-import com.skhu.luxuryshop.user.entity.Authority;
 import com.skhu.luxuryshop.user.entity.UserAuthority;
 import com.skhu.luxuryshop.user.entity.UserEntity;
 import lombok.AllArgsConstructor;
@@ -8,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @NoArgsConstructor
