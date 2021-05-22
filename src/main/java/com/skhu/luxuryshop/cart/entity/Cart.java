@@ -1,5 +1,6 @@
 package com.skhu.luxuryshop.cart.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.skhu.luxuryshop.product.entity.ProductEntity;
 import com.skhu.luxuryshop.user.entity.UserEntity;
 import lombok.*;
@@ -22,6 +23,7 @@ public class Cart {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private UserEntity user;
 
     private String color;
