@@ -1,11 +1,13 @@
 package com.skhu.luxuryshop.user.dto;
 
 import com.skhu.luxuryshop.user.entity.Authority;
+import com.skhu.luxuryshop.user.entity.UserAuthority;
 import com.skhu.luxuryshop.user.entity.UserEntity;
 import com.skhu.luxuryshop.user.exception.UnmatchedPasswordCheckException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.userdetails.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -41,7 +43,6 @@ public class UserSignupDto {
                 .email(email)
                 .password(password)
                 .nickname(nickname)
-                .authorities(Collections.singleton(authority))
                 .build();
         return user;
     }

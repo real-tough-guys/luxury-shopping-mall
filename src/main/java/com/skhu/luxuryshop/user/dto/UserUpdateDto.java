@@ -46,7 +46,6 @@ public class UserUpdateDto {
                 .email(email)
                 .password(password)
                 .nickname(nickname)
-                .authorities(Collections.singleton(authority))
                 .build();
 
         return user;

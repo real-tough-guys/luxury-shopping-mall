@@ -5,6 +5,7 @@ import com.skhu.luxuryshop.user.dto.UserUpdateDto;
 import com.skhu.luxuryshop.user.entity.UserEntity;
 import com.skhu.luxuryshop.user.exception.DuplicatedEmailException;
 import com.skhu.luxuryshop.user.exception.NoUserFoundException;
+import com.skhu.luxuryshop.user.repository.AuthorityRepository;
 import com.skhu.luxuryshop.user.repository.UserRepository;
 import com.skhu.luxuryshop.user.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 public class UserManagementService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthorityRepository authorityRepository;
 
     public UserResponseDto findById(Long id) {
         Optional<UserEntity> user = userRepository.findById(id);

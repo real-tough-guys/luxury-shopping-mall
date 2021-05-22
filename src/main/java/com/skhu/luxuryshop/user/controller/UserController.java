@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<String> signUp(@RequestBody @Valid UserSignupDto userSignupDto) {
+    public ResponseEntity<String> signUp(@RequestBody @Valid UserSignupDto userSignupDto) throws Exception {
         UserResponseDto savedUser = userSignupService.save(userSignupDto);
         return ResponseEntity
                 .created(URI.create("/" + savedUser.getId()))
@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @GetMapping("/details")
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('ADMIN, USER')")
     public ResponseEntity<UserResponseDto> details() {
         UserResponseDto userDetails = userManagementService.findByLoginUser();
         return new ResponseEntity(userDetails, HttpStatus.OK);

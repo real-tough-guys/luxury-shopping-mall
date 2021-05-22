@@ -1,7 +1,6 @@
 package com.skhu.luxuryshop.user.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.skhu.luxuryshop.cart.entity.Cart;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -17,7 +16,6 @@ import java.util.Set;
 @Builder
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 @AllArgsConstructor
 public class UserEntity {
     @Id
@@ -38,14 +36,11 @@ public class UserEntity {
 
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonManagedReference
     private List<Cart> carts = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_authority",
-            joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")}
-    )
-
-    private Set<Authority> authorities;
+    @OneToMany(cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonManagedReference
+    private List<UserAuthority> authorities;
 }
