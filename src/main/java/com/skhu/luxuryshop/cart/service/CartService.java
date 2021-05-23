@@ -5,7 +5,6 @@ import com.skhu.luxuryshop.cart.dto.CartResponseDto;
 import com.skhu.luxuryshop.cart.entity.Cart;
 import com.skhu.luxuryshop.cart.exception.NotExistCartException;
 import com.skhu.luxuryshop.cart.repository.CartRepository;
-import com.skhu.luxuryshop.product.dto.ProductResponseDto;
 import com.skhu.luxuryshop.product.entity.ProductEntity;
 import com.skhu.luxuryshop.product.exception.ProductFindByIdException;
 import com.skhu.luxuryshop.product.repository.ProductRepository;

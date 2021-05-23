@@ -1,6 +1,5 @@
 package com.skhu.luxuryshop.user.dto;
 
-import com.skhu.luxuryshop.user.entity.Authority;
 import com.skhu.luxuryshop.user.entity.UserEntity;
 import com.skhu.luxuryshop.user.exception.UnmatchedPasswordCheckException;
 import lombok.AllArgsConstructor;
