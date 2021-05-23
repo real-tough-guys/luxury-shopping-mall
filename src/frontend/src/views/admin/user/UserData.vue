@@ -5,23 +5,23 @@
         User Table
         <v-spacer></v-spacer>
         <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Search"
-          single-line
-          hide-details
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
         ></v-text-field>
       </v-card-title>
       <v-data-table
-        class="elevation-1"
-        v-if="UserList"
-        v-model="selected"
-        show-select
-        :headers="headers"
-        :items="UserList"
-        :single-select="singleSelect"
-        :search="search"
-        hide-default-footer
+          class="elevation-1"
+          v-if="UserList"
+          v-model="selected"
+          show-select
+          :headers="headers"
+          :items="UserList"
+          :single-select="singleSelect"
+          :search="search"
+          hide-default-footer
       >
         <template slot="items" slot-scope="props">
           <tr>
@@ -32,9 +32,9 @@
         </template>
         <template v-slot:top>
           <v-switch
-            v-model="singleSelect"
-            label="Single select"
-            class="pa-3"
+              v-model="singleSelect"
+              label="Single select"
+              class="pa-3"
           ></v-switch>
         </template>
       </v-data-table>
@@ -48,13 +48,13 @@
       <v-dialog v-model="UserCreateDialog" width="500">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
-            small
-            v-bind="attrs"
-            v-on="on"
-            class="mx-2"
-            fab
-            dark
-            color="indigo"
+              small
+              v-bind="attrs"
+              v-on="on"
+              class="mx-2"
+              fab
+              dark
+              color="indigo"
           >
             <v-icon dark>
               mdi-plus
@@ -68,7 +68,7 @@
           </v-card-title>
 
           <v-card-text>
-            <UserCreate />
+            <UserCreate/>
           </v-card-text>
 
           <v-divider></v-divider>
@@ -87,6 +87,8 @@
 </template>
 <script>
 import UserCreate from "../user/UserCreate.vue";
+import {mapActions} from "vuex";
+
 export default {
   components: {
     UserCreate
@@ -98,37 +100,37 @@ export default {
       singleSelect: false,
       search: "",
       headers: [
-        { text: "no", value: "id", sortable: true },
-        { text: "이름", value: "username", sortable: true },
-        { text: "이메일", value: "email", sortable: true }
+        {text: "no", value: "id", sortable: true},
+        {text: "이름", value: "nickname", sortable: true},
+        {text: "이메일", value: "email", sortable: true}
       ],
-      UserList: [
-        {
-          id: 1,
-          username: "형준이",
-          email: "jhj960918@google.ac.kr"
-        },
-        {
-          id: 2,
-          username: "준성이",
-          email: "hjs96@google.ac.kr"
-        },
-
-        {
-          id: 3,
-          username: "신혁이",
-          email: "ksh97@google.ac.kr"
-        }
-      ]
+      UserList: []
     };
   },
+  created() {
+    this.getUsers();
+  },
   methods: {
+    ...mapActions({getUserList: "users/findAll"}),
+    ...mapActions({delUser: "users/deleteUserWithId"}),
     deleteItem() {
       console.log(this.selected);
       for (var i = 0; i < this.selected.length; i++) {
         var selectId = this.selected[i].id;
+        if (selectId === this.$store.state.users.details.id) {
+          continue;
+        }
+        this.delUser(selectId);
+        this.getUsers();
         this.UserList.splice(selectId - 1, 1);
       }
+    },
+    async getUsers() {
+      if (!await this.getUserList()) {
+        await this.$router.push({name: "Main"});
+      }
+      ;
+      this.UserList = this.$store.state.users.userList;
     }
   }
 };

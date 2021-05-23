@@ -103,8 +103,7 @@
   </div>
 </template>
 <script>
-import {isDuplicatedEmail} from "@/api/user";
-import {signUp} from "@/api/user";
+import {mapActions} from 'vuex'
 
 export default {
   data() {
@@ -133,30 +132,22 @@ export default {
     };
   },
   methods: {
+    ...mapActions({signup: 'users/signUp'}),
+    ...mapActions({duplicateEmail: 'users/isDuplicatedEmail'}),
+
     isDuplicatedEmail: function () {
-      isDuplicatedEmail(this.email)
-          .then(res => {
-            alert(res.data);
-          })
-          .catch(res => {
-            alert(res.response.data);
-          });
+      this.duplicateEmail(this.email);
     },
-    save: function () {
+    async save() {
       const userSignupDto = {
         email: this.email,
         password: this.password,
         passwordCheck: this.passwordCheck,
         nickname: this.nickname
       };
-      signUp(userSignupDto)
-          .then(res => {
-            alert("회원가입 성공!");
-            window.open("/login", "_self");
-          })
-          .catch(res => {
-            alert(res.response.data);
-          });
+      if (await this.signup(userSignupDto)) {
+        await this.$router.push({name: "Login"})
+      }
     }
   }
 };

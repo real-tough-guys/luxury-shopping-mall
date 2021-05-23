@@ -8,7 +8,6 @@
           My Cart
         </h1>
         <v-card v-for="(cart,index) in carts" :key="cart.id">
-
           <v-layout>
             <v-flex xs3>
               <v-img v-bind:src=" cart.product.productImageurl[0] | loadImgOrPlaceholder" contain
@@ -39,8 +38,7 @@
         </v-card>
         <v-card-subtitle>
           <h3 align="center">
-          수량
-
+            수량
             <p style="color: orange">{{ carts.length }}</p>
             Total Price($ {{ total| moneyFilter }} 원)
           </h3>
@@ -56,6 +54,7 @@
 import axios from "axios";
 import Loding from "@/components/Loding.vue";
 import myMixin from "@/filter";
+import {mapActions} from 'vuex'
 
 export default {
   mixins: [myMixin],
@@ -68,11 +67,28 @@ export default {
   components: {
     Loding,
   },
+  created() {
+    this.getMyCartList();
+  },
   mounted() {
-    this.getCart()
   },
   methods: {
-    cartDelete(idx,cartId) {
+    ...mapActions({getMyCart: "carts/getMyCarts"}),
+    ...mapActions({getMyDetail: "users/detail"}),
+    async getMyCartList() {
+      try {
+        await this.getMyDetail();
+        await this.getMyCart(this.$store.state.users.details.id);
+        this.carts = this.$store.getters["carts/getMyCart"];
+        this.isLoading = false;
+      } catch {
+        await this.$router.push({name: "Main"});
+      }
+    },
+    async getUserDetails() {
+      await this.getMyDetail();
+    },
+    cartDelete(idx, cartId) {
       console.log(cartId)
       this.carts.splice(idx, 1);
       return axios
@@ -83,19 +99,6 @@ export default {
           .catch(err => {
             console.log(err);
           });
-    },
-    getCart() {
-      return axios
-          .get("/api/carts/")
-          .then(res => {
-            console.log(res.data)
-            this.carts = res.data;
-            this.isLoading = false;
-          })
-          .catch(err => {
-            console.log(err);
-          });
-
     }
   },
   computed: {
