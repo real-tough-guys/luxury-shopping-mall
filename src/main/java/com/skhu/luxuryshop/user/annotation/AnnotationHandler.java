@@ -1,6 +1,6 @@
 package com.skhu.luxuryshop.user.annotation;
 
-import org.springframework.web.method.HandlerMethod;
+import com.skhu.luxuryshop.user.exception.FailToAuthenticationException;
 
 public class AnnotationHandler {
     public static boolean checkAuthority(String[] authorities, PreAuthorize preAuthorize){
@@ -11,7 +11,6 @@ public class AnnotationHandler {
                 }
             }
         }
-        return false;
+        throw new FailToAuthenticationException();
     }
-
 }
