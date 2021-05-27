@@ -5,7 +5,7 @@ const config = {
 };
 const state = {
     jwt: null,
-    id:null,
+    id: null,
     details: null,
     nickname: "로그인하세요.",
     userList: [],
@@ -109,7 +109,7 @@ const actions = {
             let isSuccess = true;
             await axios.get(`${config.baseUrl}${id}/details`,
                 {headers: {'Authorization': `Bearer ${state.jwt}`}}
-                )
+            )
                 .then(response => {
                     commit("setUserDetails", response.data);
                     console.log(response)

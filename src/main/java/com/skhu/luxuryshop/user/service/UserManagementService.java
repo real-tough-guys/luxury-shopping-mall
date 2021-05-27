@@ -7,13 +7,10 @@ import com.skhu.luxuryshop.user.entity.UserEntity;
 import com.skhu.luxuryshop.user.exception.DuplicatedEmailException;
 import com.skhu.luxuryshop.user.exception.NoUserFoundException;
 import com.skhu.luxuryshop.user.exception.UnmatchedPasswordCheckException;
-import com.skhu.luxuryshop.user.jwt.TokenProvider;
 import com.skhu.luxuryshop.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,7 +19,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserManagementService {
     private final UserRepository userRepository;
-    private final TokenProvider tokenProvider;
 
     public UserResponseDto findById(Long id) {
         Optional<UserEntity> user = userRepository.findById(id);

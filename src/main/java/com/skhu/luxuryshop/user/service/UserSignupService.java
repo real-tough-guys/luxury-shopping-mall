@@ -23,7 +23,7 @@ public class UserSignupService {
     @Transactional
     public UserResponseDto save(UserSignupDto userSignupDto) throws Exception {
         if (!validateDuplicatedEmail(userSignupDto.getEmail())) {
-            throw new DuplicatedEmailException("접근할 수 없습니다.");
+            throw new DuplicatedEmailException();
         }
 
         UserEntity signupUser = userSignupDto.toUserEntity();
