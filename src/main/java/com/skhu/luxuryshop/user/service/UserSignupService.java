@@ -10,7 +10,6 @@ import com.skhu.luxuryshop.user.repository.AuthorityRepository;
 import com.skhu.luxuryshop.user.repository.UserAuthorityRepository;
 import com.skhu.luxuryshop.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,20 +17,19 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserSignupService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final AuthorityRepository authorityRepository;
     private final UserAuthorityRepository userAuthorityRepository;
 
     @Transactional
     public UserResponseDto save(UserSignupDto userSignupDto) throws Exception {
         if (!validateDuplicatedEmail(userSignupDto.getEmail())) {
-            throw new DuplicatedEmailException();
+            throw new DuplicatedEmailException("접근할 수 없습니다.");
         }
 
         UserEntity signupUser = userSignupDto.toUserEntity();
         UserEntity user = UserEntity.builder()
                 .email(signupUser.getEmail())
-                .password(passwordEncoder.encode(signupUser.getPassword()))
+                .password(signupUser.getPassword())
                 .nickname(signupUser.getNickname())
                 .authorities(signupUser.getAuthorities())
                 .build();

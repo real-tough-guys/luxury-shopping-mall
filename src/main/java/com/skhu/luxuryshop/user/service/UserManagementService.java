@@ -1,15 +1,14 @@
 package com.skhu.luxuryshop.user.service;
 
+import com.skhu.luxuryshop.user.dto.UserLoginDto;
 import com.skhu.luxuryshop.user.dto.UserResponseDto;
 import com.skhu.luxuryshop.user.dto.UserUpdateDto;
 import com.skhu.luxuryshop.user.entity.UserEntity;
 import com.skhu.luxuryshop.user.exception.DuplicatedEmailException;
 import com.skhu.luxuryshop.user.exception.NoUserFoundException;
+import com.skhu.luxuryshop.user.exception.UnmatchedPasswordCheckException;
 import com.skhu.luxuryshop.user.repository.UserRepository;
-import com.skhu.luxuryshop.user.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserManagementService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     public UserResponseDto findById(Long id) {
         Optional<UserEntity> user = userRepository.findById(id);
@@ -58,14 +56,14 @@ public class UserManagementService {
         UserEntity user = UserEntity.builder()
                 .id(updateUser.getId())
                 .email(updateUser.getEmail())
-                .password(passwordEncoder.encode(updateUser.getPassword()))
+                .password(updateUser.getPassword())
                 .nickname(updateUser.getNickname())
                 .carts(originUser.getCarts())
                 .authorities(originUser.getAuthorities())
                 .build();
 
         if (loginUser.getId() != userUpdateDto.getId()) {
-            throw new AccessDeniedException("접근할 수 없습니다.");
+            throw new DuplicatedEmailException("접근할 수 없습니다.");
         }
         if (!user.getEmail().equals(userUpdateDto.getEmail())) {
             validateDuplicatedEmail(userUpdateDto.getEmail());
@@ -84,6 +82,16 @@ public class UserManagementService {
     }
 
     public Optional<UserEntity> getMyUserWithAuthorities() {
-        return SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+        return null;
+    }
+
+    public UserEntity login(UserLoginDto userLoginDto) {
+        UserEntity user = userRepository.findOneWithAuthoritiesByEmail(userLoginDto.getEmail())
+                .orElseThrow(NoUserFoundException::new);
+
+        if (user.getPassword().equals(userLoginDto.getPassword())) {
+            return user;
+        }
+        throw new UnmatchedPasswordCheckException();
     }
 }
