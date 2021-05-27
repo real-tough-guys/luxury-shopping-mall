@@ -126,7 +126,7 @@ export default {
     ...mapActions({updateUser: 'users/update'}),
     ...mapActions({delUser: 'users/deleteUser'}),
     ...mapActions({logout: 'users/logout'}),
-    ...mapActions({getUser: 'users/detail'}),
+    ...mapActions({getUser: 'users/details'}),
     update: async function () {
       const userUpdateDto = {
         id: this.$store.state.users.details.id,
@@ -148,7 +148,7 @@ export default {
       this.logout();
     },
     getUserDetails: function () {
-      this.getUser();
+      this.getUser(this.$store.state.users.id);
     }
   }
 };

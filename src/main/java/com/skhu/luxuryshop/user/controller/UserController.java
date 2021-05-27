@@ -1,6 +1,8 @@
 package com.skhu.luxuryshop.user.controller;
 
+import com.skhu.luxuryshop.user.annotation.PreAuthorize;
 import com.skhu.luxuryshop.user.dto.*;
+import com.skhu.luxuryshop.user.entity.UserEntity;
 import com.skhu.luxuryshop.user.jwt.AuthInterceptor;
 import com.skhu.luxuryshop.user.jwt.TokenProvider;
 import com.skhu.luxuryshop.user.service.UserManagementService;
@@ -37,42 +39,28 @@ public class UserController {
     }
 
     @GetMapping("/{id}/details")
+    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<UserResponseDto> details(@PathVariable Long id) {
         UserResponseDto userDetails = userManagementService.findById(id);
         return new ResponseEntity(userDetails, HttpStatus.OK);
     }
 
-    @GetMapping("/details")
-    public ResponseEntity<UserResponseDto> details() {
-        UserResponseDto userDetails = userManagementService.findByLoginUser();
-        return new ResponseEntity(userDetails, HttpStatus.OK);
-    }
-
     @DeleteMapping("/{id}/delete")
+    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         userManagementService.deleteById(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteByAdmin(@PathVariable Long id) {
-        userManagementService.deleteById(id);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
-
-    @DeleteMapping("/delete")
-    public ResponseEntity<Void> delete() {
-        userManagementService.deleteByLoginUser();
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
-
     @PutMapping("/update")
+    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<Void> update(@RequestBody @Valid UserUpdateDto userUpdateDto) {
         userManagementService.update(userUpdateDto);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/list")
+    @PreAuthorize(roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<UserResponseDto>> findAll() {
         List<UserResponseDto> users = userManagementService.findAll();
         return new ResponseEntity(users, HttpStatus.OK);
@@ -80,18 +68,12 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<UserTokenDto> login(@Valid @RequestBody UserLoginDto userLoginDto) {
-
-
-        String jwt = tokenProvider.createToken(userManagementService.login(userLoginDto));
+        UserEntity user = userManagementService.login(userLoginDto);
+        String jwt = tokenProvider.createToken(user);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(AuthInterceptor.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new ResponseEntity<>(new UserTokenDto(jwt), httpHeaders, HttpStatus.OK);
-    }
-
-    @GetMapping("/logout")
-    public ResponseEntity<Void> logout() {
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(new UserTokenDto(user.getId(), jwt), httpHeaders, HttpStatus.OK);
     }
 }

@@ -126,7 +126,7 @@ export default {
   },
   methods: {
     ...mapActions({logout: 'users/logout'}),
-    ...mapActions({getMyDetail: 'users/detail'}),
+    ...mapActions({getMyDetail: 'users/details'}),
     ...mapActions({getMyCart: 'carts/getMyCarts'}),
     async logoutUser() {
       if (await this.logout()) {
@@ -134,12 +134,12 @@ export default {
       }
     },
     async getUserDetails() {
-      if (!await this.getMyDetail()) {
+      if (!await this.getMyDetail(this.$store.state.users.id)) {
         await this.$router.push({name: "Main"})
       }
     },
     async getMyCartList() {
-      await this.getMyCart(this.$store.state.users.details.id);
+      await this.getMyCart(this.$store.state.users.id);
     }
   }
 };
