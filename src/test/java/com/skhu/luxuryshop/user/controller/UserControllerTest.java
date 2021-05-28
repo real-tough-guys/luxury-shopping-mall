@@ -138,7 +138,6 @@ public class UserControllerTest {
     @Test
     void test_signUp_unmatchedPasswordUser() throws Exception {
         unmatchedPwdUserSignup = new UserSignupDto("test123@gmail.com", "password", "wrongpwd", "홍길동");
-
         when(userSignupService.save(ArgumentMatchers.any(UserSignupDto.class)))
                 .thenThrow(new UnmatchedPasswordCheckException());
 

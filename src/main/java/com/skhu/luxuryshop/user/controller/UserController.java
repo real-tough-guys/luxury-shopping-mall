@@ -30,13 +30,12 @@ public class UserController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @GetMapping("/emails/{email}/exists")
-    public ResponseEntity<String> isDuplicatedEmail(@PathVariable String email) {
-        userSignupService.validateDuplicatedEmail(email);
-        return new ResponseEntity("중복되지 않은 이메일입니다.", HttpStatus.OK);
+    public ResponseEntity<Boolean> isDuplicatedEmail(@PathVariable String email) {
+        return new ResponseEntity(userSignupService.validateDuplicatedEmail(email), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<String> signUp(@RequestBody @Valid UserSignupDto userSignupDto) {
+    public ResponseEntity<String> signUp(@RequestBody @Valid UserSignupDto userSignupDto) throws Exception {
         UserResponseDto savedUser = userSignupService.save(userSignupDto);
         return ResponseEntity
                 .created(URI.create("/" + savedUser.getId()))
@@ -51,33 +50,41 @@ public class UserController {
     }
 
     @GetMapping("/details")
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('ADMIN, USER')")
     public ResponseEntity<UserResponseDto> details() {
         UserResponseDto userDetails = userManagementService.findByLoginUser();
         return new ResponseEntity(userDetails, HttpStatus.OK);
     }
 
-    @PostMapping("/{id}/delete")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
+    @DeleteMapping("/{id}/delete")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         userManagementService.deleteById(id);
-        return new ResponseEntity("계정이 삭제되었습니다.", HttpStatus.OK);
+        SecurityContextHolder.clearContext();
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/delete")
-    @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<String> delete() {
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<Void> deleteByAdmin(@PathVariable Long id) {
+        userManagementService.deleteById(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<Void> delete() {
         userManagementService.deleteByLoginUser();
         SecurityContextHolder.clearContext();
-        return new ResponseEntity("계정이 삭제되었습니다.", HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<String> update(@RequestBody @Valid UserUpdateDto userUpdateDto) {
+    public ResponseEntity<Void> update(@RequestBody @Valid UserUpdateDto userUpdateDto) {
         userManagementService.update(userUpdateDto);
         SecurityContextHolder.clearContext();
-        return new ResponseEntity("정보를 변경했습니다. 다시 로그인하세요.", HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/list")
@@ -101,5 +108,11 @@ public class UserController {
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
         return new ResponseEntity<>(new UserTokenDto(jwt), httpHeaders, HttpStatus.OK);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<Void> logout() {
+        SecurityContextHolder.clearContext();
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

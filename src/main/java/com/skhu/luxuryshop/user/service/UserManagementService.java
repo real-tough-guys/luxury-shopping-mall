@@ -53,13 +53,15 @@ public class UserManagementService {
 
     public void update(UserUpdateDto userUpdateDto) {
         UserEntity updateUser = userUpdateDto.toUserEntity();
+        UserEntity originUser = userRepository.findById(userUpdateDto.getId()).orElseThrow(NoUserFoundException::new);
         UserEntity loginUser = getMyUserWithAuthorities().orElseThrow(NoUserFoundException::new);
         UserEntity user = UserEntity.builder()
                 .id(updateUser.getId())
                 .email(updateUser.getEmail())
                 .password(passwordEncoder.encode(updateUser.getPassword()))
                 .nickname(updateUser.getNickname())
-                .authorities(loginUser.getAuthorities())
+                .carts(originUser.getCarts())
+                .authorities(originUser.getAuthorities())
                 .build();
 
         if (loginUser.getId() != userUpdateDto.getId()) {
