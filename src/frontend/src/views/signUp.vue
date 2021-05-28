@@ -103,7 +103,12 @@
   </div>
 </template>
 <script>
+<<<<<<< HEAD
+import {isDuplicatedEmail} from "@/api/user";
+import {signUp} from "@/api/user";
+=======
 import {mapActions} from 'vuex'
+>>>>>>> 24f5937734df08af07719c8a063ab02b0a4959b9
 
 export default {
   data() {
@@ -145,9 +150,20 @@ export default {
         passwordCheck: this.passwordCheck,
         nickname: this.nickname
       };
+<<<<<<< HEAD
+      signUp(userSignupDto)
+          .then(res => {
+            alert("회원가입 성공!");
+            window.open("/login", "_self");
+          })
+          .catch(res => {
+            alert(res.response.data);
+          });
+=======
       if (await this.signup(userSignupDto)) {
         await this.$router.push({name: "Login"})
       }
+>>>>>>> 24f5937734df08af07719c8a063ab02b0a4959b9
     }
   }
 };

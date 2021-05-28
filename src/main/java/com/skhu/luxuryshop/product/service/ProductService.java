@@ -30,21 +30,33 @@ public class ProductService {
 
     public ProductResponseDto findById(Long id) {
         ProductEntity productEntity = productRepository.findById(id)
-                .orElseThrow(() -> new ProductFindByIdException("상품 id : " + id + "이 존재 하지 않습니다."));
+                .orElseThrow(() -> new ProductFindByIdException("상품이 존재하지 않습니다."));
         return ProductResponseDto.from(productEntity);
     }
 
     @Transactional
     public Long update(Long id, ProductRequestDto requestDto) {
         ProductEntity productEntity = productRepository.findById(id)
-                .orElseThrow(() -> new ProductFindByIdException("상품 id : " + id + "이 존재 하지 않습니다."));
+                .orElseThrow(() -> new ProductFindByIdException("상품이 존재하지 않습니다."));
         productEntity.update(requestDto.toProductEntity());
         return id;
     }
 
     public List<ProductResponseDto> findAll() {
-        List<ProductEntity> productEntitys = productRepository.findAll();
-        return productEntitys.stream()
+        List<ProductEntity> products = productRepository.findAll();
+        return products.stream()
+                .map(ProductResponseDto::from)
+                .collect(Collectors.toList());
+    }
+
+    public List<ProductResponseDto> findBySearchKeyword(String name, String category) {
+        List<ProductEntity> products;
+        if (!name.isEmpty()) {
+            products = productRepository.findByProductNameContaining(name);
+        } else {
+            products = productRepository.findByProductCategoryContaining(category);
+        }
+        return products.stream()
                 .map(ProductResponseDto::from)
                 .collect(Collectors.toList());
     }
