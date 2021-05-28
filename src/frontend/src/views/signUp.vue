@@ -104,18 +104,15 @@
 </template>
 <script>
 import {mapActions} from 'vuex'
-
 export default {
   data() {
     return {
       show1: false,
       show2: false,
-
       email: "",
       password: "",
       passwordCheck: "",
       nickname: "",
-
       rules: {
         required: input => !!input || "Required.",
         validateEmailType: email =>
@@ -134,7 +131,6 @@ export default {
   methods: {
     ...mapActions({signup: 'users/signUp'}),
     ...mapActions({duplicateEmail: 'users/isDuplicatedEmail'}),
-
     isDuplicatedEmail: function () {
       this.duplicateEmail(this.email);
     },

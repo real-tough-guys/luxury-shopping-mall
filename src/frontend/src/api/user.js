@@ -32,9 +32,10 @@ function signUp(userSignupDto) {
     })
 }
 
-function details(id) {
+
+function details() {
     return new Promise((resolve, reject) => {
-        axios.get(`${config.baseUrl}${id}/details`)
+        axios.get(`${config.baseUrl}/details`)
             .then(response => {
                 resolve(response)
                 console.log(response)
@@ -47,10 +48,9 @@ function details(id) {
 }
 
 
-
-function deleteUser(id) {
+function deleteUser() {
     return new Promise((resolve, reject) => {
-        axios.post(`${config.baseUrl}${id}/delete`)
+        axios.post(`${config.baseUrl}/delete`)
             .then(response => {
                 resolve(response)
                 console.log(response)
@@ -61,8 +61,6 @@ function deleteUser(id) {
             })
     })
 }
-
-
 
 function update(userUpdateDto) {
     return new Promise((resolve, reject) => {
@@ -77,6 +75,7 @@ function update(userUpdateDto) {
             })
     })
 }
+
 
 function findAll() {
     return new Promise((resolve, reject) => {

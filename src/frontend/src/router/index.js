@@ -8,6 +8,7 @@ const DetailProduct = () => import("../views/DetailProduct.vue");
 const Mypage = () => import("../views/Mypage.vue");
 const Main = () => import("../views/Main.vue");
 const Cart = () => import("../views/mycart.vue");
+const Search = () => import("../views/Search.vue");
 const Login = () => import("../views/login.vue");
 const SignUp = () => import("../views/signUp.vue");
 const EditUser = () => import("../views/editUser.vue");
@@ -53,6 +54,11 @@ const routes = [
         name: "EditUser",
         component: EditUser,
         meta: {authRequired: true}
+    },
+    {
+        path: "/search",
+        name: "Search",
+        component: Search,
     },
     {
         path: "/admin",
