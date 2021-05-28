@@ -1,12 +1,14 @@
 package com.skhu.luxuryshop.user.entity;
 
+import com.fasterxml.jackson.annotation.*;
+import com.skhu.luxuryshop.cart.entity.Cart;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Builder
@@ -30,11 +32,13 @@ public class UserEntity {
     @Length(min = 2, max = 8, message = "2~8자리의 닉네임을 입력하세요.")
     private String nickname;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_authority",
-            joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")}
-    )
-    private Set<Authority> authorities;
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonManagedReference
+    private List<Cart> carts;
+
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonManagedReference
+    private List<UserAuthority> authorities;
 }

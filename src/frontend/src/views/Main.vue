@@ -4,40 +4,40 @@
       <v-container fluid>
         <v-row>
           <v-col
-            v-for="(item, i) in listData"
-            :key="`item-${i}`"
-            cols="12"
-            sm="4"
+              v-for="(item, i) in listData"
+              :key="`item-${i}`"
+              cols="12"
+              sm="4"
           >
             <div>
               <v-hover v-slot="{ hover }">
                 <v-card class="mx-auto" max-width="344">
                   <div @click="detailPush(item.id)">
                     <v-img
-                      v-bind:src="
+                        v-bind:src="
                         item.productImageurl[0] | loadImgOrPlaceholder
                       "
-                      :aspect-ratio="11 / 13"
-                      height="mx-auto"
+                        :aspect-ratio="11 / 13"
+                        height="mx-auto"
                     >
                       <v-expand-transition>
                         <div
-                          v-if="hover"
-                          class="d-flex transition-fast-in-fast-out blue-grey darken-2 v-card--reveal display-3 white--text"
-                          style="height: 100%;"
+                            v-if="hover"
+                            class="d-flex transition-fast-in-fast-out blue-grey darken-2 v-card--reveal display-3 white--text"
+                            style="height: 100%;"
                         ></div>
                       </v-expand-transition>
                     </v-img>
                   </div>
                   <v-card-text class="pt-6" style="position: relative;">
                     <v-btn
-                      absolute
-                      color="black"
-                      class="white--text"
-                      fab
-                      large
-                      right
-                      top
+                        absolute
+                        color="black"
+                        class="white--text"
+                        fab
+                        large
+                        right
+                        top
                     >
                       <v-icon>mdi-heart</v-icon>
                     </v-btn>
@@ -59,9 +59,9 @@
         </v-row>
       </v-container>
       <infinite-loading
-        @infinite="infiniteHandler"
-        spinner="waveDots"
-        forceUseInfiniteWrapper
+          @infinite="infiniteHandler"
+          spinner="waveDots"
+          forceUseInfiniteWrapper
       ></infinite-loading>
     </v-card>
 
