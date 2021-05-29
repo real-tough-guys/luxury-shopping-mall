@@ -3,6 +3,7 @@ package com.skhu.luxuryshop.user.service;
 import com.skhu.luxuryshop.user.dto.UserLoginDto;
 import com.skhu.luxuryshop.user.dto.UserResponseDto;
 import com.skhu.luxuryshop.user.dto.UserUpdateDto;
+import com.skhu.luxuryshop.user.encoder.BCryptPasswordEncoder;
 import com.skhu.luxuryshop.user.entity.UserEntity;
 import com.skhu.luxuryshop.user.exception.DuplicatedEmailException;
 import com.skhu.luxuryshop.user.exception.NoUserFoundException;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserManagementService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public UserResponseDto findById(Long id) {
         Optional<UserEntity> user = userRepository.findById(id);
@@ -46,7 +48,7 @@ public class UserManagementService {
         UserEntity user = UserEntity.builder()
                 .id(updateUser.getId())
                 .email(updateUser.getEmail())
-                .password(updateUser.getPassword())
+                .password(passwordEncoder.encrypt(updateUser.getPassword()))
                 .nickname(updateUser.getNickname())
                 .carts(originUser.getCarts())
                 .authorities(originUser.getAuthorities())
@@ -67,8 +69,7 @@ public class UserManagementService {
     public UserEntity login(UserLoginDto userLoginDto) {
         UserEntity user = userRepository.findOneWithAuthoritiesByEmail(userLoginDto.getEmail())
                 .orElseThrow(NoUserFoundException::new);
-
-        if (user.getPassword().equals(userLoginDto.getPassword())) {
+        if (passwordEncoder.isMatch(userLoginDto.getPassword(), user.getPassword())) {
             return user;
         }
         throw new UnmatchedPasswordCheckException();

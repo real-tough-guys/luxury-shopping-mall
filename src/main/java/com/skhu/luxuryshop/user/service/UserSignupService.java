@@ -1,6 +1,7 @@
 package com.skhu.luxuryshop.user.service;
 
 import com.skhu.luxuryshop.user.dto.UserResponseDto;
+import com.skhu.luxuryshop.user.encoder.BCryptPasswordEncoder;
 import com.skhu.luxuryshop.user.entity.Authority;
 import com.skhu.luxuryshop.user.entity.UserAuthority;
 import com.skhu.luxuryshop.user.entity.UserEntity;
@@ -19,6 +20,7 @@ public class UserSignupService {
     private final UserRepository userRepository;
     private final AuthorityRepository authorityRepository;
     private final UserAuthorityRepository userAuthorityRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Transactional
     public UserResponseDto save(UserSignupDto userSignupDto) throws Exception {
@@ -29,7 +31,7 @@ public class UserSignupService {
         UserEntity signupUser = userSignupDto.toUserEntity();
         UserEntity user = UserEntity.builder()
                 .email(signupUser.getEmail())
-                .password(signupUser.getPassword())
+                .password(passwordEncoder.encrypt(signupUser.getPassword()))
                 .nickname(signupUser.getNickname())
                 .authorities(signupUser.getAuthorities())
                 .build();

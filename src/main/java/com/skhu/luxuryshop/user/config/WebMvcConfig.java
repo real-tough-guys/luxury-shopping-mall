@@ -1,7 +1,9 @@
 package com.skhu.luxuryshop.user.config;
 
+import com.skhu.luxuryshop.user.encoder.BCryptPasswordEncoder;
 import com.skhu.luxuryshop.user.jwt.AuthInterceptor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -17,5 +19,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("api/users/**")
                 .excludePathPatterns("api/products/**")
                 .excludePathPatterns("api/carts/**");
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

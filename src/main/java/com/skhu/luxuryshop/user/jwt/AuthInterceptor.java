@@ -33,9 +33,6 @@ public class AuthInterceptor implements HandlerInterceptor {
             if (jwt.isPresent()) {
                 String token = jwt.get();
                 tokenProvider.validateToken(token);
-                for (String auth : getAuthorities(token)) {
-                    System.out.println(auth);
-                }
                 return AnnotationHandler.checkAuthority(getAuthorities(token), preAuthorize.get());
             }
             throw new NoTokenException();
