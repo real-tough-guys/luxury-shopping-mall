@@ -18,7 +18,8 @@ import java.util.stream.Collectors;
 @Component
 @Slf4j
 public class TokenProvider implements InitializingBean {
-    private static final String AUTHORITIES_KEY = "auth";
+    protected static final String AUTHORITIES_KEY = "auth";
+    protected static final String AUTHORITIES_SPLITTER = ", ";
 
     private final String secret;
     private final long tokenValidityInMilliseconds;
@@ -45,7 +46,7 @@ public class TokenProvider implements InitializingBean {
         }
         String authorities = userAuthorities.stream()
                 .map(Authority::getAuthorityName)
-                .collect(Collectors.joining(", "));
+                .collect(Collectors.joining(AUTHORITIES_SPLITTER));
 
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenValidityInMilliseconds);

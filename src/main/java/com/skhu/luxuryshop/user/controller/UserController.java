@@ -17,6 +17,8 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
+import static com.skhu.luxuryshop.user.jwt.AuthInterceptor.TOKEN_HEADER;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
@@ -72,7 +74,7 @@ public class UserController {
         String jwt = tokenProvider.createToken(user);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(AuthInterceptor.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        httpHeaders.add(AuthInterceptor.AUTHORIZATION_HEADER, TOKEN_HEADER + jwt);
 
         return new ResponseEntity<>(new UserTokenDto(user.getId(), jwt), httpHeaders, HttpStatus.OK);
     }

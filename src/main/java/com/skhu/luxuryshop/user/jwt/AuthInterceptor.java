@@ -15,11 +15,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.annotation.Annotation;
 import java.util.Optional;
 
+import static com.skhu.luxuryshop.user.jwt.TokenProvider.AUTHORITIES_KEY;
+import static com.skhu.luxuryshop.user.jwt.TokenProvider.AUTHORITIES_SPLITTER;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
     public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String TOKEN_HEADER = "Bearer ";
     private final TokenProvider tokenProvider;
 
     @Override
@@ -30,27 +34,24 @@ public class AuthInterceptor implements HandlerInterceptor {
         Optional<String> jwt = resolveToken(request);
 
         if (preAuthorize.isPresent()) {
-            if (jwt.isPresent()) {
-                String token = jwt.get();
-                tokenProvider.validateToken(token);
-                return AnnotationHandler.checkAuthority(getAuthorities(token), preAuthorize.get());
-            }
-            throw new NoTokenException();
+            String token = jwt.orElseThrow(NoTokenException::new);
+            tokenProvider.validateToken(token);
+            return AnnotationHandler.hasAnyRole(getAuthorities(token), preAuthorize.get());
         }
         return true;
     }
 
     private Optional<String> resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return Optional.of(bearerToken.substring(7));
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(TOKEN_HEADER)) {
+            return Optional.of(bearerToken.substring(TOKEN_HEADER.length()));
         }
         return Optional.empty();
     }
 
     private String[] getAuthorities(String token) {
-        String authorities = (String) tokenProvider.getData(token).get("auth");
-        return authorities.split(", ");
+        String authorities = (String) tokenProvider.getData(token).get(AUTHORITIES_KEY);
+        return authorities.split(AUTHORITIES_SPLITTER);
     }
 
     private Optional<PreAuthorize> getPreAuthorize(HandlerMethod method) {
