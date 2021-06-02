@@ -1,6 +1,7 @@
 package com.skhu.luxuryshop.user.service;
 
 import com.skhu.luxuryshop.user.dto.UserResponseDto;
+import com.skhu.luxuryshop.user.encoder.BCryptPasswordEncoder;
 import com.skhu.luxuryshop.user.entity.Authority;
 import com.skhu.luxuryshop.user.entity.UserAuthority;
 import com.skhu.luxuryshop.user.entity.UserEntity;
@@ -10,7 +11,6 @@ import com.skhu.luxuryshop.user.repository.AuthorityRepository;
 import com.skhu.luxuryshop.user.repository.UserAuthorityRepository;
 import com.skhu.luxuryshop.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,9 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserSignupService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final AuthorityRepository authorityRepository;
     private final UserAuthorityRepository userAuthorityRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Transactional
     public UserResponseDto save(UserSignupDto userSignupDto) throws Exception {
@@ -31,7 +31,7 @@ public class UserSignupService {
         UserEntity signupUser = userSignupDto.toUserEntity();
         UserEntity user = UserEntity.builder()
                 .email(signupUser.getEmail())
-                .password(passwordEncoder.encode(signupUser.getPassword()))
+                .password(passwordEncoder.encrypt(signupUser.getPassword()))
                 .nickname(signupUser.getNickname())
                 .authorities(signupUser.getAuthorities())
                 .build();

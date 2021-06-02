@@ -5,6 +5,7 @@ const config = {
 };
 const state = {
     jwt: null,
+    id: null,
     details: null,
     nickname: "로그인하세요.",
     userList: [],
@@ -15,11 +16,11 @@ const getters = {
     }
 };
 const mutations = {
-    removeJwt: (state) => {
-        state.jwt = null;
-    },
     setJwt: (state, jwt) => {
         state.jwt = jwt;
+    },
+    setId: (state, id) => {
+        state.id = id;
     },
     setUserDetails: (state, data) => {
         state.details = data;
@@ -31,6 +32,7 @@ const mutations = {
     logout: (state) => {
         state.jwt = null;
         state.details = null;
+        state.id = null;
         state.nickname = "로그인하세요.";
     }
 };
@@ -42,6 +44,7 @@ const actions = {
             await axios.post(`${config.baseUrl}login`, userSignupDto)
                 .then(response => {
                     commit("setJwt", response.data.token);
+                    commit("setId", response.data.id);
                     alert("로그인 되었습니다.");
                     console.log(response.data);
                 })
@@ -88,9 +91,9 @@ const actions = {
             return new Promise((resolve, reject) => {
                 axios.get(`${config.baseUrl}emails/${email}/exists`)
                     .then(response => {
-                        if(response.data){
+                        if (response.data) {
                             alert("중복되지 않은 이메일입니다.");
-                        }else{
+                        } else {
                             alert("중복된 이메일입니다.");
                         }
                         resolve(response);
@@ -104,7 +107,9 @@ const actions = {
         },
         async details({commit}, id) {
             let isSuccess = true;
-            await axios.get(`${config.baseUrl}${id}/details`)
+            await axios.get(`${config.baseUrl}${id}/details`,
+                {headers: {'Authorization': `Bearer ${state.jwt}`}}
+            )
                 .then(response => {
                     commit("setUserDetails", response.data);
                     console.log(response)
@@ -116,22 +121,6 @@ const actions = {
                 })
             return isSuccess
         },
-        async detail({commit}) {
-            let isSuccess = true;
-            await axios.get(`${config.baseUrl}/details`,
-                {headers: {Authorization: `Bearer ${state.jwt}`}})
-                .then(response => {
-                    commit("setUserDetails", response.data);
-                    console.log(response)
-                })
-                .catch(error => {
-                    alert(error.response.data)
-                    console.error(error)
-                    isSuccess = false;
-                })
-            return isSuccess
-        }
-        ,
         async deleteUser({commit}) {
             let isSuccess = true;
             await axios.delete(`${config.baseUrl}${state.details.id}/delete`,
@@ -151,7 +140,7 @@ const actions = {
         ,
         async deleteUserWithId({commit}, id) {
             let isSuccess = true;
-            await axios.delete(`${config.baseUrl}delete/${id}`,
+            await axios.delete(`${config.baseUrl}${id}/delete`,
                 {headers: {'Authorization': `Bearer ${state.jwt}`}})
                 .then(response => {
                     console.log(response)
@@ -163,24 +152,7 @@ const actions = {
                 })
             return isSuccess;
         },
-        delUser({commit}) {
-            return new Promise((resolve, reject) => {
-                axios.post(`${config.baseUrl}delete`,
-                    {headers: {'Authorization': `Bearer ${state.jwt}`}})
-                    .then(response => {
-                        resolve(response)
-                        alert("계정을 삭제했습니다.")
-                        commit("logout")
-                        console.log(response)
-                    })
-                    .catch(error => {
-                        reject(error)
-                        alert(error.response.data)
-                        console.error(error)
-                    })
-            })
-        }
-        ,
+
         async update({commit}, userUpdateDto) {
             let isSuccess = true;
             await axios.put(`${config.baseUrl}update`, userUpdateDto,

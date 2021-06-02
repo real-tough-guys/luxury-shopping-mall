@@ -73,11 +73,11 @@ export default {
   },
   methods: {
     ...mapActions({getMyCart: "carts/getMyCarts"}),
-    ...mapActions({getMyDetail: "users/detail"}),
+    ...mapActions({getMyDetail: "users/details"}),
     async getMyCartList() {
       try {
-        await this.getMyDetail();
-        await this.getMyCart(this.$store.state.users.details.id);
+        await this.getMyDetail(this.$store.state.users.id);
+        await this.getMyCart(this.$store.state.users.id);
         this.carts = this.$store.getters["carts/getMyCart"];
         this.isLoading = false;
       } catch {
@@ -85,7 +85,7 @@ export default {
       }
     },
     async getUserDetails() {
-      await this.getMyDetail();
+      await this.getMyDetail(this.$store.state.users.id);
     },
     cartDelete(idx, cartId) {
       console.log(cartId)

@@ -61,7 +61,7 @@ import axios from 'axios'
 export default {
   methods: {
     ...mapActions({login: 'users/login'}),
-    ...mapActions({detail: 'users/detail'}),
+    ...mapActions({detail: 'users/details'}),
     validate() {
       this.$refs.form.validate();
     },
@@ -74,7 +74,7 @@ export default {
         password: this.password
       }
       if (await this.login(userSignupDto)) {
-        await this.detail()
+        await this.detail(this.$store.state.users.id)
         await this.$router.push({name: "Main"});
       }
     }
