@@ -3,32 +3,94 @@
     <v-card max-width="450" max-height="auto" class="mx-auto my-12">
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-card-title>
-          <v-text-field color="primary" :rules="titleRules" required v-model="title" counter="15" label="Title" clearable clear-icon="mdi-close-circle" outlined
+          <v-text-field
+            color="primary"
+            :rules="titleRules"
+            required
+            v-model="title"
+            counter="15"
+            label="Title"
+            clearable
+            clear-icon="mdi-close-circle"
+            outlined
           ></v-text-field>
         </v-card-title>
         <v-card-title>
-          <v-textarea color="primary" :rules="contentRules"
-            v-model="content" counter="50" label="Content" clearable clear-icon="mdi-close-circle" outlined
+          <v-textarea
+            color="primary"
+            :rules="contentRules"
+            v-model="content"
+            counter="50"
+            label="Content"
+            clearable
+            clear-icon="mdi-close-circle"
+            outlined
           ></v-textarea>
         </v-card-title>
 
         <v-card-title>
-          <v-text-field color="primary" v-model="price" label="Price" clearable clear-icon="mdi-close-circle" outlined
+          <v-text-field
+            color="primary"
+            v-model="price"
+            label="Price"
+            clearable
+            clear-icon="mdi-close-circle"
+            outlined
           ></v-text-field>
           원
         </v-card-title>
 
         <v-card-title>
-          <v-select color="primary" :items="items" :rules="[v => !!v || 'category를 선택해주세요']" required v-model="category" :menu-props="{ top: true, offsetY: true }" label="Category" outlined
+          <v-select
+            color="primary"
+            :items="items"
+            :rules="[v => !!v || 'category를 선택해주세요']"
+            required
+            v-model="category"
+            :menu-props="{ top: true, offsetY: true }"
+            label="Category"
+            outlined
           ></v-select>
+        </v-card-title>
+        <v-card-title>
+          <v-col cols="12">
+            <v-combobox
+              v-model="sizeSelect"
+              :items="sizeItems"
+              label="해당 상품의 사이즈를 선택해주세요!!"
+              multiple
+            ></v-combobox>
+          </v-col>
+        </v-card-title>
+        <v-card-title>
+          <v-col cols="12">
+            <v-combobox
+                v-model="colorSelect"
+                :items="colorItems"
+                label="해당 상품의 색상을 선택해주세요"
+                multiple
+            ></v-combobox>
+          </v-col>
         </v-card-title>
 
         <v-card-subtitle>
           <h4>Image를 올려주세요</h4>
         </v-card-subtitle>
-        <input type="file" ref="imageInput" name="images[]" id="photo" @change="imagesAdd" hidden multiple/>
+        <input
+          type="file"
+          ref="imageInput"
+          name="images[]"
+          id="photo"
+          @change="imagesAdd"
+          hidden
+          multiple
+        />
 
-        <v-btn color="blue-grey" class="ma-2 white--text" @click="onClickImageUpload">Imagae Upload
+        <v-btn
+          color="blue-grey"
+          class="ma-2 white--text"
+          @click="onClickImageUpload"
+          >Imagae Upload
           <v-icon right dark>
             mdi-cloud-upload
           </v-icon>
@@ -51,7 +113,13 @@
                   <v-img :src="img" width="130" height="130"></v-img>
                 </th>
                 <th>
-                  <v-btn x-small dark color="pink" v-show="previewImage" @click="removeImage(i)">
+                  <v-btn
+                    x-small
+                    dark
+                    color="pink"
+                    v-show="previewImage"
+                    @click="removeImage(i)"
+                  >
                     <v-icon dark>
                       mdi-delete
                     </v-icon>
@@ -63,11 +131,21 @@
           </template>
         </v-simple-table>
         <v-card-subtitle>
-          <v-checkbox v-model="checkbox" :rules="[v => !!v || '상품 거래에 동의 해주세요']" label="Do you agree?" required
+          <v-checkbox
+            v-model="checkbox"
+            :rules="[v => !!v || '상품 거래에 동의 해주세요']"
+            label="Do you agree?"
+            required
           ></v-checkbox>
         </v-card-subtitle>
       </v-form>
-      <v-btn color="blue-grey" block class=" white--text" :disabled="!valid" @click="validate">
+      <v-btn
+        color="blue-grey"
+        block
+        class=" white--text"
+        :disabled="!valid"
+        @click="validate"
+      >
         Submit
         <v-icon right color="white">
           mdi-checkbox-marked-circle
@@ -98,7 +176,11 @@ export default {
       title: "",
       price: "",
       category: "",
-      content: ""
+      content: "",
+      sizeSelect: [],
+      sizeItems: ["S", "M", "L", "XL", "FREE"],
+      colorSelect: [],
+      colorItems: ["White", "Black", "Blue", "Red", "Grey","Light-Blue","Brown"]
     };
   },
   methods: {
@@ -143,7 +225,9 @@ export default {
         productContent: this.content,
         productPrice: this.price,
         productCategory: this.category,
-        productImageurl: imageObj
+        productImageurl: imageObj,
+        productSize:this.sizeSelect,
+        productColor:this.colorSelect,
       };
       axios
         .post("/api/products/file", frmUploadImage, {

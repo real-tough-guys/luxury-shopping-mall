@@ -28,6 +28,14 @@ public class ProductEntity {
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "product_imageurl", joinColumns = @JoinColumn(name = "product_id"))
     private List<String> productImageurl;
+    @NotNull
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "product_size", joinColumns = @JoinColumn(name = "product_id"))
+    private List<String> productSize;
+    @ElementCollection(fetch = FetchType.LAZY)
+    @NotNull
+    @CollectionTable(name = "product_color", joinColumns = @JoinColumn(name = "product_id"))
+    private List<String> productColor;
 
     public void update(ProductEntity productEntity) {
         this.productName = productEntity.getProductName();
@@ -35,5 +43,7 @@ public class ProductEntity {
         this.productPrice = productEntity.getProductPrice();
         this.productCategory = productEntity.getProductCategory();
         this.productImageurl = productEntity.getProductImageurl();
+        this.productSize = productEntity.getProductSize();
+        this.productColor = productEntity.getProductColor();
     }
 }
