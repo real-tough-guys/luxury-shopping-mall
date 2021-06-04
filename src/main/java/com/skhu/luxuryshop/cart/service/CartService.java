@@ -56,6 +56,7 @@ public class CartService {
                 .product(productOpt)
                 .user(user)
                 .color(cartRequestDto.getColor())
+                .size(cartRequestDto.getSize())
                 .build()));
     }
 

@@ -17,13 +17,7 @@
                     :items="productList.data" :single-select="singleSelect" @click:row="rowClick" :search="search"
                     hide-default-footer>
         <template slot="items" slot-scope="props">
-          <tr>
-            <td>{{ props.item.id }}</td>
-            <td>{{ props.item.productName }}</td>
-            <td :class="headers[2].class">{{ props.item.productCategory }}</td>
-            <td :class="headers[3].class">{{props.item.productColor[0]}}</td>
 
-          </tr>
         </template>
         <template v-slot:top>
           <v-switch v-model="singleSelect" label="Single select" class="pa-3"></v-switch>
@@ -92,8 +86,8 @@ export default {
         {text: "상품이름", value: "productName", sortable: true},
         {text: "가격", value: "productPrice", sortable: true},
         {text: "카테고리", value: "productCategory", sortable: true},
-        {text: "사이즈", value: "size", sortable: true},
-        {text: "색상", value: "color", sortable: true},
+        {text: "사이즈", value: "productSize", sortable: true},
+        {text: "색상", value: "productColor", sortable: true},
         {text: "수량", value: "quantity", sortable: true},
       ]
     };

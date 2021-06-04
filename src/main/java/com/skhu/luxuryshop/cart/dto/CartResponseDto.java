@@ -13,8 +13,9 @@ public class CartResponseDto {
     private ProductEntity product;
     private UserEntity user;
     private String color;
+    private String size;
 
     public static CartResponseDto from(Cart cart) {
-        return new CartResponseDto(cart.getId(), cart.getProduct(), cart.getUser(), cart.getColor());
+        return new CartResponseDto(cart.getId(), cart.getProduct(), cart.getUser(), cart.getColor(),cart.getSize());
     }
 }

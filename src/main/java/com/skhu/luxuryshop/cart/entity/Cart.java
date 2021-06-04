@@ -27,11 +27,13 @@ public class Cart {
     private UserEntity user;
 
     private String color;
+    private String size;
 
     @Builder
-    public Cart(ProductEntity product, UserEntity user, String color) {
+    public Cart(ProductEntity product, UserEntity user, String color,String size) {
         this.product = product;
         this.user = user;
         this.color = color;
+        this.size = size;
     }
 }
