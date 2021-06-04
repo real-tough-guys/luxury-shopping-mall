@@ -1,15 +1,15 @@
 package com.skhu.luxuryshop.user.service;
 
+import com.skhu.luxuryshop.user.dto.UserLoginDto;
 import com.skhu.luxuryshop.user.dto.UserResponseDto;
 import com.skhu.luxuryshop.user.dto.UserUpdateDto;
+import com.skhu.luxuryshop.user.encoder.BCryptPasswordEncoder;
 import com.skhu.luxuryshop.user.entity.UserEntity;
 import com.skhu.luxuryshop.user.exception.DuplicatedEmailException;
 import com.skhu.luxuryshop.user.exception.NoUserFoundException;
+import com.skhu.luxuryshop.user.exception.UnmatchedPasswordCheckException;
 import com.skhu.luxuryshop.user.repository.UserRepository;
-import com.skhu.luxuryshop.user.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,16 +20,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserManagementService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public UserResponseDto findById(Long id) {
         Optional<UserEntity> user = userRepository.findById(id);
         return UserResponseDto.from(user.orElseThrow(NoUserFoundException::new));
-    }
-
-    public UserResponseDto findByLoginUser() {
-        UserEntity user = getMyUserWithAuthorities().orElseThrow(NoUserFoundException::new);
-        return UserResponseDto.from(user);
     }
 
     public List<UserResponseDto> findAll() {
@@ -46,34 +41,22 @@ public class UserManagementService {
         userRepository.deleteById(id);
     }
 
-    public void deleteByLoginUser() {
-        UserEntity user = getMyUserWithAuthorities().orElseThrow(NoUserFoundException::new);
-        userRepository.deleteById(user.getId());
-    }
-
     public void update(UserUpdateDto userUpdateDto) {
         UserEntity updateUser = userUpdateDto.toUserEntity();
         UserEntity originUser = userRepository.findById(userUpdateDto.getId()).orElseThrow(NoUserFoundException::new);
-        UserEntity loginUser = getMyUserWithAuthorities().orElseThrow(NoUserFoundException::new);
+
         UserEntity user = UserEntity.builder()
                 .id(updateUser.getId())
                 .email(updateUser.getEmail())
-                .password(passwordEncoder.encode(updateUser.getPassword()))
+                .password(passwordEncoder.encrypt(updateUser.getPassword()))
                 .nickname(updateUser.getNickname())
                 .carts(originUser.getCarts())
                 .authorities(originUser.getAuthorities())
                 .build();
 
-        if (loginUser.getId() != userUpdateDto.getId()) {
-            throw new AccessDeniedException("접근할 수 없습니다.");
-        }
         if (!user.getEmail().equals(userUpdateDto.getEmail())) {
             validateDuplicatedEmail(userUpdateDto.getEmail());
         }
-        if (!userRepository.existsById(userUpdateDto.getId())) {
-            throw new NoUserFoundException();
-        }
-
         userRepository.save(user);
     }
 
@@ -83,7 +66,12 @@ public class UserManagementService {
         }
     }
 
-    public Optional<UserEntity> getMyUserWithAuthorities() {
-        return SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+    public UserEntity login(UserLoginDto userLoginDto) {
+        UserEntity user = userRepository.findOneWithAuthoritiesByEmail(userLoginDto.getEmail())
+                .orElseThrow(NoUserFoundException::new);
+        if (passwordEncoder.isMatch(userLoginDto.getPassword(), user.getPassword())) {
+            return user;
+        }
+        throw new UnmatchedPasswordCheckException();
     }
 }

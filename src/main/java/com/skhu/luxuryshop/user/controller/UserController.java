@@ -1,7 +1,9 @@
 package com.skhu.luxuryshop.user.controller;
 
+import com.skhu.luxuryshop.user.annotation.PreAuthorize;
 import com.skhu.luxuryshop.user.dto.*;
-import com.skhu.luxuryshop.user.jwt.JwtFilter;
+import com.skhu.luxuryshop.user.entity.UserEntity;
+import com.skhu.luxuryshop.user.jwt.AuthInterceptor;
 import com.skhu.luxuryshop.user.jwt.TokenProvider;
 import com.skhu.luxuryshop.user.service.UserManagementService;
 import com.skhu.luxuryshop.user.service.UserSignupService;
@@ -9,16 +11,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+
+import static com.skhu.luxuryshop.user.jwt.AuthInterceptor.TOKEN_HEADER;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +26,6 @@ public class UserController {
     private final UserSignupService userSignupService;
     private final UserManagementService userManagementService;
     private final TokenProvider tokenProvider;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @GetMapping("/emails/{email}/exists")
     public ResponseEntity<Boolean> isDuplicatedEmail(@PathVariable String email) {
@@ -43,52 +41,28 @@ public class UserController {
     }
 
     @GetMapping("/{id}/details")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<UserResponseDto> details(@PathVariable Long id) {
         UserResponseDto userDetails = userManagementService.findById(id);
         return new ResponseEntity(userDetails, HttpStatus.OK);
     }
 
-    @GetMapping("/details")
-    @PreAuthorize("hasAnyRole('ADMIN, USER')")
-    public ResponseEntity<UserResponseDto> details() {
-        UserResponseDto userDetails = userManagementService.findByLoginUser();
-        return new ResponseEntity(userDetails, HttpStatus.OK);
-    }
-
     @DeleteMapping("/{id}/delete")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         userManagementService.deleteById(id);
-        SecurityContextHolder.clearContext();
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<Void> deleteByAdmin(@PathVariable Long id) {
-        userManagementService.deleteById(id);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
-
-    @DeleteMapping("/delete")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<Void> delete() {
-        userManagementService.deleteByLoginUser();
-        SecurityContextHolder.clearContext();
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/update")
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize(roles = {"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<Void> update(@RequestBody @Valid UserUpdateDto userUpdateDto) {
         userManagementService.update(userUpdateDto);
-        SecurityContextHolder.clearContext();
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/list")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize(roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<UserResponseDto>> findAll() {
         List<UserResponseDto> users = userManagementService.findAll();
         return new ResponseEntity(users, HttpStatus.OK);
@@ -96,23 +70,12 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<UserTokenDto> login(@Valid @RequestBody UserLoginDto userLoginDto) {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(userLoginDto.getEmail(), userLoginDto.getPassword());
-
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String jwt = tokenProvider.createToken(authentication);
+        UserEntity user = userManagementService.login(userLoginDto);
+        String jwt = tokenProvider.createToken(user);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        httpHeaders.add(AuthInterceptor.AUTHORIZATION_HEADER, TOKEN_HEADER + jwt);
 
-        return new ResponseEntity<>(new UserTokenDto(jwt), httpHeaders, HttpStatus.OK);
-    }
-
-    @GetMapping("/logout")
-    public ResponseEntity<Void> logout() {
-        SecurityContextHolder.clearContext();
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(new UserTokenDto(user.getId(), jwt), httpHeaders, HttpStatus.OK);
     }
 }
