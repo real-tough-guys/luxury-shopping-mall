@@ -62,7 +62,7 @@ public class ProductService {
     }
 
     public List<ProductResponseDto> findAllMain(int limit) {
-        Page<ProductEntity> page = productRepository.findAll(PageRequest.of(limit - 1, 2, Sort.by(Sort.Direction.DESC, "id")));
+        Page<ProductEntity> page = productRepository.findAll(PageRequest.of(limit - 1, 3, Sort.by(Sort.Direction.DESC, "id")));
         return page.stream()
                 .map(ProductResponseDto::from)
                 .collect(Collectors.toList());
