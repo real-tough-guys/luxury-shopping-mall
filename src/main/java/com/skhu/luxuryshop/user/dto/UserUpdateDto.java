@@ -4,6 +4,7 @@ import com.skhu.luxuryshop.user.entity.UserEntity;
 import com.skhu.luxuryshop.user.exception.UnmatchedPasswordCheckException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Id;
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserUpdateDto {
     @Id
     private Long id;

@@ -2,11 +2,13 @@ package com.skhu.luxuryshop.cart.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class CartRequestDto {
     @Positive(message = "없음")
