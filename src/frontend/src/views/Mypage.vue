@@ -9,14 +9,14 @@
         <div class="privacy">
           <span class="user-name">{{ this.$store.state.users.nickname }}</span>
           <br/>
-          <router-link to="/editUser" style="color:white;">
+          <router-link to="/editUser" style="color:white;" v-if="isLogin" >
             <button>
               회원정보 변경
             </button>
           </router-link>
 
-          <span class="hidden-xs-only">&nbsp;/&nbsp;</span>
-          <button @click="logout">로그아웃</button>
+          <span class="hidden-xs-only" v-if="isLogin" >&nbsp;/&nbsp;</span>
+          <button v-if="isLogin" @click="logout">로그아웃</button>
           <br/>
           <span>가입일: 2020.03.11</span>
         </div>
@@ -140,6 +140,14 @@ export default {
     },
     async getMyCartList() {
       await this.getMyCart(this.$store.state.users.id);
+    }
+  },
+  computed: {
+    isLogin() {
+      return (
+          this.$store.state.users.jwt != undefined ||
+          this.$store.state.users.jwt == ""
+      );
     }
   }
 };

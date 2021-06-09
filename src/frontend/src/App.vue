@@ -23,7 +23,7 @@
             <v-list-item v-if="!isLogin" :to="{ name: 'Login' }">
               <v-list-item-title>Login</v-list-item-title>
             </v-list-item>
-            <v-list-item v-if="isLogin" :to="{ name: 'Login' }">
+            <v-list-item v-if="isLogin" @click="logout" :to="{ name: 'Login' }">
               <v-list-item-title>Logout</v-list-item-title>
             </v-list-item>
             <v-list-item v-if="isLogin" to="/editUser">
@@ -88,6 +88,7 @@
 <script>
 import { getSearchTitle } from "@/api/search";
 import HelloWorld from "./components/HelloWorld";
+import {mapActions} from "vuex";
 
 export default {
   name: "App",
@@ -107,6 +108,14 @@ export default {
       { title: "Mypage", icon: "mdi-forum" }
     ]
   }),
+  methods: {
+    ...mapActions({logout: 'users/logout'}),
+    async logoutUser() {
+      if (await this.logout()) {
+        await this.$router.push({name: "Main"})
+      }
+    }
+  },
   computed: {
     isLogin() {
       return (
