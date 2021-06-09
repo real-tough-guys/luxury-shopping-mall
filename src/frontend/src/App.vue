@@ -20,8 +20,14 @@
           </template>
 
           <v-list>
-            <v-list-item :to="{ name: 'Login' }">
+            <v-list-item v-if="!isLogin" :to="{ name: 'Login' }">
               <v-list-item-title>Login</v-list-item-title>
+            </v-list-item>
+            <v-list-item v-if="isLogin" :to="{ name: 'Login' }">
+              <v-list-item-title>Logout</v-list-item-title>
+            </v-list-item>
+            <v-list-item v-if="isLogin" to="/editUser">
+              <v-list-item-title>회원정보 수정</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -33,7 +39,9 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>{{ this.$store.state.users.nickname }}</v-list-item-title>
+            <v-list-item-title>{{
+              this.$store.state.users.nickname
+            }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -92,13 +100,20 @@ export default {
     searchModel: null,
     drawer: false,
     group: null,
-    nickname:"로그인하세요.",
+    is: false,
+    nickname: "로그인하세요.",
     items: [
       { title: "Home", icon: "mdi-view-dashboard" },
       { title: "Mypage", icon: "mdi-forum" }
     ]
   }),
-  methods: {
+  computed: {
+    isLogin() {
+      return (
+        this.$store.state.users.jwt != undefined ||
+        this.$store.state.users.jwt == ""
+      );
+    }
   }
 };
 </script>
