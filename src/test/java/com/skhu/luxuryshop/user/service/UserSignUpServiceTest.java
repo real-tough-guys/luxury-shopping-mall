@@ -66,13 +66,13 @@ public class UserSignUpServiceTest {
     @Test
     void test_validateDuplicatedEmail_normalEmail() {
         assertThat(userSignupService.validateDuplicatedEmail(normalUserSignup.getEmail()))
-                .isEqualTo(true);
+                .isTrue();
     }
 
     @DisplayName("validateDuplicatedEmail_중복된 이메일인 경우")
     @Test
     void test_validateDuplicatedEmail_duplicatedEmail() {
         assertThat(userSignupService.validateDuplicatedEmail(duplicatedEmailUserSignup.getEmail()))
-                .isEqualTo(false);
+                .isFalse();
     }
 }

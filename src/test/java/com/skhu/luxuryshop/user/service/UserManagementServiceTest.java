@@ -71,7 +71,7 @@ public class UserManagementServiceTest {
     void test_deleteById_existentUserId() {
         userManagementService.deleteById(existentUserId);
 
-        assertThat(userRepository.existsById(existentUserId)).isEqualTo(false);
+        assertThat(userRepository.existsById(existentUserId)).isFalse();
     }
 
     @DisplayName("deleteById_존재하지 않는 유저의 id인 경우 throw NoUserFoundException")

@@ -1,6 +1,5 @@
 package com.skhu.luxuryshop.user.encoder;
 
-import com.skhu.luxuryshop.user.dto.UserResponseDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,18 +15,18 @@ public class BCryptPasswordEncoderTest {
     void test_encrypt() {
         String encryptedPassword = passwordEncoder.encrypt(originPassword);
 
-        assertThat(true).isEqualTo(passwordEncoder.isMatch(originPassword, encryptedPassword));
+        assertThat(passwordEncoder.isMatch(originPassword, encryptedPassword)).isTrue();
     }
 
     @DisplayName("isMatch_비밀번호가 일치하는 경우")
     @Test
     void test_isMatch_normalPassword() {
-        assertThat(true).isEqualTo(passwordEncoder.isMatch(originPassword, encryptedPassword));
+        assertThat(passwordEncoder.isMatch(originPassword, encryptedPassword)).isTrue();
     }
 
     @DisplayName("isMatch_비밀번호가 일치하지 않는 경우")
     @Test
     void test_isMatch_wrongPassword() {
-        assertThat(false).isEqualTo(passwordEncoder.isMatch("wrongPwd", encryptedPassword));
+        assertThat(passwordEncoder.isMatch("wrongPwd", encryptedPassword)).isFalse();
     }
 }
