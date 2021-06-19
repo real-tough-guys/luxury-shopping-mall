@@ -48,6 +48,6 @@ public class UserEntity {
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonManagedReference
+    @JsonManagedReference(value="user-userAuthority")
     private List<UserAuthority> authorities;
 }

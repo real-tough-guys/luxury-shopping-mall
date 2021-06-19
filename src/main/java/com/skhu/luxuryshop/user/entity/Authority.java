@@ -22,6 +22,6 @@ public class Authority {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "authority_id", referencedColumnName = "id")
-    @JsonManagedReference
+    @JsonManagedReference(value="auth-userAuthority")
     private Set<UserAuthority> authorities;
 }

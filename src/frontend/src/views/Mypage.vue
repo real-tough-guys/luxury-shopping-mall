@@ -9,12 +9,11 @@
         <div class="privacy">
           <span class="user-name">{{ this.$store.state.users.nickname }}</span>
           <br />
-          <router-link to="/editUser" style="color:white;">
+          <router-link to="/editUser" style="color:white;" v-if="isLogin">
             <button>
               회원정보 변경
             </button>
           </router-link>
-
           <span class="hidden-xs-only">&nbsp;/&nbsp;</span>
           <button @click="logout">로그아웃</button>
           <br />
@@ -120,6 +119,14 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    }
+  },
+  computed: {
+    isLogin() {
+      return (
+        this.$store.state.users.jwt != undefined ||
+        this.$store.state.users.jwt == ""
+      );
     }
   }
 };

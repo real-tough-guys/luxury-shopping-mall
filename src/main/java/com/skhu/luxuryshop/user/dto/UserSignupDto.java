@@ -4,12 +4,14 @@ import com.skhu.luxuryshop.user.entity.UserEntity;
 import com.skhu.luxuryshop.user.exception.UnmatchedPasswordCheckException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class UserSignupDto {
     @NotBlank(message = "이메일을 입력하세요.")

@@ -17,11 +17,11 @@ public class UserAuthority {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonBackReference
+    @JsonBackReference(value="user-userAuthority")
     private UserEntity user;
 
     @ManyToOne
     @JoinColumn(name = "authority_id")
-    @JsonBackReference
+    @JsonBackReference(value="auth-userAuthority")
     private Authority auth;
 }
