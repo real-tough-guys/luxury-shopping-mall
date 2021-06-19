@@ -12,9 +12,11 @@ const Search = () => import("../views/Search.vue");
 const Login = () => import("../views/login.vue");
 const SignUp = () => import("../views/signUp.vue");
 const EditUser = () => import("../views/editUser.vue");
+const PaymentCheck = () => import("../views/PaymentCheck.vue");
 const AdminPage = () => import("../views/admin/AdminPageHome.vue");
 const AdminProductDetail = () => import("../views/admin/product/AdminProductDetail.vue");
 const AdminProductUpdate = () => import("../views/admin/product/AdminProductUpdate.vue");
+const Payment=()=> import("../views/Payment.vue")
 const routes = [
     {
         path: "/",
@@ -59,6 +61,18 @@ const routes = [
         path: "/search",
         name: "Search",
         component: Search,
+    },
+    {
+        path: "/payment",
+        name: "Payment",
+        component: Payment,
+        props: true
+    },
+    {
+        path: "/payment/check",
+        name: "PaymentCheck",
+        component: PaymentCheck,
+        props: true
     },
     {
         path: "/admin",
