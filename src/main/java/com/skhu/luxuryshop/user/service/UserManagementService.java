@@ -54,7 +54,7 @@ public class UserManagementService {
                 .authorities(originUser.getAuthorities())
                 .build();
 
-        if (!user.getEmail().equals(userUpdateDto.getEmail())) {
+        if (!originUser.getEmail().equals(userUpdateDto.getEmail())) {
             validateDuplicatedEmail(userUpdateDto.getEmail());
         }
         userRepository.save(user);
