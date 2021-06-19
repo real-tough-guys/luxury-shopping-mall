@@ -4,11 +4,11 @@
       <span style="font-size: 50px" class="mx-10">My Page</span>
       <v-container class="information-wrap">
         <v-avatar size="150">
-          <v-img src="https://randomuser.me/api/portraits/men/78.jpg"/>
+          <v-img src="https://randomuser.me/api/portraits/men/78.jpg" />
         </v-avatar>
         <div class="privacy">
           <span class="user-name">{{ this.$store.state.users.nickname }}</span>
-          <br/>
+          <br />
           <router-link to="/editUser" style="color:white;">
             <button>
               회원정보 변경
@@ -17,129 +17,109 @@
 
           <span class="hidden-xs-only">&nbsp;/&nbsp;</span>
           <button @click="logout">로그아웃</button>
-          <br/>
-          <span>가입일: 2020.03.11</span>
+          <br />
+          <span>가입일: 2020.06.11</span>
         </div>
       </v-container>
     </v-container>
     <v-container class="order-status-wrap">
       <span style="font-size: 30px">주문내역 조회</span>
-      <v-data-table
-          :headers="headers"
-          :items="products"
-          :items-per-page="5"
-          class="elevation-2"
-      />
+      <v-container>
+        <v-card v-for="(item, index) in myOrder" :key="myOrder.id">
+          <v-card-title>{{ index + 1 }}번째 주문</v-card-title>
+          <v-card v-for="list in item.carts">
+            <v-layout>
+              <v-flex xs3>
+                <v-img
+                  v-bind:src="
+                    list.product.productImageurl[0] | loadImgOrPlaceholder
+                  "
+                  contain
+                  height="125px"
+                ></v-img>
+              </v-flex>
+              <v-layout column>
+                <v-card-title
+                  ><h4>{{ list.product.productName }}</h4></v-card-title
+                >
+                <v-card-subtitle
+                  >색상 : {{ list.color }} || 사이즈 :
+                  {{ list.size }}</v-card-subtitle
+                >
+
+                <v-card-text>{{
+                  `가격 : ${list.product.productPrice} 원 ` | moneyFilter
+                }}</v-card-text>
+              </v-layout>
+            </v-layout>
+          </v-card>
+          <v-card>
+            <v-card-title>배송지 : {{ item.myAddress }}</v-card-title>
+            <v-card-title
+              >배송 주문 사항 : {{ item.deliveryMessage }}</v-card-title
+            >
+          </v-card>
+          <v-card-subtitle>
+            <h3 align="center">
+              수량
+              <p style="color: orange">{{ item.carts.length }}</p>
+              Total Price($ {{ item.totalMoney | moneyFilter }} 원)
+            </h3>
+          </v-card-subtitle>
+        </v-card>
+        <v-spacer />
+      </v-container>
     </v-container>
   </v-main>
 </template>
 <script>
-import {mapActions} from "vuex";
+import { mapActions } from "vuex";
+import myMixin from "@/filter";
+import axios from "axios";
 
 export default {
+  mixins: [myMixin],
   data() {
     return {
-      userName: "김철수",
-      headers: [
-        {text: "상품정보", value: "name"},
-        {text: "주문번호", value: "orderId"},
-        {text: "주문일자", value: "orderDate"},
-        {text: "주문금액", value: "orderAmountAndQuantity"},
-        {text: "주문상태", value: "orderStatus"}
-      ],
-      products: [
-        {
-          name: "Frozen Yogurt",
-          orderDate: "2021.03.11",
-          orderId: 1,
-          orderAmountAndQuantity: 20000,
-          orderStatus: "상품준비"
-        },
-        {
-          name: "Ice cream sandwich",
-          orderDate: "2021.03.11",
-          orderId: 2,
-          orderAmountAndQuantity: 40000,
-          orderStatus: "배송완료"
-        },
-        {
-          name: "Eclair",
-          orderDate: "2021.03.11",
-          orderId: 3,
-          orderAmountAndQuantity: 10000,
-          orderStatus: "배송중"
-        },
-        {
-          name: "Cupcake",
-          orderDate: "2021.03.11",
-          orderId: 4,
-          orderAmountAndQuantity: 90000,
-          orderStatus: "배송중"
-        },
-        {
-          name: "Gingerbread",
-          orderDate: "2021.03.11",
-          orderId: 5,
-          orderAmountAndQuantity: 120000,
-          orderStatus: "배송중"
-        },
-        {
-          name: "Jelly bean",
-          orderDate: "2021.03.12",
-          orderId: 6,
-          orderAmountAndQuantity: 11120000,
-          orderStatus: "상품준비"
-        },
-        {
-          name: "Lollipop",
-          orderDate: "2021.03.13",
-          orderId: 7,
-          orderAmountAndQuantity: 20000,
-          orderStatus: "배송완료"
-        },
-        {
-          name: "Honeycomb",
-          orderDate: "2021.03.14",
-          orderId: 8,
-          orderAmountAndQuantity: 10000,
-          orderStatus: "배송중"
-        },
-        {
-          name: "Donut",
-          orderDate: "2021.03.15",
-          orderId: 9,
-          orderAmountAndQuantity: 2000,
-          orderStatus: "배송중"
-        },
-        {
-          name: "KitKat",
-          orderDate: "2021.03.11",
-          orderId: 10,
-          orderAmountAndQuantity: 20000,
-          orderStatus: "배송중"
-        }
-      ]
+      myOrder: [],
+      orderIdCart: []
     };
   },
   created() {
     this.getUserDetails();
   },
+  mounted() {
+    this.orderStatements();
+  },
   methods: {
-    ...mapActions({logout: 'users/logout'}),
-    ...mapActions({getMyDetail: 'users/details'}),
-    ...mapActions({getMyCart: 'carts/getMyCarts'}),
+    ...mapActions({ logout: "users/logout" }),
+    ...mapActions({ getMyDetail: "users/details" }),
+    ...mapActions({ getMyCart: "carts/getMyCarts" }),
     async logoutUser() {
       if (await this.logout()) {
-        await this.$router.push({name: "Main"})
+        await this.$router.push({ name: "Main" });
       }
     },
     async getUserDetails() {
-      if (!await this.getMyDetail(this.$store.state.users.id)) {
-        await this.$router.push({name: "Main"})
+      if (!(await this.getMyDetail(this.$store.state.users.id))) {
+        await this.$router.push({ name: "Main" });
       }
     },
     async getMyCartList() {
       await this.getMyCart(this.$store.state.users.id);
+    },
+    orderStatements() {
+      axios
+        .get("/api/orders", {
+          params: { userId: this.$store.state.users.id }
+        })
+        .then(res => {
+          console.log(res.data);
+          this.myOrder = res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };
