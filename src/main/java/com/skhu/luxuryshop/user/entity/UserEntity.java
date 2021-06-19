@@ -2,6 +2,7 @@ package com.skhu.luxuryshop.user.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import com.skhu.luxuryshop.cart.entity.Cart;
+import com.skhu.luxuryshop.order.entity.OrderEntity;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -32,10 +33,18 @@ public class UserEntity {
     @Length(min = 2, max = 8, message = "2~8자리의 닉네임을 입력하세요.")
     private String nickname;
 
+    @NotBlank(message = "주소지를 입력하세요.")
+    private String address;
+
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonManagedReference
     private List<Cart> carts;
+
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonManagedReference
+    private List<OrderEntity> orders;
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")

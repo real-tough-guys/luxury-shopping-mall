@@ -15,9 +15,10 @@ public class UserResponseDto {
     private Long id;
     private String email;
     private String nickname;
+    private String address;
     private List<UserAuthority> authorities;
 
     public static UserResponseDto from(UserEntity user) {
-        return new UserResponseDto(user.getId(), user.getEmail(), user.getNickname(), user.getAuthorities());
+        return new UserResponseDto(user.getId(), user.getEmail(), user.getNickname(), user.getAddress() ,user.getAuthorities());
     }
 }
