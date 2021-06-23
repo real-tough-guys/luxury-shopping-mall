@@ -33,6 +33,7 @@ public class UserSignupService {
                 .email(signupUser.getEmail())
                 .password(passwordEncoder.encrypt(signupUser.getPassword()))
                 .nickname(signupUser.getNickname())
+                .address(signupUser.getAddress())
                 .authorities(signupUser.getAuthorities())
                 .build();
 

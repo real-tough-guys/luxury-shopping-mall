@@ -140,8 +140,6 @@ export default {
         });
     },
     postCartAdd(id) {
-      console.log("zzz" + this.colorSelect );
-      console.log( " zzzz  " + this.sizeSelect)
       return axios
         .post(
           "/api/carts/",

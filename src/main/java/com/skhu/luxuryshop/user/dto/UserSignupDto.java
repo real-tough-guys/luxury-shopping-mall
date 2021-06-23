@@ -30,6 +30,9 @@ public class UserSignupDto {
     @Length(min = 2, max = 8, message = "2~8자리의 닉네임을 입력하세요.")
     private String nickname;
 
+    @NotBlank(message = "주소지를 입력하세요.")
+    private String address;
+
     public UserEntity toUserEntity() {
         validateSamePassword(password, passwordCheck);
 
@@ -37,6 +40,7 @@ public class UserSignupDto {
                 .email(email)
                 .password(password)
                 .nickname(nickname)
+                .address(address)
                 .build();
         return user;
     }

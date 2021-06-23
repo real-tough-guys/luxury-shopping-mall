@@ -8,31 +8,71 @@
       <v-card max-width="450" max-height="auto" class="mx-auto my-12">
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-card-title>
-            <v-text-field color="primary" :rules="titleRules" required v-model="productName" counter="15" label="name"
-                          clearable clear-icon="mdi-close-circle" outlined
+            <v-text-field
+              color="primary"
+              :rules="titleRules"
+              required
+              v-model="productName"
+              counter="15"
+              label="name"
+              clearable
+              clear-icon="mdi-close-circle"
+              outlined
             ></v-text-field>
           </v-card-title>
 
           <v-card-title>
-            <v-textarea color="primary" :rules="contentRules" v-model="productContent" counter="50" label="Content"
-                        clearable clear-icon="mdi-close-circle" outlined
+            <v-textarea
+              color="primary"
+              :rules="contentRules"
+              v-model="productContent"
+              counter="50"
+              label="Content"
+              clearable
+              clear-icon="mdi-close-circle"
+              outlined
             ></v-textarea>
           </v-card-title>
 
           <v-card-title>
-            <v-text-field color="primary" v-model="productPrice" label="Price" clearable clear-icon="mdi-close-circle"
-                          outlined></v-text-field>
+            <v-text-field
+              color="primary"
+              v-model="productPrice"
+              label="Price"
+              clearable
+              clear-icon="mdi-close-circle"
+              outlined
+            ></v-text-field>
             원
           </v-card-title>
 
           <v-card-title>
-            <v-select color="primary" :items="items" :rules="[v => !!v || 'category를 선택해주세요']" required
-                      v-model="productCategory" :menu-props="{ top: true, offsetY: true }" label="Category" outlined
+            <v-select
+              color="primary"
+              :items="items"
+              :rules="[v => !!v || 'category를 선택해주세요']"
+              required
+              v-model="productCategory"
+              :menu-props="{ top: true, offsetY: true }"
+              label="Category"
+              outlined
             ></v-select>
           </v-card-title>
 
-          <input type="file" ref="imageInput" name="images[]" id="photo" @change="imagesAdd" hidden multiple/>
-          <v-btn color="blue-grey" class="ma-2 white--text" @click="onClickImageUpload">
+          <input
+            type="file"
+            ref="imageInput"
+            name="images[]"
+            id="photo"
+            @change="imagesAdd"
+            hidden
+            multiple
+          />
+          <v-btn
+            color="blue-grey"
+            class="ma-2 white--text"
+            @click="onClickImageUpload"
+          >
             Imagae Upload
             <v-icon right dark>
               mdi-cloud-upload
@@ -41,38 +81,54 @@
           <v-simple-table>
             <template v-slot:default>
               <thead>
-              <tr>
-                <th class="text-left">
-                  Image
-                </th>
-                <th class="text-left">
-                  Delete
-                </th>
-              </tr>
+                <tr>
+                  <th class="text-left">
+                    Image
+                  </th>
+                  <th class="text-left">
+                    Delete
+                  </th>
+                </tr>
               </thead>
               <tbody>
-              <tr v-for="(img, i) in image" v-bind:key="i">
-                <th>
-                  <v-img :src="img" width="130" height="130"></v-img>
-                </th>
-                <th>
-                  <v-btn x-small dark color="pink" v-show="image" @click="removeImage(i)">
-                    <v-icon dark>
-                      mdi-delete
-                    </v-icon>
-                    Image {{ i + 1 }}
-                  </v-btn>
-                </th>
-              </tr>
+                <tr v-for="(img, i) in image" v-bind:key="i">
+                  <th>
+                    <v-img :src="img" width="130" height="130"></v-img>
+                  </th>
+                  <th>
+                    <v-btn
+                      x-small
+                      dark
+                      color="pink"
+                      v-show="image"
+                      @click="removeImage(i)"
+                    >
+                      <v-icon dark>
+                        mdi-delete
+                      </v-icon>
+                      Image {{ i + 1 }}
+                    </v-btn>
+                  </th>
+                </tr>
               </tbody>
             </template>
           </v-simple-table>
           <v-card-subtitle>
-            <v-checkbox v-model="checkbox" :rules="[v => !!v || '상품 거래에 동의 해주세요']" label="Do you agree?" required
+            <v-checkbox
+              v-model="checkbox"
+              :rules="[v => !!v || '상품 거래에 동의 해주세요']"
+              label="Do you agree?"
+              required
             ></v-checkbox>
           </v-card-subtitle>
         </v-form>
-        <v-btn color="blue-grey" block class=" white--text" :disabled="!valid" @click="validate">
+        <v-btn
+          color="blue-grey"
+          block
+          class=" white--text"
+          :disabled="!valid"
+          @click="validate"
+        >
           Submit
           <v-icon right color="white">
             mdi-checkbox-marked-circle
@@ -106,7 +162,7 @@ export default {
       productName: null,
       productContent: null,
       productPrice: null,
-      productCategory: null,
+      productCategory: null
     };
   },
   mounted() {
@@ -114,21 +170,21 @@ export default {
   },
   methods: {
     init() {
-      this.getProduct(this.id)
+      this.getProduct(this.id);
     },
     getProduct(id) {
       return axios
-          .get("/api/products/detail/" + id)
-          .then(res => {
-            console.log("res"+res)
-            this.productName = res.data.productName
-            this.productContent = res.data.productContent
-            this.productPrice = res.data.productPrice
-            this.productCategory = res.data.productCategory
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        .get("/api/products/detail/" + id)
+        .then(res => {
+          console.log("res" + res);
+          this.productName = res.data.productName;
+          this.productContent = res.data.productContent;
+          this.productPrice = res.data.productPrice;
+          this.productCategory = res.data.productCategory;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     validate() {
       this.$refs.form.validate();
@@ -171,16 +227,22 @@ export default {
       frm.append("productContent", this.productContent);
       frm.append("productPrice", this.productPrice);
       frm.append("productCategory", this.productCategory);
-      return axios.put("/api/products/edit/" + this.id, frm, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      }).then(res => {
-        console.log(res.data);
-         this.$router.push({name: "AdminProductDetail", params: {id: res.data}});
-      }).catch(err => {
-        console.log(err);
-      });
+      return axios
+        .put("/api/products/edit/" + this.id, frm, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(res => {
+          console.log(res.data);
+          this.$router.push({
+            name: "AdminProductDetail",
+            params: { id: res.data }
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };

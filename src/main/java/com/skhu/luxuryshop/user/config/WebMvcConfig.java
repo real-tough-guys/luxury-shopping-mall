@@ -18,7 +18,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(authInterceptor)
                 .excludePathPatterns("api/users/**")
                 .excludePathPatterns("api/products/**")
-                .excludePathPatterns("api/carts/**");
+                .excludePathPatterns("api/carts/**")
+                .excludePathPatterns("api/orders/**");
     }
 
     @Bean

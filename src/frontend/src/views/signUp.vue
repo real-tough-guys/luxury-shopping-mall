@@ -74,6 +74,27 @@
                   ></v-text-field>
                 </v-col>
               </v-row>
+              <v-row>
+                <v-btn  rounded @click="showApi">주소 찾기</v-btn>
+                <v-col>
+                  <v-text-field
+                      name="input-10-1"
+                      v-model="zip" label="우편번호"
+                      outlined
+                  ></v-text-field>
+                  <v-text-field
+                      name="input-10-1"
+                      v-model="nomalAddress" label="기본주소"
+                      outlined
+                  ></v-text-field>
+                  <v-text-field
+                      name="input-10-1"
+                      v-model="detailAddress" label="상세주소"
+                      outlined
+                  ></v-text-field>
+
+                </v-col>
+              </v-row>
             </v-container>
           </v-form>
         </div>
@@ -94,7 +115,11 @@
           Sign up
           <v-icon right>mdi-arrow-right-thick</v-icon>
         </v-btn>
-        <v-btn color="blue-grey darken-3" class="mr-4 white--text" @click="$router.go(-1)">
+        <v-btn
+            color="blue-grey darken-3"
+            class="mr-4 white--text"
+            @click="$router.go(-1)"
+        >
           Cancel
           <v-icon right>mdi-cancel</v-icon>
         </v-btn>
@@ -103,7 +128,7 @@
   </div>
 </template>
 <script>
-import {mapActions} from 'vuex'
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -125,13 +150,16 @@ export default {
             "Min 2 and Max 8 characters",
         pwCheck: passwordCheck =>
             this.password === passwordCheck || "Password mismatch"
-      }
+      },
+      zip: "",
+      nomalAddress: "",
+      detailAddress: ""
     };
   },
   methods: {
-    ...mapActions({signup: 'users/signUp'}),
-    ...mapActions({duplicateEmail: 'users/isDuplicatedEmail'}),
-    isDuplicatedEmail: function () {
+    ...mapActions({ signup: "users/signUp" }),
+    ...mapActions({ duplicateEmail: "users/isDuplicatedEmail" }),
+    isDuplicatedEmail: function() {
       this.duplicateEmail(this.email);
     },
     async save() {
@@ -139,11 +167,38 @@ export default {
         email: this.email,
         password: this.password,
         passwordCheck: this.passwordCheck,
-        nickname: this.nickname
+        nickname: this.nickname,
+        address : this.nomalAddress+"-"+ this.detailAddress+"-"+this.zip
       };
       if (await this.signup(userSignupDto)) {
-        await this.$router.push({name: "Login"})
+        await this.$router.push({ name: "Login" });
       }
+    },
+    showApi() {
+      new window.daum.Postcode({
+        oncomplete: data => {
+          let fullRoadAddr = data.roadAddress; // 도로명 주소 변수
+          let extraRoadAddr = "";
+
+          if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
+            extraRoadAddr += data.bname;
+          }
+          if (data.buildingName !== "" && data.apartment === "Y") {
+            extraRoadAddr +=
+                extraRoadAddr !== ""
+                    ? ", " + data.buildingName
+                    : data.buildingName;
+          }
+          if (extraRoadAddr !== "") {
+            extraRoadAddr = " (" + extraRoadAddr + ")";
+          }
+          if (fullRoadAddr !== "") {
+            fullRoadAddr += extraRoadAddr;
+          }
+          this.zip = data.zonecode;
+          this.nomalAddress = fullRoadAddr;
+        }
+      }).open();
     }
   }
 };

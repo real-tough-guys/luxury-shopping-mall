@@ -17,6 +17,6 @@ public class CartRequestDto {
     private Long userId;
     @NotBlank(message = "색상.")
     private String color;
-    @NotBlank(message = "색상.")
+    @NotBlank(message = "사이즈.")
     private String size;
 }
