@@ -69,7 +69,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserTokenDto> login(@Valid @RequestBody UserLoginDto userLoginDto) {
+    public ResponseEntity<UserTokenDto> login(@RequestBody @Valid UserLoginDto userLoginDto) {
         UserEntity user = userManagementService.login(userLoginDto);
         String jwt = tokenProvider.createToken(user);
 

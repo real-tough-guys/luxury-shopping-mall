@@ -65,10 +65,10 @@
         <v-card-title>
           <v-col cols="12">
             <v-combobox
-                v-model="colorSelect"
-                :items="colorItems"
-                label="해당 상품의 색상을 선택해주세요"
-                multiple
+              v-model="colorSelect"
+              :items="colorItems"
+              label="해당 상품의 색상을 선택해주세요"
+              multiple
             ></v-combobox>
           </v-col>
         </v-card-title>
@@ -180,7 +180,15 @@ export default {
       sizeSelect: [],
       sizeItems: ["S", "M", "L", "XL", "FREE"],
       colorSelect: [],
-      colorItems: ["White", "Black", "Blue", "Red", "Grey","Light-Blue","Brown"]
+      colorItems: [
+        "White",
+        "Black",
+        "Blue",
+        "Red",
+        "Grey",
+        "Light-Blue",
+        "Brown"
+      ]
     };
   },
   methods: {
@@ -226,8 +234,8 @@ export default {
         productPrice: this.price,
         productCategory: this.category,
         productImageurl: imageObj,
-        productSize:this.sizeSelect,
-        productColor:this.colorSelect,
+        productSize: this.sizeSelect,
+        productColor: this.colorSelect
       };
       axios
         .post("/api/products/file", frmUploadImage, {

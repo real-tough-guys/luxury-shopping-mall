@@ -1,7 +1,8 @@
 <template>
   <div>
-    <loding v-if="isLoading" />
+    <loding v-if="isLoading"/>
     <v-container>
+
       <v-card>
         <h1 align="center">
           <v-icon size="xxx-large" color="black">mdi-gift</v-icon>
@@ -11,29 +12,30 @@
           <v-layout>
             <v-flex xs3>
               <v-img
-                v-bind:src="
+                  v-bind:src="
                   cart.product.productImageurl[0] | loadImgOrPlaceholder
                 "
-                contain
-                height="125px"
+                  contain
+                  height="125px"
               ></v-img>
             </v-flex>
             <v-layout column>
               <v-card-title
-                ><h4>{{ cart.product.productName }}</h4></v-card-title
+              ><h4>{{ cart.product.productName }}</h4></v-card-title
               >
-              <v-card-subtitle>색상 : {{cart.color}} || 사이즈 : {{cart.size}}</v-card-subtitle>
+              <v-card-subtitle>색상 : {{ cart.color }} || 사이즈 : {{ cart.size }}</v-card-subtitle>
               <v-card-text>{{
-                `가격 : ${cart.product.productPrice} 원 ` | moneyFilter
-              }}</v-card-text>
+                  `가격 : ${cart.product.productPrice} 원 ` | moneyFilter
+                }}
+              </v-card-text>
             </v-layout>
             <v-card-actions>
               <v-btn
-                color="blue-grey"
-                class="ma-2 white--text"
-                fab
-                right
-                @click="cartDelete(index, cart.id)"
+                  color="blue-grey"
+                  class="ma-2 white--text"
+                  fab
+                  right
+                  @click="cartDelete(index, cart.id)"
               >
                 <v-icon dark>
                   mdi-delete
@@ -47,7 +49,7 @@
             수량
             <p style="color: orange">{{ carts.length }}</p>
             Total Price($ {{ total | moneyFilter }} 원)
-            <v-btn rounded color="blue-grey" class="ma-2 white--text" >
+            <v-btn rounded color="blue-grey" class="ma-2 white--text" @click="orderPayment">
               주문하기
             </v-btn>
           </h3>
@@ -55,7 +57,7 @@
         </v-card-subtitle>
 
       </v-card>
-      <v-spacer />
+      <v-spacer/>
     </v-container>
   </div>
 </template>
@@ -64,7 +66,8 @@
 import axios from "axios";
 import Loding from "@/components/Loding.vue";
 import myMixin from "@/filter";
-import { mapActions } from "vuex";
+import {mapActions} from "vuex";
+
 export default {
   mixins: [myMixin],
   data() {
@@ -79,7 +82,6 @@ export default {
   created() {
     this.getMyCartList();
   },
-  mounted() {},
   methods: {
     ...mapActions({getMyCart: "carts/getMyCarts"}),
     ...mapActions({getMyDetail: "users/details"}),
@@ -90,23 +92,27 @@ export default {
         this.carts = this.$store.getters["carts/getMyCart"];
         this.isLoading = false;
       } catch {
-        await this.$router.push({ name: "Main" });
+        await this.$router.push({name: "Main"});
       }
     },
     async getUserDetails() {
       await this.getMyDetail(this.$store.state.users.id);
     },
     cartDelete(idx, cartId) {
-      console.log(cartId);
-      this.carts.splice(idx, 1);
-      return axios
-        .delete("/api/carts/" + cartId)
-        .then(res => {
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      if (confirm("삭제 하시겠습니까?")) {
+        this.carts.splice(idx, 1);
+        return axios
+            .delete("/api/carts/" + cartId)
+            .then(res => {
+              console.log(res);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+      }
+    },
+    orderPayment() {
+      this.$router.push({name: 'Payment', params: {order: this.carts}});
     }
   },
   computed: {

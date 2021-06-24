@@ -93,7 +93,6 @@ export default {
             this.listData = this.listData.concat(res.data);
             $state.loaded();
             this.limit += 1;
-
           } else {
             $state.complete();
           }
