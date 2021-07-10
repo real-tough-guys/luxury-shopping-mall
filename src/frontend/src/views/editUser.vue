@@ -68,6 +68,27 @@
                   ></v-text-field>
                 </v-col>
               </v-row>
+              <v-row>
+                <v-btn  rounded @click="showApi">주소 찾기</v-btn>
+                <v-col>
+                  <v-text-field
+                      name="input-10-1"
+                      v-model="zip" label="우편번호"
+                      outlined
+                  ></v-text-field>
+                  <v-text-field
+                      name="input-10-1"
+                      v-model="nomalAddress" label="기본주소"
+                      outlined
+                  ></v-text-field>
+                  <v-text-field
+                      name="input-10-1"
+                      v-model="detailAddress" label="상세주소"
+                      outlined
+                  ></v-text-field>
+
+                </v-col>
+              </v-row>
             </v-container>
           </v-form>
         </div>
@@ -109,7 +130,9 @@ export default {
       passwordCheck: "",
       nickname: "",
       valid: true,
-
+      zip: "",
+      nomalAddress: "",
+      detailAddress: "",
       rules: {
         required: input => !!input || "Required.",
         minPw: password => password.length >= 8 || "Min 8 characters",
@@ -133,7 +156,8 @@ export default {
         email: this.email,
         password: this.password,
         passwordCheck: this.passwordCheck,
-        nickname: this.nickname
+        nickname: this.nickname,
+        address : this.nomalAddress+"-"+ this.detailAddress+"-"+this.zip
       };
       if (await this.updateUser(userUpdateDto)) {
         await this.$router.push({name: "Login"})
@@ -149,6 +173,32 @@ export default {
     },
     getUserDetails: function () {
       this.getUser(this.$store.state.users.id);
+    },
+    showApi() {
+      new window.daum.Postcode({
+        oncomplete: data => {
+          let fullRoadAddr = data.roadAddress; // 도로명 주소 변수
+          let extraRoadAddr = "";
+
+          if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
+            extraRoadAddr += data.bname;
+          }
+          if (data.buildingName !== "" && data.apartment === "Y") {
+            extraRoadAddr +=
+                extraRoadAddr !== ""
+                    ? ", " + data.buildingName
+                    : data.buildingName;
+          }
+          if (extraRoadAddr !== "") {
+            extraRoadAddr = " (" + extraRoadAddr + ")";
+          }
+          if (fullRoadAddr !== "") {
+            fullRoadAddr += extraRoadAddr;
+          }
+          this.zip = data.zonecode;
+          this.nomalAddress = fullRoadAddr;
+        }
+      }).open();
     }
   }
 };

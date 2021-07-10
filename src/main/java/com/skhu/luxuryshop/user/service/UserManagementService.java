@@ -50,6 +50,7 @@ public class UserManagementService {
                 .email(updateUser.getEmail())
                 .password(passwordEncoder.encrypt(updateUser.getPassword()))
                 .nickname(updateUser.getNickname())
+                .address(userUpdateDto.getAddress())
                 .carts(originUser.getCarts())
                 .authorities(originUser.getAuthorities())
                 .build();
