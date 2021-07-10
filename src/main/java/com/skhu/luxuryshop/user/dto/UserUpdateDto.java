@@ -45,6 +45,7 @@ public class UserUpdateDto {
                 .email(email)
                 .password(password)
                 .nickname(nickname)
+                .address(address)
                 .build();
 
         return user;

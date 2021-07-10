@@ -5,7 +5,7 @@ INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (1,'test1.jpg
 INSERT INTO product_size (product_id, product_size) VALUES (1,'Free');
 INSERT INTO product_color (product_id, product_color) VALUES (1,'Black');
 INSERT INTO product_color (product_id, product_color) VALUES (1,'White');
-INSERT INTO product (product_name, product_content,product_price,product_category ) VALUES ('test2', ' ', 1,'outer');
+INSERT INTO product (product_name, product_content,product_price,product_category ) VALUES ('브이넥 니트', ' ', 1,'outer');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (2,'test2.jpg');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (2,'test2.jpg');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (2,'test2.jpg');
@@ -21,7 +21,7 @@ INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (3,'test3.jpg
 INSERT INTO product_size (product_id, product_size) VALUES (3,'Free');
 INSERT INTO product_color (product_id, product_color) VALUES (3,'Black');
 INSERT INTO product_color (product_id, product_color) VALUES (3,'White');
-INSERT INTO product (product_name, product_content,product_price,product_category ) VALUES ('브이넥 니트', ' ', 36500,'top');
+INSERT INTO product (product_name, product_content,product_price,product_category ) VALUES ('목폴라 니트', ' ', 36500,'top');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (4,'test4.jpg');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (4,'test4.jpg');
 INSERT INTO product_imageurl (product_id, product_imageurl) VALUES (4,'test4.jpg');

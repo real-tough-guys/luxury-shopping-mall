@@ -9,69 +9,88 @@
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-card-title>
             <v-text-field
-              color="primary"
-              :rules="titleRules"
-              required
-              v-model="productName"
-              counter="15"
-              label="name"
-              clearable
-              clear-icon="mdi-close-circle"
-              outlined
+                color="primary"
+                :rules="titleRules"
+                required
+                v-model="productName"
+                counter="15"
+                label="name"
+                clearable
+                clear-icon="mdi-close-circle"
+                outlined
             ></v-text-field>
           </v-card-title>
 
           <v-card-title>
             <v-textarea
-              color="primary"
-              :rules="contentRules"
-              v-model="productContent"
-              counter="50"
-              label="Content"
-              clearable
-              clear-icon="mdi-close-circle"
-              outlined
+                color="primary"
+                :rules="contentRules"
+                v-model="productContent"
+                counter="50"
+                label="Content"
+                clearable
+                clear-icon="mdi-close-circle"
+                outlined
             ></v-textarea>
           </v-card-title>
 
           <v-card-title>
             <v-text-field
-              color="primary"
-              v-model="productPrice"
-              label="Price"
-              clearable
-              clear-icon="mdi-close-circle"
-              outlined
+                color="primary"
+                v-model="productPrice"
+                label="Price"
+                clearable
+                clear-icon="mdi-close-circle"
+                outlined
             ></v-text-field>
             원
           </v-card-title>
 
           <v-card-title>
             <v-select
-              color="primary"
-              :items="items"
-              :rules="[v => !!v || 'category를 선택해주세요']"
-              required
-              v-model="productCategory"
-              :menu-props="{ top: true, offsetY: true }"
-              label="Category"
-              outlined
+                color="primary"
+                :items="items"
+                :rules="[v => !!v || 'category를 선택해주세요']"
+                required
+                v-model="productCategory"
+                :menu-props="{ top: true, offsetY: true }"
+                label="Category"
+                outlined
             ></v-select>
           </v-card-title>
-
+          <v-card-title>
+            <v-col cols="12">
+              <v-combobox
+                  v-model="sizeSelect"
+                  :items="sizeItems"
+                  label="해당 상품의 사이즈를 선택해주세요!!"
+                  multiple
+              ></v-combobox>
+            </v-col>
+          </v-card-title>
+          <v-card-title>
+            <v-col cols="12">
+              <v-combobox
+                  v-model="colorSelect"
+                  :items="colorItems"
+                  label="해당 상품의 색상을 선택해주세요"
+                  multiple
+              ></v-combobox>
+            </v-col>
+          </v-card-title>
           <input
-            type="file"
-            ref="imageInput"
-            name="images[]"
-            id="photo"
-            @change="imagesAdd"
-            hidden
-            multiple
+              type="file"
+              ref="imageInput"
+              name="images[]"
+              id="photo"
+              @change="imagesAdd"
+              hidden
+              multiple
           />
           <v-btn
-            color="blue-grey"
-            class="ma-2 white--text"
-            @click="onClickImageUpload"
+              color="blue-grey"
+              class="ma-2 white--text"
+              @click="onClickImageUpload"
           >
             Imagae Upload
             <v-icon right dark>
@@ -81,53 +100,53 @@
           <v-simple-table>
             <template v-slot:default>
               <thead>
-                <tr>
-                  <th class="text-left">
-                    Image
-                  </th>
-                  <th class="text-left">
-                    Delete
-                  </th>
-                </tr>
+              <tr>
+                <th class="text-left">
+                  Image
+                </th>
+                <th class="text-left">
+                  Delete
+                </th>
+              </tr>
               </thead>
               <tbody>
-                <tr v-for="(img, i) in image" v-bind:key="i">
-                  <th>
-                    <v-img :src="img" width="130" height="130"></v-img>
-                  </th>
-                  <th>
-                    <v-btn
+              <tr v-for="(img, i) in image" v-bind:key="i">
+                <th>
+                  <v-img :src="img" width="130" height="130"></v-img>
+                </th>
+                <th>
+                  <v-btn
                       x-small
                       dark
                       color="pink"
                       v-show="image"
                       @click="removeImage(i)"
-                    >
-                      <v-icon dark>
-                        mdi-delete
-                      </v-icon>
-                      Image {{ i + 1 }}
-                    </v-btn>
-                  </th>
-                </tr>
+                  >
+                    <v-icon dark>
+                      mdi-delete
+                    </v-icon>
+                    Image {{ i + 1 }}
+                  </v-btn>
+                </th>
+              </tr>
               </tbody>
             </template>
           </v-simple-table>
           <v-card-subtitle>
             <v-checkbox
-              v-model="checkbox"
-              :rules="[v => !!v || '상품 거래에 동의 해주세요']"
-              label="Do you agree?"
-              required
+                v-model="checkbox"
+                :rules="[v => !!v || '상품 거래에 동의 해주세요']"
+                label="Do you agree?"
+                required
             ></v-checkbox>
           </v-card-subtitle>
         </v-form>
         <v-btn
-          color="blue-grey"
-          block
-          class=" white--text"
-          :disabled="!valid"
-          @click="validate"
+            color="blue-grey"
+            block
+            class=" white--text"
+            :disabled="!valid"
+            @click="validate"
         >
           Submit
           <v-icon right color="white">
@@ -162,7 +181,19 @@ export default {
       productName: null,
       productContent: null,
       productPrice: null,
-      productCategory: null
+      productCategory: null,
+      sizeSelect: [],
+      sizeItems: ["S", "M", "L", "XL", "FREE"],
+      colorSelect: [],
+      colorItems: [
+        "White",
+        "Black",
+        "Blue",
+        "Red",
+        "Grey",
+        "Light-Blue",
+        "Brown"
+      ]
     };
   },
   mounted() {
@@ -174,17 +205,17 @@ export default {
     },
     getProduct(id) {
       return axios
-        .get("/api/products/detail/" + id)
-        .then(res => {
-          console.log("res" + res);
-          this.productName = res.data.productName;
-          this.productContent = res.data.productContent;
-          this.productPrice = res.data.productPrice;
-          this.productCategory = res.data.productCategory;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+          .get("/api/products/detail/" + id)
+          .then(res => {
+            console.log("res" + res);
+            this.productName = res.data.productName;
+            this.productContent = res.data.productContent;
+            this.productPrice = res.data.productPrice;
+            this.productCategory = res.data.productCategory;
+          })
+          .catch(err => {
+            console.log(err);
+          });
     },
     validate() {
       this.$refs.form.validate();
@@ -218,31 +249,45 @@ export default {
       this.images.splice(key, 1);
     },
     allSubmit() {
-      var frm = new FormData();
+      var frmUploadImage = new FormData();
+      const imageObj = [];
       for (var i = 0; i < this.images.length; i++) {
-        frm.append("files", this.images[i]);
-        frm.append("productImageurl", this.images[i].name);
+        frmUploadImage.append("files", this.images[i]);
+        imageObj.push(this.images[i].name);
       }
-      frm.append("productName", this.productName);
-      frm.append("productContent", this.productContent);
-      frm.append("productPrice", this.productPrice);
-      frm.append("productCategory", this.productCategory);
-      return axios
-        .put("/api/products/edit/" + this.id, frm, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        })
-        .then(res => {
-          console.log(res.data);
-          this.$router.push({
-            name: "AdminProductDetail",
-            params: { id: res.data }
+
+      const productObj = {
+        productName: this.productName,
+        productContent: this.productContent,
+        productPrice: this.productPrice,
+        productCategory: this.productCategory,
+        productImageurl: imageObj,
+        productSize: this.sizeSelect,
+        productColor: this.colorSelect
+      };
+      axios
+          .post("/api/products/file", frmUploadImage, {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          })
+          .then(res => {
+            console.log(res);
+            axios
+                .put("/api/products/edit/" + this.id, productObj)
+                .then(res => {
+                  this.$router.push({
+                    name: "AdminProductDetail",
+                    params: { id: res.data }
+                  });
+                })
+                .catch(err => {
+                  console.log(err);
+                });
+          })
+          .catch(err => {
+            console.log(err);
           });
-        })
-        .catch(err => {
-          console.log(err);
-        });
     }
   }
 };
