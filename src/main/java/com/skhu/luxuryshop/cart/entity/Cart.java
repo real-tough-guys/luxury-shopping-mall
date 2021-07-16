@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.skhu.luxuryshop.product.entity.ProductEntity;
 import com.skhu.luxuryshop.user.entity.UserEntity;
 import lombok.*;
-
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.*;
 
 @Getter
@@ -12,7 +14,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Cart {
+public class CartEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,7 +32,7 @@ public class Cart {
     private String size;
 
     @Builder
-    public Cart(ProductEntity product, UserEntity user, String color,String size) {
+    public CartEntity(ProductEntity product, UserEntity user, String color, String size) {
         this.product = product;
         this.user = user;
         this.color = color;
