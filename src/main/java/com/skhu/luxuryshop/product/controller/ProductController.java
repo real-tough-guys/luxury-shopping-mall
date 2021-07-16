@@ -52,10 +52,7 @@ public class ProductController {
         return ResponseEntity.ok("이미지 저장완료");
     }
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Long> updateProduct(@PathVariable Long id, ProductRequestDto productRequestDto, List<MultipartFile> files) {
-        if (files != null) {
-            productService.uploadFiles(files);
-        }
+    public ResponseEntity<Long> updateProduct(@PathVariable Long id,@RequestBody @Valid ProductRequestDto productRequestDto) {
         productService.update(id, productRequestDto);
         return ResponseEntity.ok(productService.update(id, productRequestDto));
     }

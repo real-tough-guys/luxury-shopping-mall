@@ -17,7 +17,7 @@
           <span class="hidden-xs-only">&nbsp;/&nbsp;</span>
           <button @click="logout">로그아웃</button>
           <br />
-          <span>가입일: 2020.06.11</span>
+          <span>가입일: 2020.06.25</span>
         </div>
       </v-container>
     </v-container>
