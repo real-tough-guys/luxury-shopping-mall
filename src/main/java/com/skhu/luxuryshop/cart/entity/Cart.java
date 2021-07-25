@@ -14,7 +14,9 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class CartEntity {
+@Table(name = "cart")
+public class Cart {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,7 +34,7 @@ public class CartEntity {
     private String size;
 
     @Builder
-    public CartEntity(ProductEntity product, UserEntity user, String color, String size) {
+    public Cart(ProductEntity product, UserEntity user, String color, String size) {
         this.product = product;
         this.user = user;
         this.color = color;
